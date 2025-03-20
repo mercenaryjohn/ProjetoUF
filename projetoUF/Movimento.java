@@ -3,28 +3,30 @@ public class Movimento
 {
     public double[] movimentador (EscolherClasse classeEscolhida, String inputDoUsuario, double localização[])
     {
-        if (inputDoUsuario.equals("norte"))
+        String inputLowered = inputDoUsuario.toLowerCase();
+
+        if (inputLowered.equals("norte") || inputDoUsuario.equals("1"))
         {
             localização[1] = localização[1] + 1;
-            System.out.println(localização[1]);
+            //System.out.println(localização[1]); //DEBUG
             return localização;
         }
-        if (inputDoUsuario.equals("sul"))
+        if (inputLowered.equals("sul") || inputDoUsuario.equals("2"))
         {
             localização[1] = localização[1] - 1;
-            System.out.println(localização[1]);
+            //System.out.println(localização[1]); //DEBUG
             return localização;
         }
-        if (inputDoUsuario.equals("leste"))
+        if (inputLowered.equals("leste") || inputDoUsuario.equals("3"))
         {
             localização[0] = localização[0] + 1;
-            System.out.println(localização[0]);
+            //System.out.println(localização[0]); //DEBUG
             return localização;
         }
-        if (inputDoUsuario.equals("oeste"))
+        if (inputLowered.equals("oeste") || inputDoUsuario.equals("4"))
         {
             localização[0] = localização[0] - 1;
-            System.out.println(localização[0]);
+            //System.out.println(localização[0]); //DEBUG
             return localização;
         }
         return localização;

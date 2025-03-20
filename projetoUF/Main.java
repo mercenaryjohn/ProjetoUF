@@ -6,7 +6,9 @@ public class Main
     {
         Scanner scanString = new Scanner(System.in); // inicia o scanner
 
-        System.out.print("Escolha a sua classe\n");
+        String listaDeClasses = " 1 - Escoteiro \n 2 - Engenheiro \n 3 - Veterinário \n 4 - Prisioneiro \n";
+        System.out.print("Escolha o seu sobrevivente:\n" + listaDeClasses);
+
         String escolhaDeClasseDoUsuario = scanString.nextLine();
         
         EscolherClasse classeEscolhida = new EscolherClasse(escolhaDeClasseDoUsuario);
@@ -15,37 +17,46 @@ public class Main
         String inputDoUsuario = "default"; // para não dar problema no while
         Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
+
         while(!inputDoUsuario.equals("sair"))
         {
-            System.out.println("O que eu devo fazer agora?");
-            System.out.println("1 - Andar\n0 - (para sair do jogo)");
-            inputDoUsuario = scanString.nextLine();
-            System.out.println("inputDoUsuario:" + inputDoUsuario);
-
-            if(objEscolhas.escolhas(inputDoUsuario).equals("andar"))
+            int inputFoiAlgoEsperado = 1;
+            while (inputFoiAlgoEsperado == 1) // Se o usuário escolher algo não esperado, pergunta novamente
             {
-                int n = 0;
-                System.out.println("Quantos passos eu deveria andar?...");
-                int passos = Integer.parseInt(scanString.nextLine());
-                System.out.println("Para onde?...");
+                System.out.println("O que eu devo fazer agora?");
+                System.out.println("1 - Andar\n0 - (para sair do jogo)");
                 inputDoUsuario = scanString.nextLine();
-                while(n < passos)
+                System.out.println("_DEBUG_inputDoUsuario:" + inputDoUsuario); // DEBUG
+
+                if(objEscolhas.escolhas(inputDoUsuario).equals("andar"))
                 {
-                    double[] posição = objMovimento.movimentador(classeEscolhida, inputDoUsuario,
-                     classeEscolhida.localização);
-                    classeEscolhida.localização = posição;
-                    System.out.println("X: " + posição[0] + " Y:" +
-                    posição[1]);
-                    n++;
+                    inputFoiAlgoEsperado = 0;
+                    int n = 0;
+                    System.out.println("Quantos passos eu deveria andar?...");
+                    int passos = Integer.parseInt(scanString.nextLine());
+
+                    String listaDeDireções = "\n 1 - Norte \n 2 - Sul \n 3 - Leste \n 4 - Oeste \n";
+                    System.out.println("Para onde?..." + listaDeDireções);
+                    
+                    inputDoUsuario = scanString.nextLine();
+                    while(n < passos)
+                    {
+                        double[] posição = objMovimento.movimentador(classeEscolhida, inputDoUsuario,
+                        classeEscolhida.localização);
+                        
+                        classeEscolhida.localização = posição;
+                        System.out.println("X: " + posição[0] + " Y:" + posição[1]);
+                        n++;
+                    }
+                }
+                if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
+                {
+                    inputDoUsuario = "sair";
+                    break;
                 }
             }
-            if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
-            {
-                inputDoUsuario = "sair";
-                break;
-            }
         }
-        
+
         scanString.close();// fecha o scanner
     }
 }
