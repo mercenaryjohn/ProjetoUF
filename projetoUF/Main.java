@@ -24,7 +24,7 @@ public class Main
             while (inputFoiAlgoEsperado == 1) // Se o usuário escolher algo não esperado, pergunta novamente
             {
                 System.out.println("O que eu devo fazer agora?");
-                System.out.println("1 - Andar\n0 - (para sair do jogo)");
+                System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n0 - (para sair do jogo)");
                 inputDoUsuario = scanString.nextLine();
                 System.out.println("_DEBUG_inputDoUsuario:" + inputDoUsuario); // DEBUG
 
@@ -41,13 +41,23 @@ public class Main
                     inputDoUsuario = scanString.nextLine();
                     while(n < passos)
                     {
-                        double[] posição = objMovimento.movimentador(classeEscolhida, inputDoUsuario,
+                        double[] posição = objMovimento.movimentador(inputDoUsuario,
                         classeEscolhida.localização);
                         
                         classeEscolhida.localização = posição;
                         System.out.println("X: " + posição[0] + " Y:" + posição[1]);
                         n++;
                     }
+                }
+                if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
+                {
+                    inputFoiAlgoEsperado = 0;
+                    classeEscolhida.energia = classeEscolhida.energia + 50; //TODO: número temporário
+                    System.out.println("Debug_energia: " + classeEscolhida.energia);
+                }
+                if(objEscolhas.escolhas(inputDoUsuario).equals("inventário"))
+                {
+                    inputFoiAlgoEsperado = 0;
                 }
                 if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
                 {

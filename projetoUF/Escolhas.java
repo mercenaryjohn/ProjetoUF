@@ -12,6 +12,9 @@ public class Escolhas
             case "2": //descansar
                 escolhaEmTexto = "descansar";
                 return escolhaEmTexto;
+            case "3":
+                escolhaEmTexto = "inventário";
+                return escolhaEmTexto;
             case "0":
                 escolhaEmTexto = "sair";
                 return escolhaEmTexto;
