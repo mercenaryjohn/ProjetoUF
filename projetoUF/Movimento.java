@@ -1,7 +1,7 @@
 
 public class Movimento
 {
-    public double[] movimentador (EscolherClasse classeEscolhida, String inputDoUsuario, double localização[])
+    public double[] movimentador (String inputDoUsuario, double localização[])
     {
         String inputLowered = inputDoUsuario.toLowerCase();
 
