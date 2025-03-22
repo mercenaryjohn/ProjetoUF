@@ -52,7 +52,7 @@ public class Main
                 if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
                 {
                     inputFoiAlgoEsperado = 0;
-                    classeEscolhida.energia = classeEscolhida.energia + 50; //TODO: número temporário
+                    classeEscolhida.energia = classeEscolhida.energia + 100; //TODO: número temporário
                     System.out.println("Debug_energia: " + classeEscolhida.energia);
                 }
                 if(objEscolhas.escolhas(inputDoUsuario).equals("inventário"))
