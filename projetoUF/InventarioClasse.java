@@ -21,11 +21,12 @@ public class InventarioClasse
     }
 
     // Ativa o efeito do item no personagem.
+    Agua objAgua = new Agua();
     public void usarItem (EscolherClasse classeEscolhida, String nomeItem)
     {
         if (nomeItem.equals("Água"))
         {
-            classeEscolhida.setSede(classeEscolhida.getSede() + 50); //TODO: número temporário
+            objAgua.usarAgua(classeEscolhida);
         }
     }
 }

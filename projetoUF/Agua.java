@@ -8,11 +8,10 @@ public class Agua extends Item
         setDurabilidade(1);
     }
 
-    InventarioClasse objInventario = new InventarioClasse();
+    //InventarioClasse objInventario = new InventarioClasse();
     public void usarAgua(EscolherClasse classeEscolhida)
     {
-        objInventario.usarItem(classeEscolhida, this.nome);
         //System.out.println(this.nome); //DEBUG this.nome funciona para usar o nome
-        objInventario.removerItem(classeEscolhida, this.nome);
+        classeEscolhida.setSede(classeEscolhida.getSede() + 50); //TODO: número temporário
     }
 }

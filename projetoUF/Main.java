@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -36,8 +38,21 @@ public class Main
                 {
                     inputFoiAlgoEsperado = 0;
                     int n = 0;
+                    int passos = 0;
+                    
                     System.out.println("Quantos passos eu deveria andar?...");
-                    int passos = Integer.parseInt(scanString.nextLine());
+                    while (true)
+                    {
+                        try
+                        {
+                            passos = Integer.parseInt(scanString.nextLine());
+                            break;
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.out.println("Preciso escolher um número para isso...");
+                        }
+                    }
 
                     String listaDeDireções = "\n 1 - Norte \n 2 - Sul \n 3 - Leste \n 4 - Oeste \n";
                     System.out.println("Para onde?..." + listaDeDireções);
@@ -66,16 +81,16 @@ public class Main
                     System.out.println("Inventário:");
                     System.out.println("________________________________________");
 
-                    Map<String, Integer> countMap = new HashMap<>(); // Usar para contar os items da list Inventário
+                    Map<String, Integer> mapaContadorLista = new HashMap<>(); // Usar para contar os items da list Inventário
 
                     for (String item : classeEscolhida.getInventário())
                     {
-                        countMap.put(item, countMap.getOrDefault(item, 0) + 1);
+                        mapaContadorLista.put(item, mapaContadorLista.getOrDefault(item, 0) + 1);
                     }
 
                     // 
                     int index = 1;
-                    for (Map.Entry<String, Integer> entry : countMap.entrySet())
+                    for (Map.Entry<String, Integer> entry : mapaContadorLista.entrySet())
                     {
                         System.out.println(index + "- " + entry.getKey() + " x" + entry.getValue());
                         index++;
@@ -84,11 +99,37 @@ public class Main
                     System.out.println("________________________________________");
                     objInventario.adicionarItem(classeEscolhida, "Água"); // TODO: adicionei item pela 1ª vez
 
-                    System.out.println("Eu devo usar algo?...");
-                    int usarItemInventário = Integer.parseInt(scanString.nextLine());
+                    System.out.println("Eu devo usar algo?..."); // Escolha de Item para usar
+                    int usarItemInventário = 0;
+                    while (true)
+                    {
+                        try
+                        {
+                            usarItemInventário = Integer.parseInt(scanString.nextLine());
+                            break;
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.out.println("Preciso escolher um número para isso...");
+                        }
+                    }
+
+                    List<String> listaItens = new ArrayList<>(mapaContadorLista.keySet());
+                    if (usarItemInventário > 0 && usarItemInventário <= mapaContadorLista.size()) 
+                    {
+                        String itemEscolhidoParaUsar = listaItens.get(usarItemInventário - 1);
+                        System.out.println("Irei usar... " + itemEscolhidoParaUsar);
+                        objInventario.usarItem(classeEscolhida, itemEscolhidoParaUsar);
+                        objInventario.removerItem(classeEscolhida, itemEscolhidoParaUsar);
+                    } 
+                    else 
+                    {
+                        System.out.println("Não sei o que escolher...");
+                    }
+
                     //objInventario.removerItem(classeEscolhida, "Água"); // remove
                     //objAgua.usarAgua(classeEscolhida);
-                    //System.out.println(classeEscolhida.getSede());
+                    System.out.println(classeEscolhida.getSede()); // DEBUG
 
                 }
                 if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
