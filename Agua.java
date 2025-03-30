@@ -3,16 +3,16 @@ public class Agua extends Item
 {
     public Agua()
     {
-        this.nome = "Água";
-        this.peso = 1;
-        this.durabilidade = 1;
+        setNome("Água");
+        setPeso(1);
+        setDurabilidade(1);
     }
 
-    public String[] usar(String nomeItem, String inventario[], EscolherClasse classeEscolhida)
+    InventarioClasse objInventario = new InventarioClasse();
+    public void usarAgua(EscolherClasse classeEscolhida)
     {
-        // TODO: ESCREVER METODO AQUI
-        classeEscolhida.sede = classeEscolhida.sede + 50; //TODO: número temporário
-
-        return inventario;
+        objInventario.usarItem(classeEscolhida, this.nome);
+        //System.out.println(this.nome); //DEBUG this.nome funciona para usar o nome
+        objInventario.removerItem(classeEscolhida, this.nome);
     }
 }

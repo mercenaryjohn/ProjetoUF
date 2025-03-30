@@ -17,7 +17,7 @@ public class Evento
     protected String[] Impacto;
     protected String condiçãoDeAtivação;
 
-    public executar(EscolherClasse classeEscolhida, Ambiente local)
+    public void executar(EscolherClasse classeEscolhida, Ambiente local)
     {
 
     }

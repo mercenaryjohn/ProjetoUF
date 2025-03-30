@@ -1,57 +1,58 @@
+import java.util.ArrayList;
 
 public class EscolherClasse extends Personagem
 {
     public EscolherClasse(String classeEscolhida)
     {
+        super(null, 0, 0, 0, 0, 0);
         String classeEscolhidaLowered = classeEscolhida.toLowerCase();
 
         if (classeEscolhidaLowered.equals("Escoteiro") || classeEscolhida.equals("1"))
         {
-        this.nome = "Escoteiro"; //nota: o this. não é necessário
-        this.vida = 180;
-        this.fome = 150;
-        this.sede = 100;
-        this.energia = 100;
-        this.sanidade = 200;
-        this.inventário = new double[20];
-        this.localização = new double [2];
+        setNome ("Escoteiro");
+        setVida (180);
+        setFome (150);
+        setSede (100);
+        setSede (100);
+        setSanidade (200);
+        setInventário (new ArrayList<>(20));
+        setLocalização ( new double [2]);
         }
 
         if (classeEscolhidaLowered.equals("Engenheiro") || classeEscolhida.equals("2"))
         {
-        this.nome = "Engenheiro";
-        this.vida = 100;
-        this.fome = 160;
-        this.sede = 100;
-        this.energia = 90;
-        this.sanidade = 250;
-        this.inventário = new double[20];
-        this.localização = new double [2];
+        setNome ("Engenheiro");
+        setVida (100);
+        setFome (160);
+        setSede (100);
+        setSede (90);
+        setSanidade (250);
+        setInventário (new ArrayList<>(20));
+        setLocalização (new double [2]);
         }
 
         if (classeEscolhidaLowered.equals("Veterinário") || classeEscolhida.equals("3"))
         {
-        this.nome = "Veterinário";
-        this.vida = 100;
-        this.fome = 170;
-        this.sede = 100;
-        this.energia = 90;
-        this.sanidade = 200;
-        this.inventário = new double[20];
-        this.localização = new double [2];
+        setNome  ("Veterinário");
+        setVida  (100);
+        setFome  (170);
+        setSede  (100);
+        setEnergia  (90);
+        setSanidade  (200);
+        setInventário  (new ArrayList<>(20));
+        setLocalização  (new double [2]);
         }
 
         if (classeEscolhidaLowered.equals("Prisioneiro") || classeEscolhida.equals("4"))
         {
-        this.nome = "Prisioneiro";
-        this.vida = 80;
-        this.fome = 90;
-        this.sede = 120;
-        this.energia = 65;
-        this.sanidade = 80;
-        this.inventário = new double[6];
-        this.localização = new double [2];
+        setNome  ("Prisioneiro");
+        setVida  (80);
+        setFome  (90);
+        setSede  (120);
+        setEnergia  (65);
+        setSanidade  (80);
+        setInventário  (new ArrayList<>(8));
+        setLocalização  (new double [2]);
         }
-
     }
 }
