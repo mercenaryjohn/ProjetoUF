@@ -4,46 +4,46 @@ public class EscolherClasse extends Personagem
 {
     public EscolherClasse(String classeEscolhida)
     {
-        super(null, 0, 0, 0, 0, 0);
+        super(null, 1, 1, 1, 1, 1);
         String classeEscolhidaLowered = classeEscolhida.toLowerCase();
 
-        if (classeEscolhidaLowered.equals("Escoteiro") || classeEscolhida.equals("1"))
+        if (classeEscolhidaLowered.equals("escoteiro") || classeEscolhida.equals("1"))
         {
         setNome ("Escoteiro");
         setVida (180);
         setFome (150);
         setSede (100);
-        setSede (100);
+        setEnergia  (180);
         setSanidade (200);
         setInventário (new ArrayList<>(20));
         setLocalização ( new double [2]);
         }
 
-        if (classeEscolhidaLowered.equals("Engenheiro") || classeEscolhida.equals("2"))
+        if (classeEscolhidaLowered.equals("engenheiro") || classeEscolhida.equals("2"))
         {
         setNome ("Engenheiro");
         setVida (100);
         setFome (160);
-        setSede (100);
         setSede (90);
+        setEnergia  (160);
         setSanidade (250);
         setInventário (new ArrayList<>(20));
         setLocalização (new double [2]);
         }
 
-        if (classeEscolhidaLowered.equals("Veterinário") || classeEscolhida.equals("3"))
+        if (classeEscolhidaLowered.equals("veterinário") || classeEscolhida.equals("3"))
         {
         setNome  ("Veterinário");
         setVida  (100);
         setFome  (170);
         setSede  (100);
-        setEnergia  (90);
+        setEnergia  (140);
         setSanidade  (200);
         setInventário  (new ArrayList<>(20));
         setLocalização  (new double [2]);
         }
 
-        if (classeEscolhidaLowered.equals("Prisioneiro") || classeEscolhida.equals("4"))
+        if (classeEscolhidaLowered.equals("prisioneiro") || classeEscolhida.equals("4"))
         {
         setNome  ("Prisioneiro");
         setVida  (80);

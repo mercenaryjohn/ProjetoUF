@@ -15,6 +15,9 @@ public class Escolhas
             case "3":
                 escolhaEmTexto = "inventário";
                 return escolhaEmTexto;
+            case "4":
+                escolhaEmTexto = "status";
+                return escolhaEmTexto;
             case "0":
                 escolhaEmTexto = "sair";
                 return escolhaEmTexto;

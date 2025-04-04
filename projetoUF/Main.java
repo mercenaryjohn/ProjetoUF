@@ -10,11 +10,42 @@ public class Main
     {
         Scanner scanString = new Scanner(System.in); // inicia o scanner
 
-        String listaDeClasses = " 1 - Escoteiro \n 2 - Engenheiro \n 3 - Veterinário \n 4 - Prisioneiro \n";
-        System.out.print("Escolha o seu sobrevivente:\n" + listaDeClasses);
-
-        String escolhaDeClasseDoUsuario = scanString.nextLine();
+        String[] listaDeClasses = {"1","Escoteiro","2","Engenheiro","3","Veterinário","4","Prisioneiro"};
+        //String listaDeClasses = " 1 - Escoteiro \n 2 - Engenheiro \n 3 - Veterinário \n 4 - Prisioneiro \n";
         
+        System.out.print("Escolha o seu sobrevivente:\n");
+        for(int i = 0; (i + 1) < listaDeClasses.length; i = i + 2)
+        {
+            System.out.print(listaDeClasses[i] + " - " + listaDeClasses[i+1] + "\n");
+        }
+
+        String escolhaDeClasseDoUsuario;
+        while(true) // Garantir que a escolha seja válida
+        {
+            escolhaDeClasseDoUsuario = scanString.nextLine();
+            int podeSair = 0;
+            for(int i = 0; i < listaDeClasses.length; i++)
+            {
+                if (escolhaDeClasseDoUsuario.equals(listaDeClasses[i].toLowerCase()))
+                {
+                    podeSair = 1;
+                    break;
+                }
+            }
+            if (podeSair == 1)
+            {
+                break;
+            }
+            else
+            {
+                System.out.print("Escolha o seu sobrevivente:\n");
+                for(int i = 0; (i + 1) < listaDeClasses.length; i = i + 2)
+                {
+                    System.out.print(listaDeClasses[i] + " - " + listaDeClasses[i+1] + "\n");
+                }
+            }
+        }
+
         EscolherClasse classeEscolhida = new EscolherClasse(escolhaDeClasseDoUsuario);
         System.out.println("Você escolheu o " + classeEscolhida.getNome() + "!");
 
@@ -22,7 +53,7 @@ public class Main
         Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
         InventarioClasse objInventario = new InventarioClasse();
-        Agua objAgua = new Agua();
+        Agua objAgua = new Agua(); // DEBUG 
 
         while(!inputDoUsuario.equals("sair"))
         {
@@ -30,7 +61,8 @@ public class Main
             while (inputFoiAlgoEsperado == 1) // Se o usuário escolher algo não esperado, pergunta novamente
             {
                 System.out.println("O que eu devo fazer agora?");
-                System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n0 - (para sair do jogo)");
+                System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n4 - Status");
+                System.out.println("0 - (para sair do jogo)");
                 inputDoUsuario = scanString.nextLine();
                 System.out.println("_DEBUG_inputDoUsuario:" + inputDoUsuario); // DEBUG
 
@@ -79,7 +111,7 @@ public class Main
                     inputFoiAlgoEsperado = 0;
                     //System.out.println(classeEscolhida.getInventário());
                     System.out.println("Inventário:");
-                    System.out.println("________________________________________");
+                    System.out.println("________________________________________\n");
 
                     Map<String, Integer> mapaContadorLista = new HashMap<>(); // Usar para contar os items da list Inventário
 
@@ -131,6 +163,22 @@ public class Main
                     //objAgua.usarAgua(classeEscolhida);
                     System.out.println(classeEscolhida.getSede()); // DEBUG
 
+                }
+                if(objEscolhas.escolhas(inputDoUsuario).equals("status"))
+                {
+                    double[] mostrarPosição = classeEscolhida.getLocalização();
+                    System.out.println("________________________________________\n");
+                    System.out.println("Classe: " + classeEscolhida.getNome());
+                    System.out.println("Vida: " + classeEscolhida.getVida());
+                    System.out.println("Fome: " + classeEscolhida.getFome());
+                    System.out.println("Sede: " + classeEscolhida.getSede());
+                    System.out.println("Energia: " + classeEscolhida.getEnergia());
+                    System.out.println("Sanidade: " + classeEscolhida.getSanidade());
+                    if (classeEscolhida.getNome().equals("Escoteiro"))
+                    {
+                        System.out.println("Posição (X,Y): " +  mostrarPosição[0] +","+ mostrarPosição[1]);
+                    }
+                    System.out.println("________________________________________");
                 }
                 if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
                 {
