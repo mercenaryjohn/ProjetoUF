@@ -22,11 +22,16 @@ public class InventarioClasse
 
     // Ativa o efeito do item no personagem.
     Agua objAgua = new Agua();
+    Alimento objAlimento = new Alimento(0,0);
     public void usarItem (EscolherClasse classeEscolhida, String nomeItem)
     {
         if (nomeItem.equals("Água"))
         {
-            objAgua.usarAgua(classeEscolhida);
+            objAgua.usar(classeEscolhida);
+        }
+        if(nomeItem.equals(""))
+        {
+
         }
     }
 }

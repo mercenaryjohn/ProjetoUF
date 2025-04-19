@@ -27,7 +27,7 @@ public class Item
     { this.durabilidade = durabilidade; }
 
 
-    public void Usar()
+    public void usar()
     {
 
     }

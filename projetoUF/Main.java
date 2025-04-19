@@ -53,24 +53,37 @@ public class Main
         Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
         InventarioClasse objInventario = new InventarioClasse();
-        Agua objAgua = new Agua(); // DEBUG 
-
+        Agua objAgua = new Agua(); // DEBUG TODO
+        
+        ///////////////////////////////////////////////////////////////////////// MAPA
+        Ambiente objAmbiente = new Ambiente("nome", "descrição",
+         "recursos", null, null);
+        char[][] mapa = objAmbiente.fazerMapaMundo();
+        //objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização()); 
+        /////////////////////////////////////////////////////////////////////////
+        
         while(!inputDoUsuario.equals("sair"))
         {
             int inputFoiAlgoEsperado = 1;
             while (inputFoiAlgoEsperado == 1) // Se o usuário escolher algo não esperado, pergunta novamente
             {
+                objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização());
+                //Print da posição atual
+
                 System.out.println("O que eu devo fazer agora?");
                 System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n4 - Status");
                 System.out.println("0 - (para sair do jogo)");
                 inputDoUsuario = scanString.nextLine();
-                System.out.println("_DEBUG_inputDoUsuario:" + inputDoUsuario); // DEBUG
+                //System.out.println("_DEBUG_inputDoUsuario:" + inputDoUsuario); // DEBUG
 
+                ////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////
                 if(objEscolhas.escolhas(inputDoUsuario).equals("andar"))
                 {
                     inputFoiAlgoEsperado = 0;
                     int n = 0;
                     int passos = 0;
+                    String inputAqui;
                     
                     System.out.println("Quantos passos eu deveria andar?...");
                     while (true)
@@ -86,26 +99,30 @@ public class Main
                         }
                     }
 
-                    String listaDeDireções = "\n 1 - Norte \n 2 - Sul \n 3 - Leste \n 4 - Oeste \n";
+                    String listaDeDireções = "\n 1 - Norte \n 2 - Sul \n 3 - Leste \n 4 - Oeste";
                     System.out.println("Para onde?..." + listaDeDireções);
                     
-                    inputDoUsuario = scanString.nextLine();
+                    inputAqui = scanString.nextLine();
                     while(n < passos)
                     {
-                        double[] posição = objMovimento.movimentador(inputDoUsuario,
+                        double[] posição = objMovimento.movimentador(inputAqui,
                         classeEscolhida.getLocalização());
                         
                         classeEscolhida.setLocalização(posição);
-                        System.out.println("X: " + posição[0] + " Y:" + posição[1]);
+                        //System.out.println("X: " + posição[0] + " Y:" + posição[1]); //DEBUG
                         n++;
                     }
                 }
+                ////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////
                 if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
                 {
                     inputFoiAlgoEsperado = 0;
                     classeEscolhida.setEnergia(classeEscolhida.getEnergia() + 100);  //TODO: número temporário
                     System.out.println("Debug_energia: " + classeEscolhida.getEnergia());
                 }
+                ////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////
                 if(objEscolhas.escolhas(inputDoUsuario).equals("inventário"))
                 {
                     inputFoiAlgoEsperado = 0;
@@ -113,23 +130,26 @@ public class Main
                     System.out.println("Inventário:");
                     System.out.println("________________________________________\n");
 
-                    Map<String, Integer> mapaContadorLista = new HashMap<>(); // Usar para contar os items da list Inventário
+                    Map<String, Integer> mapaContadorLista = new HashMap<>(); 
+                    // Usar para contar os items da list Inventário
 
                     for (String item : classeEscolhida.getInventário())
                     {
                         mapaContadorLista.put(item, mapaContadorLista.getOrDefault(item, 0) + 1);
                     }
 
-                    // 
+                    //
                     int index = 1;
                     for (Map.Entry<String, Integer> entry : mapaContadorLista.entrySet())
                     {
                         System.out.println(index + "- " + entry.getKey() + " x" + entry.getValue());
                         index++;
                     }
-
+                    System.out.println("0 - Sair");
                     System.out.println("________________________________________");
-                    objInventario.adicionarItem(classeEscolhida, "Água"); // TODO: adicionei item pela 1ª vez
+                    
+                    objInventario.adicionarItem(classeEscolhida, "Água"); 
+                    // TODO adicionei item pela 1ª vez, DEBUG
 
                     System.out.println("Eu devo usar algo?..."); // Escolha de Item para usar
                     int usarItemInventário = 0;
@@ -153,17 +173,21 @@ public class Main
                         System.out.println("Irei usar... " + itemEscolhidoParaUsar);
                         objInventario.usarItem(classeEscolhida, itemEscolhidoParaUsar);
                         objInventario.removerItem(classeEscolhida, itemEscolhidoParaUsar);
-                    } 
+                    }
+                    if (usarItemInventário == 0)
+                    {
+
+                    }
                     else 
                     {
                         System.out.println("Não sei o que escolher...");
                     }
-
-                    //objInventario.removerItem(classeEscolhida, "Água"); // remove
-                    //objAgua.usarAgua(classeEscolhida);
-                    System.out.println(classeEscolhida.getSede()); // DEBUG
-
+                    //objInventario.removerItem(classeEscolhida, "Água"); // remove DEBUG
+                    //objAgua.usar(classeEscolhida);
+                    //System.out.println(classeEscolhida.getSede()); // DEBUG
                 }
+                ////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////
                 if(objEscolhas.escolhas(inputDoUsuario).equals("status"))
                 {
                     double[] mostrarPosição = classeEscolhida.getLocalização();
