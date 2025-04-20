@@ -11,11 +11,11 @@ public class Evento
         Condição de ativação: Determina se o evento pode ocorrer (ex.: apenas em
             determinados ambientes).
         */
-    protected String nome;
-    protected String descrição;
-    protected float probabilidadeDeOcorrer;
-    protected String[] Impacto;
-    protected String condiçãoDeAtivação;
+    private String nome;
+    private String descrição;
+    private float probabilidadeDeOcorrer;
+    private String[] Impacto;
+    private String condiçãoDeAtivação;
 
     public void executar(EscolherClasse classeEscolhida, Ambiente local)
     {

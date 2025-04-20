@@ -1,9 +1,9 @@
 
 public class Item 
 {
-    protected String nome;
-    protected int peso;
-    protected int durabilidade;
+    private String nome;
+    private int peso;
+    private int durabilidade;
 
     public Item()
     {
@@ -27,7 +27,7 @@ public class Item
     { this.durabilidade = durabilidade; }
 
 
-    public void Usar()
+    public void usar()
     {
 
     }
