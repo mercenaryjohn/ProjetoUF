@@ -11,6 +11,7 @@ public class Evento
         Condição de ativação: Determina se o evento pode ocorrer (ex.: apenas em
             determinados ambientes).
         */
+        
     private String nome;
     private String descrição;
     private float probabilidadeDeOcorrer;

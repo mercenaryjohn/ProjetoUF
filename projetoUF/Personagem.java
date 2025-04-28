@@ -10,7 +10,7 @@ public class Personagem
     private int sede;
     private int energia;
     private int sanidade;
-    private List<String> inventário;
+    private List<Item> inventário;
     private double[] localização;
 
     // Construtor
@@ -39,7 +39,7 @@ public class Personagem
     { return energia; }
     public int getSanidade() 
     { return sanidade; }
-    public List<String> getInventário()
+    public List<Item> getInventário()
     { return inventário; }
     public double[] getLocalização()
     { return localização; }
@@ -57,7 +57,7 @@ public class Personagem
     { this.energia = energia; }
     public void setSanidade(int sanidade) 
     { this.sanidade = sanidade; }
-    public void setInventário(List<String> inventário)
+    public void setInventário(List<Item> inventário)
     { this.inventário = inventário; }
     public void setLocalização(double[] localização)
     { this.localização = localização; }

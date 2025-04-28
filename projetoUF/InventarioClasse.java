@@ -3,35 +3,27 @@ import java.util.List;
 public class InventarioClasse
 {
     // Insere um novo item no inventário, se houver espaço.
-    public void adicionarItem (EscolherClasse classeEscolhida, String nomeItem) 
+    public void adicionarItem (EscolherClasse classeEscolhida, Item item) 
     {
-        List<String> inventárioNovo = classeEscolhida.getInventário();
-        inventárioNovo.add(nomeItem);
+        List<Item> inventárioNovo = classeEscolhida.getInventário();
+        inventárioNovo.add(item);
+        //System.out.println(item.getClass()); //DEBUG
         classeEscolhida.setInventário(inventárioNovo);
         return;
     }
 
     // Retira um item do inventário.
-    public void removerItem (EscolherClasse classeEscolhida, String nomeItem)
+    public void removerItem (EscolherClasse classeEscolhida, Item item)
     {
-        List<String> inventárioNovo = classeEscolhida.getInventário();
-        inventárioNovo.remove(nomeItem);
+        List<Item> inventárioNovo = classeEscolhida.getInventário();
+        inventárioNovo.remove(item);
         classeEscolhida.setInventário(inventárioNovo);
         return;
     }
 
     // Ativa o efeito do item no personagem.
-    Agua objAgua = new Agua();
-    Alimento objAlimento = new Alimento(0,0);
-    public void usarItem (EscolherClasse classeEscolhida, String nomeItem)
+    public void usarItem (EscolherClasse classeEscolhida, Item item)
     {
-        if (nomeItem.equals("Água"))
-        {
-            objAgua.usar(classeEscolhida);
-        }
-        if(nomeItem.equals(""))
-        {
-
-        }
+        item.usar(classeEscolhida);
     }
 }
