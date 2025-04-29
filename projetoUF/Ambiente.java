@@ -106,14 +106,16 @@ public class Ambiente
             {
                 double n = noise[y][x];
 
-                if (n < 0.3) mapa[y][x] = ambientes[0]; // Floresta
-                else if (n < 0.40) mapa[y][x] = ambientes[1]; // Montanha
-                else if (n < 0.42) mapa[y][x] = ambientes[2]; // Caverna
-                else if (n < 0.55) mapa[y][x] = ambientes[3]; // Água
-                else if (n < 0.60) mapa[y][x] = ambientes[4]; // Ruínas
+                if (n < 0.4) mapa[y][x] = ambientes[0]; // Floresta
+                else if (n < 0.45) mapa[y][x] = ambientes[1]; // Montanha
+                else if (n < 0.48) mapa[y][x] = ambientes[2]; // Caverna
+                else if (n < 0.58) mapa[y][x] = ambientes[3]; // Água
+                else if (n < 0.63) mapa[y][x] = ambientes[4]; // Ruínas
                 else mapa[y][x] = ambientes[5]; // Planície
             }
         }
+        
+        mapa[altura/2][largura/2] = ambientes[5]; // Planície
 
         // Expandir cada letra em um bloco 5x5
         for (int y = 0; y < altura; y++) 
@@ -146,18 +148,18 @@ public class Ambiente
 
     public void printVisaoAtualMapa(char[][] mapa, double[] localização)
     {
-        int chunkSize = 5;
+        int chunkVisao = 5; //chunkVisao
         int mapaAltura = mapa.length;
         int mapaLargura = mapa[0].length;
 
-        // Posição do player //TODO
+        // Posição do player
         int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
         int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
         //System.out.println(playerX); //DEBUG
         //System.out.println(playerY);
 
         // Raio de 2 chunks (2 * 5 = 10)
-        int raio = chunkSize * 2;
+        int raio = chunkVisao * 2;
 
         // Limites da janela
         int inicioY = Math.max(0, playerY - raio);
@@ -252,5 +254,4 @@ public class Ambiente
             System.out.println();
         }
     }
-
 }

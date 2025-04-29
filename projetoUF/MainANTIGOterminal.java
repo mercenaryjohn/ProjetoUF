@@ -4,27 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.swing.SwingUtilities;
-
-public class Main
+public class MainANTIGOterminal
 {
     public static void main(String[] args)
     {
         Scanner scanString = new Scanner(System.in); // inicia o scanner
 
-        ///////////////////////////////////////////////////////////////////////// MAPA
-        Ambiente objAmbiente = new Ambiente(null, null,
-        null, null, null);
-        char[][] mapa = objAmbiente.fazerMapaMundo();
-        //objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização()); //DEBUG
-        /////////////////////////////////////////////////////////////////////////
-
-        GUIframe frame = new GUIframe(mapa);
-        frame.setVisible(true);
-        GUIscreen tela = frame.getTela();
-
-        //String[] listaDeClasses = {"1","Escoteiro","2","Engenheiro","3","Veterinário","4","Prisioneiro"};
-        String[] listaDeClasses = {"Escoteiro","Engenheiro","Veterinário","Prisioneiro"};
+        String[] listaDeClasses = {"1","Escoteiro","2","Engenheiro","3","Veterinário","4","Prisioneiro"};
         //String listaDeClasses = " 1 - Escoteiro \n 2 - Engenheiro \n 3 - Veterinário \n 4 - Prisioneiro \n";
         
         System.out.print("Escolha o seu sobrevivente:\n");
@@ -33,12 +19,34 @@ public class Main
             System.out.print(listaDeClasses[i] + " - " + listaDeClasses[i+1] + "\n");
         }
 
-        EscolherClasse classeEscolhida = tela.mostrarMenuInicial(listaDeClasses);
+        String escolhaDeClasseDoUsuario;
+        while(true) // Garantir que a escolha seja válida
+        {
+            escolhaDeClasseDoUsuario = scanString.nextLine();
+            int podeSair = 0;
+            for(int i = 0; i < listaDeClasses.length; i++)
+            {
+                if (escolhaDeClasseDoUsuario.equals(listaDeClasses[i].toLowerCase()))
+                {
+                    podeSair = 1;
+                    break;
+                }
+            }
+            if (podeSair == 1)
+            {
+                break;
+            }
+            else
+            {
+                System.out.print("Escolha o seu sobrevivente:\n");
+                for(int i = 0; (i + 1) < listaDeClasses.length; i = i + 2)
+                {
+                    System.out.print(listaDeClasses[i] + " - " + listaDeClasses[i+1] + "\n");
+                }
+            }
+        }
 
-        tela.setPlayer(classeEscolhida);
-        tela.setClasseFoiEscolhida(true);
-
-        //EscolherClasse classeEscolhida = new EscolherClasse(escolhaDeClasseDoUsuario);
+        EscolherClasse classeEscolhida = new EscolherClasse(escolhaDeClasseDoUsuario);
         System.out.println("Você escolheu o " + classeEscolhida.getNome() + "!");
 
         String inputDoUsuario = "default"; // para não dar problema no while
@@ -48,6 +56,13 @@ public class Main
         Agua objAgua = new Agua(); // DEBUG TODO
         Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
         objAlimento.setAlimentoStats("Fruta");
+
+        ///////////////////////////////////////////////////////////////////////// MAPA
+        Ambiente objAmbiente = new Ambiente(null, null,
+         null, null, null);
+        char[][] mapa = objAmbiente.fazerMapaMundo();
+        //objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização()); 
+        /////////////////////////////////////////////////////////////////////////
 
         int vidaMáxima = classeEscolhida.getVida();
         int energiaMáxima = classeEscolhida.getEnergia();
@@ -59,8 +74,7 @@ public class Main
             {
                 objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização());
                 //Print da posição atual
-                String[] opções = {"1 - Andar","2 - Descansar","3 - Inventário","4 - Status"};
-                tela.setListaDeOpcoes(opções);
+
                 System.out.println("O que eu devo fazer agora?");
                 System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n4 - Status");
                 System.out.println("0 - (para sair do jogo)");
