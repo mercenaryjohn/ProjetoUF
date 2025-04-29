@@ -4,6 +4,7 @@ public class Escolhas
     {
         String escolhaEmTexto = null;
         String escolhaEmCasoDeInputErrado = "";
+        System.out.println("Fez escolha"); //DEBUG
         switch(escolha)
         {
             case "1": //movimento

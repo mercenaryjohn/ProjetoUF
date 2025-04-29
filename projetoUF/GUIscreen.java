@@ -19,8 +19,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private EscolherClasse player;
     char[][] mapa;
 
-    //private GUIterminal terminal;
-
     Timer timer = new Timer(16, this); //60 FPS
 
     public GUIscreen (char[][] mapa)
@@ -28,8 +26,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         this.mapa = mapa;
 
         setLayout(new BorderLayout());
-        //terminal = new GUIterminal();
-        //add(terminal, BorderLayout.SOUTH);
         
         addKeyListener(this);
         setFocusable(true); // Permite o panel receber input
@@ -85,27 +81,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             return null;
         }
     }
-
-    public void abrirMenuInterativo() //TODO
-    {
-        String[] opcoes = {"Descansar", "Inventário", "Status"};
-        String escolha = (String) JOptionPane.showInputDialog
-        (
-            null,
-            "Escolha uma ação:",
-            "Menu do Jogo",
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            opcoes,
-            opcoes[0]
-        );
-    
-        if (escolha != null) 
-        {
-            // Executar ação com base na escolha
-        }
-    }
-
 
     @Override
     public void paintComponent(Graphics g)
@@ -250,7 +225,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         if (menuAberto) //Na frente do mapa
         {
             g.setColor(Color.BLACK);
-            g.fillRect(40, 240, 400, 100); // background for menu options
+            g.fillRect(40, 240, 400, 100); //Fundo do menu
     
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 16));
