@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.swing.SwingUtilities;
-
-public class Main
+public class MainGUI
 {
     public static void main(String[] args)
     {
@@ -25,7 +23,6 @@ public class Main
 
         //String[] listaDeClasses = {"1","Escoteiro","2","Engenheiro","3","Veterinário","4","Prisioneiro"};
         String[] listaDeClasses = {"Escoteiro","Engenheiro","Veterinário","Prisioneiro"};
-        //String listaDeClasses = " 1 - Escoteiro \n 2 - Engenheiro \n 3 - Veterinário \n 4 - Prisioneiro \n";
         
         System.out.print("Escolha o seu sobrevivente:\n");
         for(int i = 0; (i + 1) < listaDeClasses.length; i = i + 2)
@@ -37,20 +34,30 @@ public class Main
 
         tela.setPlayer(classeEscolhida);
         tela.setClasseFoiEscolhida(true);
+        GUIescolhas objEscolhasGUI = new GUIescolhas(classeEscolhida); 
+        tela.setEscolhas(objEscolhasGUI);
+        InventarioClasse objInventario = new InventarioClasse();
+        tela.setInventario(objInventario);
 
+        Escolhas objEscolhas = new Escolhas(); //terminal
         //EscolherClasse classeEscolhida = new EscolherClasse(escolhaDeClasseDoUsuario);
         System.out.println("Você escolheu o " + classeEscolhida.getNome() + "!");
 
         String inputDoUsuario = "default"; // para não dar problema no while
-        Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
+        //Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
-        InventarioClasse objInventario = new InventarioClasse();
         Agua objAgua = new Agua(); // DEBUG TODO
         Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
         objAlimento.setAlimentoStats("Fruta");
 
         int vidaMáxima = classeEscolhida.getVida();
         int energiaMáxima = classeEscolhida.getEnergia();
+
+        String[] opções = {"2 - Descansar","3 - Inventário","4 - Status", "- para voltar [e] -"};
+        tela.setListaDeOpcoes(opções);
+
+        objInventario.adicionarItem(classeEscolhida, objAgua);  ////////////////////////////////
+        objInventario.adicionarItem(classeEscolhida, objAlimento);
         
         while(!inputDoUsuario.equals("sair"))
         {
@@ -59,8 +66,6 @@ public class Main
             {
                 objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização());
                 //Print da posição atual
-                String[] opções = {"1 - Andar","2 - Descansar","3 - Inventário","4 - Status"};
-                tela.setListaDeOpcoes(opções);
                 System.out.println("O que eu devo fazer agora?");
                 System.out.println("1 - Andar\n2 - Descansar\n3 - Inventário \n4 - Status");
                 System.out.println("0 - (para sair do jogo)");
@@ -108,7 +113,7 @@ public class Main
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////
-                else if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
+                if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
                 {
                     inputFoiAlgoEsperado = 0;
                     System.out.println("1 - Descanso Curto \n2 - Descanso Longo");

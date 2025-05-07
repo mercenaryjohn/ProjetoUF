@@ -10,13 +10,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GUIscreen extends JPanel implements ActionListener, KeyListener
 {
     private boolean classeFoiEscolhida = false;
+    private boolean playerEstáVivo = true;
     private boolean menuAberto = false;
-    private String mensagemNaTela = "";
+    private boolean inventárioAberto = false;
+    private boolean statsAberto = false;
     private EscolherClasse player;
+    private GUIescolhas objEscolhas;
+    private InventarioClasse objInventario;
     char[][] mapa;
 
     Timer timer = new Timer(16, this); //60 FPS
@@ -35,14 +44,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     }
 
     public void actionPerformed(ActionEvent k)
-    {
-        repaint();
-    }
+    { repaint(); }
 
     public void setPlayer(EscolherClasse classeEscolhida)
-    {
-        player = classeEscolhida;
-    }
+    { player = classeEscolhida; }
+
+    public void setEscolhas(GUIescolhas escolhas)
+    { objEscolhas = escolhas; }
+
+    public void setInventario(InventarioClasse Inventario)
+    { objInventario = Inventario; }
 
     public void setClasseFoiEscolhida(boolean pronto) 
     {
@@ -52,9 +63,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
     private String[] listaDeOpcoes;
     public void setListaDeOpcoes(String[] listaRecebida)
-    {
-        listaDeOpcoes = listaRecebida;
-    }
+    { listaDeOpcoes = listaRecebida; }
 
     public EscolherClasse mostrarMenuInicial(String[] listaDeClasses) 
     {
@@ -79,6 +88,70 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         {
             System.exit(0); // Sai se cancelar
             return null;
+        }
+    }
+
+    public void escolherItemInventário()
+    {
+        Map<Item, Integer> mapaContadorLista = new HashMap<>();
+        // Usar para contar os items da list Inventário
+
+        for (Item item : player.getInventário()) // Coloca itens no HasMap
+        {
+            mapaContadorLista.put(item, mapaContadorLista.getOrDefault(item, 0) + 1);
+        }
+    
+        // Para associar a string mostrada ao Item real
+        Map<String, Item> opçõesMapaString = new LinkedHashMap<>();
+    
+        int index = 1;
+        for (Map.Entry<Item, Integer> entry : mapaContadorLista.entrySet()) 
+        {
+            Item item = entry.getKey();
+            int quantidade = entry.getValue();
+    
+            String descricao;
+            if (item instanceof Alimento) 
+            {
+                Alimento alimento = (Alimento) item;
+                descricao = index + " - " + item.getNome() + " x" + quantidade + " (Validade: " + alimento.getValidade() + ")";
+            } 
+            else 
+            {
+                descricao = index + " - " + item.getNome() + " x" + quantidade;
+            }
+    
+            opçõesMapaString.put(descricao, item);
+            index++;
+        }
+
+        // Array com as descrições para o dropdown
+        String[] opcoes = opçõesMapaString.keySet().toArray(new String[0]);
+
+        if (opcoes.length == 0) 
+        {
+            JOptionPane.showMessageDialog(null, "Inventário vazio.");
+            return;
+        }
+
+        // Mostra o dropdown
+        String escolha = (String) JOptionPane.showInputDialog
+        (
+            null,
+            "Escolha um item:",
+            "Inventário",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opcoes,
+            opcoes[0]
+        );
+
+        // Usa o Item correspondente
+        Item usarItemInventário = opçõesMapaString.get(escolha);
+        if (usarItemInventário != null) 
+        {
+            objInventario.usarItem(player, usarItemInventário);
+            objInventario.removerItem(player, usarItemInventário);
         }
     }
 
@@ -232,55 +305,190 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     
             for (int i = 0; i < listaDeOpcoes.length; i++) 
             {
-                g.drawString(listaDeOpcoes[i], 50, 270 + i * 20);
+                g.drawString(listaDeOpcoes[i], 50, 265 + i * 20);
             }
+        }
+
+        /*if (inventárioAberto) // Usando dropdown, não isso, deixar aqui caso precise
+            g.setColor(Color.BLACK);
+            g.fillRect(40, 100, 400, 200); //Fundo do menu
+    
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+
+            Map<Item, Integer> mapaContadorLista = new HashMap<>();
+            // Usar para contar os items da list Inventário
+
+            for (Item item : player.getInventário()) // Coloca itens no HasMap
+            {
+                mapaContadorLista.put(item, mapaContadorLista.getOrDefault(item, 0) + 1);
+            }
+
+            // Print cada item
+            int index = 1;
+            g.drawString("Inventário:", 50 , 270);
+            g.drawString("________________________________________", 50, 275);
+
+            int i = 1;
+            for (Map.Entry<Item, Integer> entry : mapaContadorLista.entrySet())
+            {
+                Item item = entry.getKey();
+                if (item instanceof Alimento)
+                {
+                    g.drawString(index + "- " + (entry.getKey()).getNome() + " x" + entry.getValue() 
+                    + " (Validade: " + ((Alimento) item).getValidade() + ")", 50, 275 + i * 20);
+                }
+                else
+                {
+                    g.drawString(index + "- " + (entry.getKey()).getNome() + " x" + entry.getValue(), 50, 275 + i * 20);
+                }
+                index++;
+                i++;
+            }
+            g.drawString("________________________________________", 50, 275 + i * 20);
+        */
+
+        if (statsAberto)
+        {
+            //double[] mostrarPosição = player.getLocalização();
+            String[] statsArray;
+            if (player.getNome().equals("Escoteiro"))
+            {
+                double[] mostrarPosição = player.getLocalização();
+                String[] statsArrayA =
+                {
+                "________________________________________",
+                "Classe: " + player.getNome(),
+                "Vida: " + player.getVida(),
+                "Fome: " + player.getFome(),
+                "Sede: " + player.getSede(),
+                "Energia: " + player.getEnergia(),
+                "Sanidade: " + player.getSanidade(),
+                "Posição (X,Y): " + mostrarPosição[0] +","+ mostrarPosição[1],
+                "________________________________________",
+                "- para voltar [e] -"
+                };
+                statsArray = statsArrayA;
+            }
+            else
+            {
+                    String[] statsArrayB = {
+                    "________________________________________",
+                    "Classe: " + player.getNome(),
+                    "Vida: " + player.getVida(),
+                    "Fome: " + player.getFome(),
+                    "Sede: " + player.getSede(),
+                    "Energia: " + player.getEnergia(),
+                    "Sanidade: " + player.getSanidade(),
+                    "________________________________________",
+                    "- para voltar [e] -"
+                    };
+                    statsArray = statsArrayB;
+            }
+            g.setColor(Color.BLACK);
+            g.fillRect(40, 240, 400, 220); //Fundo do menu
+    
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+    
+            for (int i = 0; i < statsArray.length; i++) 
+            {
+                g.drawString(statsArray[i], 50, 255 + i * 20);
+            }
+        }
+
+        if (playerEstáVivo == false)
+        {
+            g.setColor(Color.BLACK);
+            g.fillRect(40, 240, 400, 200); //Fundo do menu
+    
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            g.drawString("GAME OVER...", 50, 270);
         }
     }
 
-    Escolhas objEscolhas = new Escolhas();
     public void keyPressed(KeyEvent k) //TODO
     {
-        switch(k.getKeyCode())
+        if (playerEstáVivo)
         {
-            case KeyEvent.VK_E:
-                if (!menuAberto) 
-                {
-                    System.out.println("Aberto");
-                    menuAberto = true;
-                    mensagemNaTela = "";
+            switch(k.getKeyCode())
+            {
+                case KeyEvent.VK_E:
+                    //System.out.println("Aberto");
+                    boolean menuAbertoHolder = !menuAberto;
+                    menuAberto = menuAbertoHolder;
+                    statsAberto = false;
+                    inventárioAberto = false;
                     repaint();
                     break;
-                } 
-                else if (menuAberto) 
-                {
-                    System.out.println("Fechou");
-                    String escolha = String.valueOf(k.getKeyChar());
-                    objEscolhas.escolhas(escolha);
+                case KeyEvent.VK_D:
+                    if (player.getEnergia() > 0)
+                    {
+                    double[] posiçãoXD = player.getLocalização();
+                    posiçãoXD[0] = posiçãoXD[0] + 1;
+                    player.setLocalização(posiçãoXD);
+                    player.setEnergia(player.getEnergia() - 1);
+                    }
                     menuAberto = false;
-                    repaint();
                     break;
-                }
-            case KeyEvent.VK_D:
-                double[] posiçãoXD = player.getLocalização();
-                posiçãoXD[0] = posiçãoXD[0] + 1;
-                player.setLocalização(posiçãoXD);
-                break;
-            case KeyEvent.VK_S:
-                double[] posiçãoYS = player.getLocalização();
-                posiçãoYS[1] = posiçãoYS[1] - 1;
-                player.setLocalização(posiçãoYS);
-                break;
-            case KeyEvent.VK_A:
-                double[] posiçãoXA = player.getLocalização();
-                posiçãoXA[0] = posiçãoXA[0] - 1;
-                player.setLocalização(posiçãoXA);
-                break;
-            case KeyEvent.VK_W:
-                double[] posiçãoYW = player.getLocalização();
-                posiçãoYW[1] = posiçãoYW[1] + 1;
-                player.setLocalização(posiçãoYW);
-                break;
-            
+                case KeyEvent.VK_S:
+                    if (player.getEnergia() > 0)
+                    {
+                    double[] posiçãoYS = player.getLocalização();
+                    posiçãoYS[1] = posiçãoYS[1] - 1;
+                    player.setLocalização(posiçãoYS);
+                    player.setEnergia(player.getEnergia() - 1);
+                    }
+                    menuAberto = false;
+                    break;
+                case KeyEvent.VK_A:
+                    if (player.getEnergia() > 0)
+                    {
+                    double[] posiçãoXA = player.getLocalização();
+                    posiçãoXA[0] = posiçãoXA[0] - 1;
+                    player.setLocalização(posiçãoXA);
+                    player.setEnergia(player.getEnergia() - 1);
+                    }
+                    menuAberto = false;
+                    break;
+                case KeyEvent.VK_W:
+                    if (player.getEnergia() > 0)
+                    {
+                    double[] posiçãoYW = player.getLocalização();
+                    posiçãoYW[1] = posiçãoYW[1] + 1;
+                    player.setLocalização(posiçãoYW);
+                    player.setEnergia(player.getEnergia() - 1);
+                    }
+                    menuAberto = false;
+                    break;
+                case KeyEvent.VK_1:
+                    if (inventárioAberto)
+                    {
+
+                    }
+                case KeyEvent.VK_2: //Descansar
+                    if (menuAberto)
+                    {
+                        menuAberto = false;
+                        objEscolhas.escolhas("2", player);
+                    }
+                    break;
+                case KeyEvent.VK_3: //Inventário
+                    if (menuAberto)
+                    {
+                        menuAberto = false;
+                        inventárioAberto = true;
+                        escolherItemInventário();
+                    }
+                case KeyEvent.VK_4: //Status
+                    if (menuAberto)
+                    {
+                        menuAberto = false;
+                        statsAberto = true;
+                    }
+                    break;
+            }
         }
         repaint();
     }
