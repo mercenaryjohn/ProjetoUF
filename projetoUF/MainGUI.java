@@ -53,7 +53,7 @@ public class MainGUI
         int vidaMáxima = classeEscolhida.getVida();
         int energiaMáxima = classeEscolhida.getEnergia();
 
-        String[] opções = {"2 - Descansar","3 - Inventário","4 - Status", "- para voltar [e] -"};
+        String[] opções = {"1 - Vasculhar", "2 - Descansar","3 - Inventário",/*"4 - Status",*/"- para voltar [e] -"};
         tela.setListaDeOpcoes(opções);
 
         objInventario.adicionarItem(classeEscolhida, objAgua);  ////////////////////////////////

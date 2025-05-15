@@ -17,17 +17,17 @@ public class Ambiente
     private String nome;
     private String descrição;
     private String[] recursosDisponíveis;
-    private float[] probabilidadeEventos; // não tenho certeza do tipo ainda
-    private String[] climas; // não tenho certeza do tipo ainda
+    private float[] probabilidadeEventos;
+    private String[] climasEventos;
 
     public Ambiente(String nome, String descrição, String[] recursosDisponíveis, 
-    float[] probabilidadeEventos, String[] climas)
+    float[] probabilidadeEventos, String[] climasEventos)
     {
         this.nome = nome;
         this.descrição = descrição;
         this.recursosDisponíveis = recursosDisponíveis;
         this.probabilidadeEventos = probabilidadeEventos;
-        this.climas = climas;
+        this.climasEventos = climasEventos;
     }
 
     public String getNome()
@@ -38,8 +38,8 @@ public class Ambiente
     { return recursosDisponíveis; }
     public float[] getProbabilidadeEventos()
     { return probabilidadeEventos; }
-    public String[] getClimas()
-    { return climas; }
+    public String[] getClimasEventos()
+    { return climasEventos; }
 
 
     public void explorar()

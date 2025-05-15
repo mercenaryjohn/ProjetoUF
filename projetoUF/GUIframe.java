@@ -11,8 +11,8 @@ public class GUIframe extends JFrame
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Última Fronteira");
-        setSize(650,650);
-        setResizable(false);
+        setSize(1100,650);
+        setResizable(true);
 
         iniciarFrame(mapa);
     }
@@ -30,7 +30,7 @@ public class GUIframe extends JFrame
 
         tela = new GUIscreen(mapa);
 
-        tela.setPreferredSize(new Dimension(650, 650));
+        tela.setPreferredSize(new Dimension(1100, 650));
         add(tela);
 
         pack();

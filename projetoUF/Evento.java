@@ -20,6 +20,6 @@ public class Evento
 
     public void executar(EscolherClasse classeEscolhida, Ambiente local)
     {
-
+        
     }
 }

@@ -22,7 +22,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private boolean playerEstáVivo = true;
     private boolean menuAberto = false;
     private boolean inventárioAberto = false;
-    private boolean statsAberto = false;
+    private boolean statsAberto = true;
     private EscolherClasse player;
     private GUIescolhas objEscolhas;
     private InventarioClasse objInventario;
@@ -179,6 +179,14 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         //System.out.println(playerX); //DEBUG
         //System.out.println(playerY);
 
+        if (player.getEnergia() == 0)
+        {
+            if (mapa[playerY][playerX] == '~')
+            {
+                playerEstáVivo = false;
+            }
+        }
+
         // Raio de 2 chunks (2 * 5 = 10)
         int raio = chunkVisao * 2;
 
@@ -211,44 +219,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         {
             for (int x = inicioX; x < fimX; x++) 
             {
-                if(y == playerY && x == playerX)
-                {
-                    if (mapa[y][x] == 'F')
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    else if (mapa[y][x] == 'M') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    else if (mapa[y][x] == 'C') 
-                    {
-                        g.setColor(jogadorCorClara);
-                    }
-                    else if (mapa[y][x] == '~') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    else if (mapa[y][x] == 'R') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    else if (mapa[y][x] == '_') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    else
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    //int screenX = (x - inicioX) * tileTamanho;
-                    //int screenY = (y - inicioY) * tileTamanho;
-                    //g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
-                    int screenX = deslocaX + (x - inicioX) * tileTamanho;
-                    int screenY = deslocaY + (y - inicioY) * tileTamanho;
-                    g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
-                }
-                else
+                if (true)
                 {
                     if (mapa[y][x] == 'F')
                     {
@@ -290,22 +261,45 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     //g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
                     int screenX = deslocaX + (x - inicioX) * tileTamanho;
                     int screenY = deslocaY + (y - inicioY) * tileTamanho;
-                    g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
+                    g.fillRect(screenX + 220, screenY, tileTamanho, tileTamanho);
                 }
-            }
-        }
-
-        if (menuAberto) //Na frente do mapa
-        {
-            g.setColor(Color.BLACK);
-            g.fillRect(40, 240, 400, 100); //Fundo do menu
-    
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-    
-            for (int i = 0; i < listaDeOpcoes.length; i++) 
-            {
-                g.drawString(listaDeOpcoes[i], 50, 265 + i * 20);
+                if(y == playerY && x == playerX)
+                {
+                    if (mapa[y][x] == 'F')
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    else if (mapa[y][x] == 'M') 
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    else if (mapa[y][x] == 'C') 
+                    {
+                        g.setColor(jogadorCorClara);
+                    }
+                    else if (mapa[y][x] == '~') 
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    else if (mapa[y][x] == 'R') 
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    else if (mapa[y][x] == '_') 
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    else
+                    {
+                        g.setColor(jogadorCorEscura);
+                    }
+                    //int screenX = (x - inicioX) * tileTamanho;
+                    //int screenY = (y - inicioY) * tileTamanho;
+                    //g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
+                    int screenX = deslocaX + (x - inicioX) * tileTamanho;
+                    int screenY = deslocaY + (y - inicioY) * tileTamanho;
+                    g.fillOval(screenX + 220, screenY, tileTamanho, tileTamanho);
+                }
             }
         }
 
@@ -347,6 +341,19 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             }
             g.drawString("________________________________________", 50, 275 + i * 20);
         */
+        if (menuAberto) //Na frente do mapa
+        {
+            g.setColor(Color.BLACK);
+            g.fillRect(getWidth() / 2 + 20, (getHeight() / 2) - 80, 400, 120); //Fundo do menu
+    
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+    
+            for (int i = 0; i < listaDeOpcoes.length; i++) 
+            {
+                g.drawString(listaDeOpcoes[i], getWidth() / 2 + 30, - 50 + (getHeight() / 2) + i * 20);
+            }
+        }
 
         if (statsAberto)
         {
@@ -366,7 +373,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 "Sanidade: " + player.getSanidade(),
                 "Posição (X,Y): " + mostrarPosição[0] +","+ mostrarPosição[1],
                 "________________________________________",
-                "- para voltar [e] -"
+                /*"- para voltar [e] -"*/
                 };
                 statsArray = statsArrayA;
             }
@@ -381,30 +388,34 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     "Energia: " + player.getEnergia(),
                     "Sanidade: " + player.getSanidade(),
                     "________________________________________",
-                    "- para voltar [e] -"
+                    /*"- para voltar [e] -"*/
                     };
                     statsArray = statsArrayB;
             }
             g.setColor(Color.BLACK);
-            g.fillRect(40, 240, 400, 220); //Fundo do menu
+            g.fillRect(deslocaX - 220, deslocaY, 440, 630); //Fundo
     
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 16));
     
             for (int i = 0; i < statsArray.length; i++) 
             {
-                g.drawString(statsArray[i], 50, 255 + i * 20);
+                g.drawString(statsArray[i], deslocaX - 210, 20 + deslocaY + i * 20);
             }
         }
 
         if (playerEstáVivo == false)
         {
             g.setColor(Color.BLACK);
-            g.fillRect(40, 240, 400, 200); //Fundo do menu
+            g.fillRect(deslocaX + 240, getHeight() / 2, 400, 50); //Fundo do menu
     
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-            g.drawString("GAME OVER...", 50, 270);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            if (mapa[playerY][playerX] == '~' && player.getEnergia() == 0)
+            {
+                g.drawString("GAME OVER... Morreu por afogamento", deslocaX + 260, getHeight() / 2 + 30); 
+            }
+            else { g.drawString("GAME OVER...", deslocaX + 260, getHeight() / 2 + 30); }
         }
     }
 
@@ -418,7 +429,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     //System.out.println("Aberto");
                     boolean menuAbertoHolder = !menuAberto;
                     menuAberto = menuAbertoHolder;
-                    statsAberto = false;
                     inventárioAberto = false;
                     repaint();
                     break;
@@ -481,13 +491,13 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         inventárioAberto = true;
                         escolherItemInventário();
                     }
-                case KeyEvent.VK_4: //Status
+                /*case KeyEvent.VK_4: //Status
                     if (menuAberto)
                     {
                         menuAberto = false;
                         statsAberto = true;
                     }
-                    break;
+                    break;*/
             }
         }
         repaint();
