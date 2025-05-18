@@ -17,6 +17,7 @@ public class Evento
     private float probabilidadeDeOcorrer;
     private String[] Impacto;
     private String condiçãoDeAtivação;
+    private EscolherClasse player;
 
     public void executar(EscolherClasse classeEscolhida, Ambiente local)
     {

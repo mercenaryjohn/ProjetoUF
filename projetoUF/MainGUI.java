@@ -46,9 +46,9 @@ public class MainGUI
         String inputDoUsuario = "default"; // para não dar problema no while
         //Escolhas objEscolhas = new Escolhas(); // relaciona um numero a uma escolha
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
-        Agua objAgua = new Agua(); // DEBUG TODO
-        Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
-        objAlimento.setAlimentoStats("Fruta");
+        //Agua objAgua = new Agua(); // DEBUG TODO
+        //Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
+        //objAlimento.setAlimentoStats("Fruta");
 
         int vidaMáxima = classeEscolhida.getVida();
         int energiaMáxima = classeEscolhida.getEnergia();
@@ -56,8 +56,9 @@ public class MainGUI
         String[] opções = {"1 - Vasculhar", "2 - Descansar","3 - Inventário",/*"4 - Status",*/"- para voltar [e] -"};
         tela.setListaDeOpcoes(opções);
 
-        objInventario.adicionarItem(classeEscolhida, objAgua);  ////////////////////////////////
-        objInventario.adicionarItem(classeEscolhida, objAlimento);
+        
+        //objInventario.adicionarItem(classeEscolhida, objAgua);  ////////////////////////////////
+        //objInventario.adicionarItem(classeEscolhida, objAlimento);
         
         while(!inputDoUsuario.equals("sair"))
         {
@@ -180,8 +181,8 @@ public class MainGUI
                     System.out.println("0 - Sair");
                     System.out.println("________________________________________");
                     
-                    objInventario.adicionarItem(classeEscolhida, objAgua); 
-                    objInventario.adicionarItem(classeEscolhida, objAlimento);
+                    //objInventario.adicionarItem(classeEscolhida, objAgua); 
+                    //objInventario.adicionarItem(classeEscolhida, objAlimento);
                     // TODO adiciona Item para testar, DEBUG
 
                     System.out.println("Eu devo usar algo?..."); // Escolha de Item para usar

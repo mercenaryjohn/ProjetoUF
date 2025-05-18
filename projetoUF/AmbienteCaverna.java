@@ -25,7 +25,7 @@ public class AmbienteCaverna extends Ambiente
     {
         super(
         "Caverna",
-        "Um ambiente subterrâneo que pode oferecer abrigo contra o clima, + mas esconde perigos desconhecidos",
+        "Um ambiente subterrâneo que pode oferecer abrigo contra o clima, mas esconde perigos desconhecidos",
         new String[] {"Pedra", "Osso", "Água contaminada"}, //recursos
         new float[] {0.1f, 0.1f, 0.1f}, //probabilidades eventos
         new String[] {"Criatura", "Tunel", "Desmoronamento"} // climas e eventos

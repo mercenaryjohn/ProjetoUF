@@ -15,7 +15,7 @@ public class GUIescolhas
         if (escolha.equals("2")) //Descansar
         {
             player.setEnergia(energiaMáxima);
-            System.out.println("Debug_energia: " + player.getEnergia());
+            //System.out.println("Debug_energia: " + player.getEnergia());
         }
         if (escolha.equals("3")) // Inventário
         {
