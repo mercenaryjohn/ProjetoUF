@@ -633,7 +633,21 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 player.setSede(player.getSede() - 1);
             }
             if (turnoAtual % 60 == 0)
-            { diasSePassaram++; }
+            { 
+                diasSePassaram++; 
+                for (Item item : player.getInventário())
+                {
+                    if (item instanceof Alimento)
+                    {
+                        Alimento alimento = (Alimento) item;
+                        alimento.setValidade(alimento.getValidade() - 1);
+                        if (alimento.getValidade() < 1) //TODO apodrecimento
+                        {
+                            objInventario.removerItem(player, alimento);
+                        }
+                    }
+                }
+            }
             if (player.getFome() == 0 ||player.getSede() == 0)
             { playerEstáVivo = false; }
         }
