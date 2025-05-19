@@ -1,4 +1,4 @@
-public class GUIescolhas 
+public class GUIescolhas // obsoleto
 {
     private int vidaMáxima;
     private int energiaMáxima;
@@ -10,7 +10,7 @@ public class GUIescolhas
 
     public void escolhas(String escolha, EscolherClasse player)
     {
-        System.out.println("Fez escolha"); // DEBUG
+        //System.out.println("Fez escolha"); // DEBUG
         
         if (escolha.equals("2")) //Descansar
         {

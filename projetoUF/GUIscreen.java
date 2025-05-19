@@ -27,6 +27,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private GUIescolhas objEscolhas;
     private InventarioClasse objInventario;
 
+    private int vidaMáxima;
+    private int sanidadeMáxima;
+    private int energiaMáxima;
+    private int sedeMáxima;
+    private int fomeMáxima;
+
     private AmbienteCaverna objCaverna = new AmbienteCaverna();
     private AmbienteFloresta objFloresta = new AmbienteFloresta();
     private AmbienteLagoRio objLagoRio = new AmbienteLagoRio();
@@ -39,7 +45,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private String últimoItemEncontrado = "";
     private String eventoAtual = "";
     private double turnoAtual = 0;
-    private double dia;
+    private int diasSePassaram = 0;
 
     private char[][] mapa;
     private int mapaAltura;
@@ -66,7 +72,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     { repaint(); }
 
     public void setPlayer(EscolherClasse classeEscolhida)
-    { player = classeEscolhida; }
+    { 
+        player = classeEscolhida; 
+        
+    }
 
     public void setEscolhas(GUIescolhas escolhas)
     { objEscolhas = escolhas; }
@@ -430,6 +439,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 "Ambiente: " + ambienteAtualNome,
                 "   " + DescriçãoParte1, DescriçãoParte2, DescriçãoParte3 + DescriçãoParte4,
                 "Turno: " + turnoAtual,
+                "   ("+ diasSePassaram + ") dias se passaram",
                 "Último recurso encontrado: " + últimoItemEncontrado,
                 "Evento atual: " + eventoAtual
                 };
@@ -449,6 +459,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     "Ambiente: " + ambienteAtualNome,
                     "   " + DescriçãoParte1, DescriçãoParte2, DescriçãoParte3 + DescriçãoParte4,
                     "Turno: " + turnoAtual,
+                    "   ("+ diasSePassaram + ") dias se passaram",
                     "Último recurso encontrado: " + últimoItemEncontrado,
                     "Evento atual: " + eventoAtual
                     };
@@ -551,11 +562,14 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             if (ambienteAtualObj != null)
                             {
                                 Item itemRecurso = objGerenciadorDeAmbientes.vasculharAmbiente(ambienteAtualObj);
-                                if (itemRecurso != null)
+                                if (itemRecurso != null && player.getInventário().size() < player.getCapacidadeInventário() )
                                 { 
                                     objInventario.adicionarItem(player, itemRecurso); 
                                     últimoItemEncontrado = itemRecurso.getNome();
-                                } else { últimoItemEncontrado = "(Nada)"; }
+                                }
+                                else { últimoItemEncontrado = "(Nada)"; }
+                                if ( player.getInventário().size() == player.getCapacidadeInventário() )
+                                { últimoItemEncontrado = "inventário cheio " + "("+ player.getCapacidadeInventário() +")"; }
                             }
                             player.setEnergia(player.getEnergia() - 1);
                         }
@@ -613,15 +627,15 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             {
 
             }
-            if (turnoAtual % 5 == 0)
+            if (turnoAtual % 4 == 0)
             {
                 player.setFome(player.getFome() - 1);
                 player.setSede(player.getSede() - 1);
             }
+            if (turnoAtual % 60 == 0)
+            { diasSePassaram++; }
             if (player.getFome() == 0 ||player.getSede() == 0)
-            {
-                playerEstáVivo = false;
-            }
+            { playerEstáVivo = false; }
         }
         repaint();
     }

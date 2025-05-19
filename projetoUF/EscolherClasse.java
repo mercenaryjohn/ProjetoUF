@@ -4,7 +4,7 @@ public class EscolherClasse extends Personagem
 {
     public EscolherClasse(String classeEscolhida)
     {
-        super(null, 1, 1, 1, 1, 1);
+        super(null, 1, 1, 1, 1, 1, 1);
         String classeEscolhidaLowered = classeEscolhida.toLowerCase();
 
         if (classeEscolhidaLowered.equals("escoteiro") || classeEscolhida.equals("1"))
@@ -15,8 +15,9 @@ public class EscolherClasse extends Personagem
         setSede (100);
         setEnergia  (280);
         setSanidade (200);
-        setInventário (new ArrayList<>(20));
+        setInventário (new ArrayList<>(30));
         setLocalização ( new double [2]);
+        setCapacidadeInventário(30);
         }
 
         if (classeEscolhidaLowered.equals("engenheiro") || classeEscolhida.equals("2"))
@@ -27,8 +28,9 @@ public class EscolherClasse extends Personagem
         setSede (90);
         setEnergia  (260);
         setSanidade (250);
-        setInventário (new ArrayList<>(20));
+        setInventário (new ArrayList<>(30));
         setLocalização (new double [2]);
+        setCapacidadeInventário(30);
         }
 
         if (classeEscolhidaLowered.equals("veterinário") || classeEscolhida.equals("3"))
@@ -39,8 +41,9 @@ public class EscolherClasse extends Personagem
         setSede  (100);
         setEnergia  (240);
         setSanidade  (200);
-        setInventário  (new ArrayList<>(20));
+        setInventário  (new ArrayList<>(30));
         setLocalização  (new double [2]);
+        setCapacidadeInventário(30);
         }
 
         if (classeEscolhidaLowered.equals("prisioneiro") || classeEscolhida.equals("4"))
@@ -51,8 +54,9 @@ public class EscolherClasse extends Personagem
         setSede  (120);
         setEnergia  (130);
         setSanidade  (80);
-        setInventário  (new ArrayList<>(8));
+        setInventário  (new ArrayList<>(10));
         setLocalização  (new double [2]);
+        setCapacidadeInventário(10);
         }
     }
 }
