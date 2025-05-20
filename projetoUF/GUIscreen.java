@@ -43,7 +43,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
     private String últimoItemEncontrado = "";
     private String eventoAtual = "";
-    private double turnoAtual = 0;
+    private int turnoAtual = 0;
     private int diasSePassaram = 0;
 
     private char[][] mapa;
