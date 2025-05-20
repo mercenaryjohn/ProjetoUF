@@ -1,4 +1,4 @@
-public class EventoDescoberta 
+public class EventoDescoberta extends Evento
 {
     
 }

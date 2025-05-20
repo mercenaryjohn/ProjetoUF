@@ -25,8 +25,6 @@ public class MainGUI
 
         tela.setPlayer(classeEscolhida);
         tela.setClasseFoiEscolhida(true);
-        GUIescolhas objEscolhasGUI = new GUIescolhas(classeEscolhida); 
-        tela.setEscolhas(objEscolhasGUI);
         InventarioClasse objInventario = new InventarioClasse();
         tela.setInventario(objInventario);
 

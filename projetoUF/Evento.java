@@ -15,9 +15,8 @@ public class Evento
     private String nome;
     private String descrição;
     private float probabilidadeDeOcorrer;
-    private String[] Impacto;
+    private String[] impacto;
     private String condiçãoDeAtivação;
-    private EscolherClasse player;
 
     public void executar(EscolherClasse classeEscolhida, Ambiente local)
     {

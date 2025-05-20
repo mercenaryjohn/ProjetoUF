@@ -24,7 +24,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private boolean playerEmCombate = false;
     private boolean playerSeMovimentou = false;
     private EscolherClasse player;
-    private GUIescolhas objEscolhas;
     private InventarioClasse objInventario;
 
     private int vidaMáxima;
@@ -76,9 +75,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         player = classeEscolhida; 
         
     }
-
-    public void setEscolhas(GUIescolhas escolhas)
-    { objEscolhas = escolhas; }
 
     public void setInventario(InventarioClasse Inventario)
     { objInventario = Inventario; }
@@ -610,7 +606,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             menuAberto = false;
                             player.setFome(player.getFome() - 20); //TODO   
                             player.setSede(player.getSede() - 20);
-                            objEscolhas.escolhas("2", player);
+                            player.setEnergia(energiaMáxima);
                         }
                         break;
                     case KeyEvent.VK_3: //Inventário

@@ -12,7 +12,7 @@ public class Personagem
     private int sanidade;
     private List<Item> inventário;
     private double[] localização;
-    private int capacidadeInventário; // último a ser adicionado
+    private int capacidadeInventário; // foi o último a ter sido adicionado
 
     // Construtor
     public Personagem(String nome, int vida, int fome, int sede, int energia, int sanidade, int capacidadeInventário)

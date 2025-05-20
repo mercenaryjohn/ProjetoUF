@@ -1,4 +1,4 @@
-public class Escolhas 
+public class Escolhas // Apenas para o Terminal
 {
     public String escolhas(String escolha)
     {
