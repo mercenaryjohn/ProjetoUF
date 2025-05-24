@@ -27,8 +27,29 @@ public class Item
     { this.durabilidade = durabilidade; }
 
 
-    public void usar()
+    public void usar(EscolherClasse classeEscolhida)
     {
 
+    }
+
+    public Item clonarObjItem(Item item) // clonar Obj para adicionar uma nova instância no inventário
+    {
+        if (item instanceof Alimento) 
+        {
+            Alimento obj = new Alimento(1,1);
+            obj.setAlimentoStats(item.getNome());
+            return obj;
+        } 
+        else if (item instanceof Agua) 
+        {
+            Agua obj = new Agua();
+            return obj;
+        }
+        else if (item instanceof Arma) 
+        {
+            //Arma obj = (Arma) item;
+            return new Arma();
+        }
+        else { return null; }
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Main
+public class MainTerminal
 {
     public static void main(String[] args)
     {
@@ -54,13 +54,18 @@ public class Main
         Movimento objMovimento = new Movimento(); // modifica a posição na array localização de coordenada x,y
         InventarioClasse objInventario = new InventarioClasse();
         Agua objAgua = new Agua(); // DEBUG TODO
-        
+        Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
+        objAlimento.setAlimentoStats("Fruta");
+
         ///////////////////////////////////////////////////////////////////////// MAPA
-        Ambiente objAmbiente = new Ambiente("nome", "descrição",
-         "recursos", null, null);
+        Ambiente objAmbiente = new Ambiente(null, null,
+         null, null, null);
         char[][] mapa = objAmbiente.fazerMapaMundo();
         //objAmbiente.printVisaoAtualMapa(mapa, classeEscolhida.getLocalização()); 
         /////////////////////////////////////////////////////////////////////////
+
+        int vidaMáxima = classeEscolhida.getVida();
+        int energiaMáxima = classeEscolhida.getEnergia();
         
         while(!inputDoUsuario.equals("sair"))
         {
@@ -99,7 +104,7 @@ public class Main
                         }
                     }
 
-                    String listaDeDireções = "\n 1 - Norte \n 2 - Sul \n 3 - Leste \n 4 - Oeste";
+                    String listaDeDireções = "\n 1 - Norte [^] \n 2 - Sul [v] \n 3 - Leste [>] \n 4 - Oeste [<]";
                     System.out.println("Para onde?..." + listaDeDireções);
                     
                     inputAqui = scanString.nextLine();
@@ -110,46 +115,83 @@ public class Main
                         
                         classeEscolhida.setLocalização(posição);
                         //System.out.println("X: " + posição[0] + " Y:" + posição[1]); //DEBUG
+                        classeEscolhida.setEnergia(classeEscolhida.getEnergia() - 1);
+                        //System.out.println("Energia: " + classeEscolhida.getEnergia()); //DEBUG
                         n++;
                     }
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////
-                if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
+                else if(objEscolhas.escolhas(inputDoUsuario).equals("descansar"))
                 {
                     inputFoiAlgoEsperado = 0;
-                    classeEscolhida.setEnergia(classeEscolhida.getEnergia() + 100);  //TODO: número temporário
+                    System.out.println("1 - Descanso Curto \n2 - Descanso Longo");
+                    int inputAqui;
+                    while (true)
+                    {
+                        try
+                        {
+                            inputAqui = Integer.parseInt(scanString.nextLine());
+                            break;
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            System.out.println("Preciso escolher um número para isso...");
+                        }
+                    }
+                    if (inputAqui == 1) // curto
+                    {
+                        classeEscolhida.setEnergia(classeEscolhida.getEnergia() + 50);
+                        if (classeEscolhida.getEnergia() > energiaMáxima)
+                        {
+                            classeEscolhida.setEnergia(energiaMáxima);
+                        }
+                    }
+                    else // longo
+                    {
+                        classeEscolhida.setEnergia(energiaMáxima);
+                    }
                     System.out.println("Debug_energia: " + classeEscolhida.getEnergia());
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////
-                if(objEscolhas.escolhas(inputDoUsuario).equals("inventário"))
+                else if(objEscolhas.escolhas(inputDoUsuario).equals("inventário"))
                 {
                     inputFoiAlgoEsperado = 0;
                     //System.out.println(classeEscolhida.getInventário());
                     System.out.println("Inventário:");
                     System.out.println("________________________________________\n");
 
-                    Map<String, Integer> mapaContadorLista = new HashMap<>(); 
+                    Map<Item, Integer> mapaContadorLista = new HashMap<>(); 
                     // Usar para contar os items da list Inventário
 
-                    for (String item : classeEscolhida.getInventário())
+                    for (Item item : classeEscolhida.getInventário()) // Coloca itens no HasMap
                     {
                         mapaContadorLista.put(item, mapaContadorLista.getOrDefault(item, 0) + 1);
                     }
 
-                    //
+                    // Print cada item
                     int index = 1;
-                    for (Map.Entry<String, Integer> entry : mapaContadorLista.entrySet())
+                    for (Map.Entry<Item, Integer> entry : mapaContadorLista.entrySet())
                     {
-                        System.out.println(index + "- " + entry.getKey() + " x" + entry.getValue());
+                        Item item = entry.getKey();
+                        if (item instanceof Alimento)
+                        {
+                            System.out.println(index + "- " + (entry.getKey()).getNome() + " x" + entry.getValue() 
+                            + " (Validade: " + ((Alimento) item).getValidade() + ")");
+                        }
+                        else
+                        {
+                            System.out.println(index + "- " + (entry.getKey()).getNome() + " x" + entry.getValue());
+                        }
                         index++;
                     }
                     System.out.println("0 - Sair");
                     System.out.println("________________________________________");
                     
-                    objInventario.adicionarItem(classeEscolhida, "Água"); 
-                    // TODO adicionei item pela 1ª vez, DEBUG
+                    objInventario.adicionarItem(classeEscolhida, objAgua); 
+                    objInventario.adicionarItem(classeEscolhida, objAlimento);
+                    // TODO adiciona Item para testar, DEBUG
 
                     System.out.println("Eu devo usar algo?..."); // Escolha de Item para usar
                     int usarItemInventário = 0;
@@ -166,15 +208,15 @@ public class Main
                         }
                     }
 
-                    List<String> listaItens = new ArrayList<>(mapaContadorLista.keySet());
+                    List<Item> listaItens = new ArrayList<>(mapaContadorLista.keySet());
                     if (usarItemInventário > 0 && usarItemInventário <= mapaContadorLista.size()) 
                     {
-                        String itemEscolhidoParaUsar = listaItens.get(usarItemInventário - 1);
-                        System.out.println("Irei usar... " + itemEscolhidoParaUsar);
+                        Item itemEscolhidoParaUsar = listaItens.get(usarItemInventário - 1);
+                        System.out.println("Irei usar... " + itemEscolhidoParaUsar.getNome());
                         objInventario.usarItem(classeEscolhida, itemEscolhidoParaUsar);
                         objInventario.removerItem(classeEscolhida, itemEscolhidoParaUsar);
                     }
-                    if (usarItemInventário == 0)
+                    else if (usarItemInventário == 0)
                     {
 
                     }
@@ -188,7 +230,7 @@ public class Main
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////
-                if(objEscolhas.escolhas(inputDoUsuario).equals("status"))
+                else if(objEscolhas.escolhas(inputDoUsuario).equals("status"))
                 {
                     double[] mostrarPosição = classeEscolhida.getLocalização();
                     System.out.println("________________________________________\n");
@@ -203,8 +245,15 @@ public class Main
                         System.out.println("Posição (X,Y): " +  mostrarPosição[0] +","+ mostrarPosição[1]);
                     }
                     System.out.println("________________________________________");
+                    System.out.println("Aperte qualquer tecla para (Voltar)");
+                    String ComerInput = scanString.nextLine();
                 }
-                if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
+                if (classeEscolhida.getVida() == 0)
+                {
+                    System.out.println("Você Morreu");
+                    break;
+                }
+                else if(objEscolhas.escolhas(inputDoUsuario).equals("sair"))
                 {
                     inputDoUsuario = "sair";
                     break;

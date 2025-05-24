@@ -1,5 +1,5 @@
 
-public class Evento 
+public abstract class Evento 
 {
         /* 
         Nome: Identificação do evento.
@@ -11,14 +11,6 @@ public class Evento
         Condição de ativação: Determina se o evento pode ocorrer (ex.: apenas em
             determinados ambientes).
         */
-    private String nome;
-    private String descrição;
-    private float probabilidadeDeOcorrer;
-    private String[] Impacto;
-    private String condiçãoDeAtivação;
-
-    public void executar(EscolherClasse classeEscolhida, Ambiente local)
-    {
-
-    }
+        
+    public abstract void executar(Personagem jogador, String eventoEscolhido, String[] eventos);
 }

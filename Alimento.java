@@ -18,101 +18,124 @@ public class Alimento extends Item
     public void setNutrição(int nutrição)
     { this.nutrição = nutrição; }
 
+    public int getValidade()
+    { return validade; }
+    public int getNutrição()
+    { return nutrição; }
+
     // Total alimentos atual 5, de 0 a 4 na array
-    private String[] nomesAlimentos = {"Fruta","Carne","Carne em lata","Fruta em lata","Carne seca"};
+    private String[] nomesAlimentos = {"Fruta","Carne","Carne em lata","Fruta em lata","Carne seca",
+                                        "Raíz", "Cogumelo", "Cogumelo (Venenoso)", "Peixe", "Alga comestível"};
     public String[] getNomesAlimentos()
     { return nomesAlimentos; }
 
-    public String qualAlimento(int opcao)
-    {
-        String nomeAlimento;
-        String[] nomesAlimentos = getNomesAlimentos();
-
-        switch(opcao)
-        {
-            case 0:
-                nomeAlimento = nomesAlimentos[0];
-                return nomeAlimento;
-            case 1:
-                nomeAlimento = "Carne";
-                return nomeAlimento;
-            case 2:
-                nomeAlimento = "Carne em lata";
-                return nomeAlimento;
-            case 3:
-                nomeAlimento = "Fruta em lata";
-                return nomeAlimento;
-            case 4:
-                nomeAlimento = "Carne seca";
-                return nomeAlimento;
-            default:
-                nomeAlimento = "Fruta";
-                return nomeAlimento;
-        }
-    }
-
-    //TODO array de objAlimentos em inventario??
-    public int[] getAlimentoStats(String nomeAlimento)
+    public void setAlimentoStats(String nomeAlimento)
     {
         String[] nomesAlimentos = getNomesAlimentos();
-        int[] stats = {0,0};
         int contador = 0;
         if(nomeAlimento.equals(nomesAlimentos[contador]))
         {
-            //Fruta
-            //Peso 1
-            //Durabilidade 1 //TODO acho melhor só ignorar durabilidade
-            //Validade 7
-            //Nutrição 30
+            setNome("Fruta");
+            setPeso(1);
+            setDurabilidade(1);
+            setValidade(7);
+            setNutrição(30);
         }
-        contador++;
+        contador++; //1
         if(nomeAlimento.equals(nomesAlimentos[contador]))
         {
-            //Carne
-            //Peso 4
-            //Durabilidade 1
-            //Validade 4
-            //Nutrição 5
+            setNome("Carne");
+            setPeso(4);
+            setDurabilidade(1);
+            setValidade(3);
+            setNutrição(20);
         }
-        contador++;
+        contador++; //2
         if(nomeAlimento.equals(nomesAlimentos[contador]))
         {
-            //Nome Carne em lata
-            //Peso 2
-            // Durabilidade 1
-            //Validade 730
-            //Nutrição 70
+            setNome("Carne em lata");
+            setPeso(4);
+            setDurabilidade(2);
+            setValidade(730);
+            setNutrição(80);
         }
-        contador++;
-
-        /*
-        case 4:
-        setNome("Fruta em lata");
-        setPeso(2);
-        setDurabilidade(1);
-        setValidade(730);
-        setNutrição(1);
-
-        setNome("Carne seca");
-        setPeso(2);
-        setDurabilidade(1);
-        setValidade(100);
-        setNutrição(1);
-        */
-
-        return stats;
+        contador++; //3
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Fruta em lata");
+            setPeso(2);
+            setDurabilidade(1);
+            setValidade(730);
+            setNutrição(70);
+        }
+        contador++; //4
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Carne seca");
+            setPeso(2);
+            setDurabilidade(1);
+            setValidade(100);
+            setNutrição(100);
+        }
+        contador++; //5
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Raíz");
+            setPeso(2);
+            setDurabilidade(1);
+            setValidade(10);
+            setNutrição(60);
+        }
+        contador++; //6
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Cogumelo");
+            setPeso(1);
+            setDurabilidade(1);
+            setValidade(20);
+            setNutrição(60);
+        }
+        contador++; //7
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Cogumelo (Venenoso)");
+            setPeso(1);
+            setDurabilidade(1);
+            setValidade(30);
+            setNutrição(-50); //venenoso
+        }
+        contador++; //8
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Peixe");
+            setPeso(3);
+            setDurabilidade(1);
+            setValidade(30);
+            setNutrição(70);
+        }
+        contador++; //9
+        if(nomeAlimento.equals(nomesAlimentos[contador]))
+        {
+            setNome("Alga comestível");
+            setPeso(1);
+            setDurabilidade(1);
+            setValidade(30);
+            setNutrição(25);
+        }
+    
     }
 
     //InventarioClasse objInventario = new InventarioClasse();
-    public void usar(EscolherClasse classeEscolhida, String nomeAlimento)
+    public void usar(EscolherClasse classeEscolhida)
     {
         String[] nomesAlimentos = getNomesAlimentos();
         int contador = 0;
+        String alimentoNome = getNome();
         while(contador < (nomesAlimentos.length))
         {
-            if(nomeAlimento.equals(nomesAlimentos[contador]))
+            if(alimentoNome.equals(nomesAlimentos[contador]))
             {
-                classeEscolhida.setFome(classeEscolhida.getFome() + 50); //TODO: número temporário
+                classeEscolhida.setFome(classeEscolhida.getFome() + getNutrição());
                 break;
             }
             contador++;

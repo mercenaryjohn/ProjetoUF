@@ -10,11 +10,12 @@ public class Personagem
     private int sede;
     private int energia;
     private int sanidade;
-    private List<String> inventário;
+    private List<Item> inventário;
     private double[] localização;
+    private int capacidadeInventário; // o mais recente a ser adicionado
 
     // Construtor
-    public Personagem(String nome, int vida, int fome, int sede, int energia, int sanidade)
+    public Personagem(String nome, int vida, int fome, int sede, int energia, int sanidade, int capacidadeInventário)
     {
         this.nome = nome;
         this.vida = vida;
@@ -24,6 +25,7 @@ public class Personagem
         this.sanidade = sanidade;
         this.inventário = new ArrayList<>();
         this.localização = new double [2];
+        this.capacidadeInventário = capacidadeInventário;
     }
 
     // Getters, comandos para pegar os dados de personagem
@@ -39,10 +41,12 @@ public class Personagem
     { return energia; }
     public int getSanidade() 
     { return sanidade; }
-    public List<String> getInventário()
+    public List<Item> getInventário()
     { return inventário; }
     public double[] getLocalização()
     { return localização; }
+    public int getCapacidadeInventário()
+    { return capacidadeInventário; }
 
     // Setters, comandos para modificar os dados de personagem
     public void setNome(String nome)
@@ -57,8 +61,8 @@ public class Personagem
     { this.energia = energia; }
     public void setSanidade(int sanidade) 
     { this.sanidade = sanidade; }
-    public void setInventário(List<String> inventário)
-    { this.inventário = inventário; }
     public void setLocalização(double[] localização)
     { this.localização = localização; }
+    public void setCapacidadeInventário(int capacidadeInventário)
+    { this.capacidadeInventário = capacidadeInventário; }
 }
