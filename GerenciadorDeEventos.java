@@ -1,6 +1,8 @@
 
 import java.util.Random;
 
+import Ambientes.*;
+
 public class GerenciadorDeEventos 
 {
     Random objRandom = new Random();

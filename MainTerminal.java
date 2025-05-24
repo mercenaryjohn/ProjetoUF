@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import Ambientes.*;
+
 public class MainTerminal
 {
     public static void main(String[] args)

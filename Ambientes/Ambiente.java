@@ -1,3 +1,5 @@
+package Ambientes;
+
 import java.util.Random;
 
 public class Ambiente 

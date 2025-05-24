@@ -16,7 +16,7 @@ public class EventoClimatico extends Evento
         }
         else if(eventoEscolhido.equals("Deslizamento"))
         {
-            player.setVida(player.getVida() - 5);
+            player.setVida(player.getVida() - 2);
             player.setEnergia(player.getEnergia() - 1);
             player.setSanidade(player.getSanidade() - 1);
         }

@@ -1,5 +1,6 @@
 
 import java.util.Random;
+import Ambientes.*;
 
 public class GerenciadorDeAmbientes 
 {

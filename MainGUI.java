@@ -1,3 +1,4 @@
+import Ambientes.*;
 
 public class MainGUI
 {

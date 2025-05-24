@@ -1,3 +1,5 @@
+package Ambientes;
+
 public class AmbienteRuinas extends Ambiente
 {
     /*

@@ -10,11 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import Ambientes.*;
 
 public class GUIscreen extends JPanel implements ActionListener, KeyListener
 {
@@ -671,6 +674,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getInventário().size() > 0)
                         {
                             escolherItemInventárioIngameUI(itemSelecionadoInventário);
+                            turnoAtual++;
                             itemSelecionadoInventário = 0;
                         }
                         break;
@@ -680,12 +684,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             {
 
             }
-            if (turnoAtual % 4 == 0)
+            if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto)
             {
                 player.setFome(player.getFome() - 1);
                 player.setSede(player.getSede() - 1);
             }
-            if (turnoAtual % 60 == 0 && turnoAtual != 0)
+            if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto)
             { 
                 diasSePassaram++;
                 List<Item> itensParaRemover = new ArrayList<>(); 
