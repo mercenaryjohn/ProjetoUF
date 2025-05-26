@@ -4,22 +4,17 @@ import Ambientes.*;
 
 public class GerenciadorDeAmbientes 
 {
-    private AmbienteCaverna objCaverna;
-    private AmbienteFloresta objFloresta;
-    private AmbienteLagoRio objLagoRio;
-    private AmbienteMontanha objMontanha;
-    private AmbienteRuinas objRuinas;
+    private AmbienteCaverna objCaverna = new AmbienteCaverna();
+    private AmbienteFloresta objFloresta = new AmbienteFloresta();
+    private AmbienteLagoRio objLagoRio = new AmbienteLagoRio();
+    private AmbienteMontanha objMontanha = new AmbienteMontanha();
+    private AmbienteRuinas objRuinas = new AmbienteRuinas();
 
     Random objRandom = new Random();
 
-    public GerenciadorDeAmbientes (AmbienteCaverna objCaverna, AmbienteFloresta objFloresta, 
-    AmbienteLagoRio objLagoRio, AmbienteMontanha objMontanha, AmbienteRuinas objRuinas)
+    public GerenciadorDeAmbientes ()
     {
-        this.objCaverna = objCaverna;
-        this.objFloresta = objFloresta;
-        this.objLagoRio = objLagoRio;
-        this.objMontanha = objMontanha;
-        this.objRuinas = objRuinas;
+        
     }
 
     public String pegarNomeAmbiente(char ambienteChar)
@@ -117,21 +112,21 @@ public class GerenciadorDeAmbientes
         {
             recursoEscolhidoItem = objAgua;
             ((Agua) recursoEscolhidoItem).setHidratação(-50);
-            ((Agua) recursoEscolhidoItem).setNome("Água contaminada");
+            recursoEscolhidoItem.setNome("Água contaminada");
             return recursoEscolhidoItem;
         }
         if (recursoEscolhidoNome.equals("Água de degelo"))
         {
             recursoEscolhidoItem = objAgua;
             ((Agua) recursoEscolhidoItem).setHidratação(objAgua.getHidratação());
-            ((Agua) recursoEscolhidoItem).setNome("Água de degelo");
+            recursoEscolhidoItem.setNome("Água de degelo");
             return recursoEscolhidoItem;
         }
         if (recursoEscolhidoNome.equals("Gelo"))
         {
             recursoEscolhidoItem = objAgua;
             ((Agua) recursoEscolhidoItem).setHidratação(objAgua.getHidratação());
-            ((Agua) recursoEscolhidoItem).setNome("Gelo");
+            recursoEscolhidoItem.setNome("Gelo");
             return recursoEscolhidoItem;
         }
 
@@ -150,7 +145,10 @@ public class GerenciadorDeAmbientes
         if (localNome.equals("Corpo d'água") && chance5050 == false) //Maior chance de pegar água
         { recursoEscolhidoItem = objAgua; }
         else
-        { objItemGenérico.setNome(recursoEscolhidoNome); } //Objeto sem classe específica
+        { 
+            objItemGenérico.setNome(recursoEscolhidoNome);
+            recursoEscolhidoItem = objItemGenérico; 
+        } //Objeto sem classe específica
 
         return recursoEscolhidoItem;
     }

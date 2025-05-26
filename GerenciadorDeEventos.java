@@ -70,7 +70,7 @@ public class GerenciadorDeEventos
             if (eventoEscolhido.equals(eventos[1]));
             {}
             if (eventoEscolhido.equals(eventos[2]));
-            {}
+            { objEventoDoencaFerimento.executar(player, eventoEscolhido, eventos); }
         }
         else if (local.getNome().equals("Ruínas Abandonadas"))
         { // "Sobrevivente hostil", "Passagem secreta", "Armadilha"
@@ -79,7 +79,7 @@ public class GerenciadorDeEventos
             if (eventoEscolhido.equals(eventos[1]));
             {}
             if (eventoEscolhido.equals(eventos[2]));
-            {}
+            { objEventoDoencaFerimento.executar(player, eventoEscolhido, eventos); }
         }
         else if (local.getNome().equals("Planície")) 
         {

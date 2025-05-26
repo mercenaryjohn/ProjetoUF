@@ -43,13 +43,23 @@ public class Item
         else if (item instanceof Agua) 
         {
             Agua obj = new Agua();
+            obj.setNome(item.getNome());
+            obj.setHidratação(((Agua)item).getHidratação());
             return obj;
         }
         else if (item instanceof Arma) 
         {
             //Arma obj = (Arma) item;
-            return new Arma();
+            Arma obj = new Arma();
+            obj.setNome(item.getNome());
+            obj.setPoderDeDano(((Arma)item).getPoderDeDano());
+            return obj;
         }
-        else { return null; }
+        else
+        {
+            Item obj = new Item();
+            obj.setNome(item.getNome());
+            return obj;
+        }
     }
 }

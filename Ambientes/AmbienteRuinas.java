@@ -33,7 +33,7 @@ public class AmbienteRuinas extends Ambiente
         super(
         "Ruínas Abandonadas",
         "Restos de antigas construções que podem conter suprimentos valiosos ou armadilhas",
-        new String[] {"Ferramenta antiga", "Munição", "Carne em lata", "Fruta em lata", "Abrigo"}, //recursos
+        new String[] {"Arma antiga", "Munição", "Carne em lata", "Fruta em lata", "Abrigo"}, //recursos
         new float[] {0.1f, 0.1f, 0.1f}, //probabilidades eventos
         new String[] {"Sobrevivente hostil", "Passagem secreta", "Armadilha"} // climas e eventos
         );

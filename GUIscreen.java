@@ -33,19 +33,17 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private int itemSelecionadoInventário = 0;
     private Map<String, Integer> cópiaDeMapaContadorLista = new HashMap<>();
 
+    private long tempoAtual; // é sim usado
+    private long ultimaAcaoFeita = 0;
+    private int delayEmMili = 250; // && tempoQuePassou >= delayEmMili
+
     private int vidaMáxima;
     private int sanidadeMáxima;
     private int energiaMáxima;
     private int sedeMáxima;
     private int fomeMáxima;
 
-    private AmbienteCaverna objCaverna = new AmbienteCaverna();
-    private AmbienteFloresta objFloresta = new AmbienteFloresta();
-    private AmbienteLagoRio objLagoRio = new AmbienteLagoRio();
-    private AmbienteMontanha objMontanha = new AmbienteMontanha();
-    private AmbienteRuinas objRuinas = new AmbienteRuinas();
-    private GerenciadorDeAmbientes objGerenciadorDeAmbientes = new GerenciadorDeAmbientes
-                            (objCaverna, objFloresta, objLagoRio, objMontanha, objRuinas);
+    private GerenciadorDeAmbientes objGerenciadorDeAmbientes = new GerenciadorDeAmbientes();
     private GerenciadorDeEventos objGerenciadorDeEventos = new GerenciadorDeEventos();
 
     private String últimoItemEncontrado = "";
@@ -509,6 +507,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
     public void keyPressed(KeyEvent k) //TODO
     {
+        long tempoAtual = System.currentTimeMillis();
         if (playerEstáVivo)
         {
             if (!playerEmCombate && !inventárioAberto)
@@ -516,51 +515,57 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 switch(k.getKeyCode())
                 {
                     case KeyEvent.VK_D:
-                        if (player.getEnergia() > 0)
+                        if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
-                        double[] posiçãoXD = player.getLocalização();
-                        posiçãoXD[0] = posiçãoXD[0] + 1;
-                        player.setLocalização(posiçãoXD);
-                        player.setEnergia(player.getEnergia() - 1);
+                            double[] posiçãoXD = player.getLocalização();
+                            posiçãoXD[0] = posiçãoXD[0] + 1;
+                            player.setLocalização(posiçãoXD);
+                            player.setEnergia(player.getEnergia() - 1);
+                            menuAberto = false;
+                            playerSeMovimentou = true;
+                            ultimaAcaoFeita = tempoAtual;
                         }
-                        menuAberto = false;
-                        playerSeMovimentou = true;
                         break;
                     case KeyEvent.VK_S:
-                        if (player.getEnergia() > 0)
+                        if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
-                        double[] posiçãoYS = player.getLocalização();
-                        posiçãoYS[1] = posiçãoYS[1] - 1;
-                        player.setLocalização(posiçãoYS);
-                        player.setEnergia(player.getEnergia() - 1);
+                            double[] posiçãoYS = player.getLocalização();
+                            posiçãoYS[1] = posiçãoYS[1] - 1;
+                            player.setLocalização(posiçãoYS);
+                            player.setEnergia(player.getEnergia() - 1);
+                            playerSeMovimentou = true;
+                            ultimaAcaoFeita = tempoAtual;
                         }
                         menuAberto = false;
-                        playerSeMovimentou = true;
                         break;
                     case KeyEvent.VK_A:
-                        if (player.getEnergia() > 0)
+                        if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
-                        double[] posiçãoXA = player.getLocalização();
-                        posiçãoXA[0] = posiçãoXA[0] - 1;
-                        player.setLocalização(posiçãoXA);
-                        player.setEnergia(player.getEnergia() - 1);
+                            double[] posiçãoXA = player.getLocalização();
+                            posiçãoXA[0] = posiçãoXA[0] - 1;
+                            player.setLocalização(posiçãoXA);
+                            player.setEnergia(player.getEnergia() - 1);
+                            playerSeMovimentou = true;
+                            ultimaAcaoFeita = tempoAtual;
                         }
                         menuAberto = false;
-                        playerSeMovimentou = true;
                         break;
                     case KeyEvent.VK_W:
-                        if (player.getEnergia() > 0)
+                        if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
-                        double[] posiçãoYW = player.getLocalização();
-                        posiçãoYW[1] = posiçãoYW[1] + 1;
-                        player.setLocalização(posiçãoYW);
-                        player.setEnergia(player.getEnergia() - 1);
+                            double[] posiçãoYW = player.getLocalização();
+                            posiçãoYW[1] = posiçãoYW[1] + 1;
+                            player.setLocalização(posiçãoYW);
+                            player.setEnergia(player.getEnergia() - 1);
+                            playerSeMovimentou = true;
+                            ultimaAcaoFeita = tempoAtual;
                         }
                         menuAberto = false;
-                        playerSeMovimentou = true;
                         break;
                     case KeyEvent.VK_1: //Vasculhar
-                        if (menuAberto && últimoItemEncontrado != "inventário cheio " + "("+ player.getCapacidadeInventário() +")")
+                        if (menuAberto && últimoItemEncontrado != "inventário cheio " +
+                         "("+ player.getCapacidadeInventário() +")" 
+                         && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             //menuAberto = false;
                             double[] localização = player.getLocalização();
@@ -583,11 +588,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 { últimoItemEncontrado = "inventário cheio " + "("+ player.getCapacidadeInventário() +")"; }
                             }
                             player.setEnergia(player.getEnergia() - 1);
+                            ultimaAcaoFeita = tempoAtual;
+                            turnoAtual++;
                         }
-                        turnoAtual++;
                         break;
                 }
-                if (playerSeMovimentou == true && !menuAberto && !inventárioAberto)
+                if (playerSeMovimentou == true && !menuAberto && !inventárioAberto) //EVENTOS
                 {
                     double[] localização = player.getLocalização();
                     int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
@@ -638,6 +644,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             menuAberto = false;
                             player.setFome(player.getFome() - 20); //TODO   
                             player.setSede(player.getSede() - 20);
+                            player.setSanidade(player.getSanidade() + 40);
+                            if (sanidadeMáxima < player.getSanidade())
+                                { player.setSanidade(sanidadeMáxima); }
                             player.setEnergia(energiaMáxima);
                         }
                         break;
@@ -684,12 +693,14 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             {
 
             }
-            if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto)
+            if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto 
+             && tempoAtual - ultimaAcaoFeita >= delayEmMili)
             {
                 player.setFome(player.getFome() - 1);
                 player.setSede(player.getSede() - 1);
             }
-            if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto)
+            if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto
+             && tempoAtual - ultimaAcaoFeita >= delayEmMili)
             { 
                 diasSePassaram++;
                 List<Item> itensParaRemover = new ArrayList<>(); 
@@ -708,7 +719,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 for (Item item : itensParaRemover) //remove se foi adicionado a lista
                 { objInventario.removerItem(player, item); }
             }
-            if (player.getVida() <= 0 || player.getFome() <= 0 ||player.getSede() <= 0)
+            if (player.getVida() <= 0 || player.getFome() <= 0 || 
+            player.getSede() <= 0 || player.getSanidade() <= 0)
             { playerEstáVivo = false; }
         }
         repaint();
