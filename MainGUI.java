@@ -24,14 +24,19 @@ public class MainGUI
         InventarioClasse objInventario = new InventarioClasse();
         tela.setInventario(objInventario);
 
-        //Agua objAgua = new Agua(); // DEBUG TODO
+        //Agua objAgua = new Agua(); // DEBUG
         //objInventario.adicionarItem(classeEscolhida, objAgua);
-        Alimento objAlimento = new Alimento(0, 0); // DEBUG TODO
-        objAlimento.setAlimentoStats("Fruta");
-        objInventario.adicionarItem(classeEscolhida, objAlimento);
+        //Alimento objAlimento = new Alimento(0, 0); // DEBUG
+        //objAlimento.setAlimentoStats("Fruta");
+        //objInventario.adicionarItem(classeEscolhida, objAlimento);
 
         String[] opções = {"1 - Vasculhar", "2 - Descansar","3 - Inventário",/*"4 - Status",*/"- para voltar [e] -"};
         tela.setListaDeOpcoes(opções);
 
+        /*
+        for (int i = 1; i < 20; i++) //TESTE TAMANHO INVENTÁRIO
+        {Agua objAgua = new Agua();
+            objAgua.setNome(""+i);
+        objInventario.adicionarItem(classeEscolhida, objAgua);} */
     }
 }

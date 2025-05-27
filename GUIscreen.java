@@ -33,9 +33,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private int itemSelecionadoInventário = 0;
     private Map<String, Integer> cópiaDeMapaContadorLista = new HashMap<>();
 
-    private long tempoAtual; // é sim usado
+    @SuppressWarnings("unused")
+    private long tempoAtual; // usado em keyPressed para limitar a velocidade de certas ações
     private long ultimaAcaoFeita = 0;
-    private int delayEmMili = 250; // && tempoQuePassou >= delayEmMili
+    private int delayEmMili = 200; // && tempoQuePassou >= delayEmMili
 
     private int vidaMáxima;
     private int sanidadeMáxima;
@@ -47,6 +48,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private GerenciadorDeEventos objGerenciadorDeEventos = new GerenciadorDeEventos();
 
     private String últimoItemEncontrado = "";
+                //Tem que começar em 1, já que só aparece a partir do 2° item
+    private int numeroDeItensEcontradosIguais = 1;
     private String eventoAtual = "";
     private boolean eventoEstáOcorrendo = false;
     private int turnoAtual = 0;
@@ -180,23 +183,17 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
         if (classeFoiEscolhida == false) 
-        {
-            // Player ainda não escolheu
-            return;
-        }
+        {// Player ainda não escolheu
+            return; }
 
         int chunkVisao = 5; //chunkVisao
-
         int tileTamanho = 30;
 
         // Posição atual do player
         double[] localização = player.getLocalização();
         int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
         int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
-        //System.out.println(playerX); //DEBUG
-        //System.out.println(playerY);
 
         if (player.getEnergia() <= 0)
         {
@@ -241,43 +238,18 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 if (true)
                 {
                     if (mapa[y][x] == 'F')
-                    {
-                        //System.out.print(VERDE + mapa[y][x] + " " + RESET);
-                        g.setColor(florestaVerde);
-                    }
+                        { g.setColor(florestaVerde); }
                     else if (mapa[y][x] == 'M') 
-                    {
-                        //System.out.print(BRANCO + mapa[y][x] + " " + RESET);
-                        g.setColor(montanhaBranco);
-                    }
+                        { g.setColor(montanhaBranco); }
                     else if (mapa[y][x] == 'C') 
-                    {
-                        //System.out.print(CINZA + mapa[y][x] + " " + RESET);
-                        g.setColor(cavernaCinza);
-                    }
+                        { g.setColor(cavernaCinza); }
                     else if (mapa[y][x] == '~') 
-                    {
-                        //System.out.print(AZUL + mapa[y][x] + " " + RESET);
-                        g.setColor(aguaAzul);
-                    }
+                        { g.setColor(aguaAzul); }
                     else if (mapa[y][x] == 'R') 
-                    {
-                        //System.out.print(MAGENTA + mapa[y][x] + " " + RESET);
-                        g.setColor(ruinaRoxo);
-                    }
+                        { g.setColor(ruinaRoxo); }
                     else if (mapa[y][x] == '_') 
-                    {
-                        //System.out.print(AMARELO + mapa[y][x] + " " + RESET);
-                        g.setColor(planicieCor);
-                    }
-                    else
-                    {
-                        //System.out.print(mapa[y][x] + " ");
-                        g.setColor(Color.RED);
-                    }
-                    //int screenX = (x - inicioX) * tileTamanho;
-                    //int screenY = (y - inicioY) * tileTamanho;
-                    //g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
+                        { g.setColor(planicieCor); }
+                    else { g.setColor(Color.RED); } // Por garantia
                     int screenX = deslocaX + (x - inicioX) * tileTamanho;
                     int screenY = deslocaY + (y - inicioY) * tileTamanho;
                     g.fillRect(screenX + 220, screenY, tileTamanho, tileTamanho);
@@ -285,36 +257,19 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 if(y == playerY && x == playerX)
                 {
                     if (mapa[y][x] == 'F')
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
+                        { g.setColor(jogadorCorEscura); }
                     else if (mapa[y][x] == 'M') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
+                        { g.setColor(jogadorCorEscura); }
                     else if (mapa[y][x] == 'C') 
-                    {
-                        g.setColor(jogadorCorClara);
-                    }
+                        { g.setColor(jogadorCorClara); }
                     else if (mapa[y][x] == '~') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
+                        { g.setColor(jogadorCorEscura); }
                     else if (mapa[y][x] == 'R') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
+                        { g.setColor(jogadorCorEscura); }
                     else if (mapa[y][x] == '_') 
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
+                        { g.setColor(jogadorCorEscura); }
                     else
-                    {
-                        g.setColor(jogadorCorEscura);
-                    }
-                    //int screenX = (x - inicioX) * tileTamanho;
-                    //int screenY = (y - inicioY) * tileTamanho;
-                    //g.fillRect(screenX, screenY, tileTamanho, tileTamanho);
+                        { g.setColor(jogadorCorEscura);}
                     int screenX = deslocaX + (x - inicioX) * tileTamanho;
                     int screenY = deslocaY + (y - inicioY) * tileTamanho;
                     g.fillOval(screenX + 220, screenY, tileTamanho, tileTamanho);
@@ -322,7 +277,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             }
         }
 
-        if (inventárioAberto) // Mostrar inventário //TODO
+        if (inventárioAberto) // Mostrar inventário
         {
             Map<String, Integer> mapaContadorLista = new HashMap<>();
             // Usar para contar os items da list Inventário
@@ -344,9 +299,14 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             int tiposDiferentesDeItem = mapaContadorLista.size();
             cópiaDeMapaContadorLista = mapaContadorLista;
 
-            int alturaInicio = 220;
+            int alturaInicio = 220 + tiposDiferentesDeItem * 4; // usado para subtrair
             int alturaPosição1 = alturaInicio - 20;
             int alturaPosição2 = alturaInicio - 25;
+
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(getWidth() / 2 + 10, (getHeight() / 2) - alturaInicio - 10, 420, //Fundo do fundo
+            140 + tiposDiferentesDeItem * 20);
+
             g.setColor(Color.BLACK);
             g.fillRect(getWidth() / 2 + 20, (getHeight() / 2) - alturaInicio, 400, 
             120 + tiposDiferentesDeItem * 20);
@@ -377,6 +337,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         
         if (menuAberto) //Na frente do mapa
         {
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(getWidth() / 2 + 10, (getHeight() / 2) - 90, 420, 140); //Fundo do fundo
+
             g.setColor(Color.BLACK);
             g.fillRect(getWidth() / 2 + 20, (getHeight() / 2) - 80, 400, 120); //Fundo do menu
     
@@ -487,7 +450,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
         if (playerEmCombate)
         {
-
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(deslocaX + 230, deslocaY + 10, 600, 600); //Fundo
+            g.setColor(Color.BLACK);
+            g.fillRect(deslocaX + 240, deslocaY + 20, 580, 580); //Fundo
         }
 
         if (playerEstáVivo == false)
@@ -563,8 +529,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         menuAberto = false;
                         break;
                     case KeyEvent.VK_1: //Vasculhar
-                        if (menuAberto && últimoItemEncontrado != "inventário cheio " +
-                         "("+ player.getCapacidadeInventário() +")" 
+                        if (menuAberto && !últimoItemEncontrado.equals("inventário cheio " +
+                         "("+ player.getCapacidadeInventário() +")") 
                          && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             //menuAberto = false;
@@ -581,7 +547,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 { 
                                     Item itemParaAdicionar = itemRecurso.clonarObjItem(itemRecurso);
                                     objInventario.adicionarItem(player, itemParaAdicionar);
-                                    últimoItemEncontrado = itemParaAdicionar.getNome();
+                                    if (últimoItemEncontrado.equals(itemParaAdicionar.getNome()))
+                                    { 
+                                        numeroDeItensEcontradosIguais++;
+                                        últimoItemEncontrado = últimoItemEncontrado + " +" + numeroDeItensEcontradosIguais; 
+                                    }
+                                    else 
+                                    { 
+                                        numeroDeItensEcontradosIguais = 1;
+                                        últimoItemEncontrado = itemParaAdicionar.getNome(); 
+                                    }
                                 }
                                 else { últimoItemEncontrado = "(Nada)"; }
                                 if ( player.getInventário().size() == player.getCapacidadeInventário() )
@@ -589,9 +564,11 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             }
                             player.setEnergia(player.getEnergia() - 1);
                             ultimaAcaoFeita = tempoAtual;
-                            turnoAtual++;
+                            passagemDeTurnos();
                         }
                         break;
+                        default:
+                            break;
                 }
                 if (playerSeMovimentou == true && !menuAberto && !inventárioAberto) //EVENTOS
                 {
@@ -626,13 +603,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual);
                             }
                         }
-                    turnoAtual ++;
+                    passagemDeTurnos();
                     playerSeMovimentou = false;
                 }
                 switch  (k.getKeyCode())
                 {
-                    case KeyEvent.VK_E:
-                        //System.out.println("Aberto");
+                    case KeyEvent.VK_E: //Menu
                         boolean menuAbertoHolder = !menuAberto;
                         menuAberto = menuAbertoHolder;
                         inventárioAberto = false;
@@ -642,7 +618,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (menuAberto && inventárioAberto == false)
                         {
                             menuAberto = false;
-                            player.setFome(player.getFome() - 20); //TODO   
+                            player.setFome(player.getFome() - 20);
                             player.setSede(player.getSede() - 20);
                             player.setSanidade(player.getSanidade() + 40);
                             if (sanidadeMáxima < player.getSanidade())
@@ -650,21 +626,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             player.setEnergia(energiaMáxima);
                         }
                         break;
-                    case KeyEvent.VK_3: //Inventário
+                    case KeyEvent.VK_3: //Abrir Inventário
                         if (menuAberto)
-                        {   /* 
-                            for (Item item : player.getInventário()) //TODO DEBUG
-                            {
-                                System.out.println(item.getNome());
-                            }*/
+                        {
                             menuAberto = false;
                             inventárioAberto = true;
-                            //escolherItemInventário();
                         }
                         break;
                 }
             }
-            if (inventárioAberto)
+            if (inventárioAberto) //Usando Inventário
             {
                 switch (k.getKeyCode()) 
                 {
@@ -683,7 +654,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getInventário().size() > 0)
                         {
                             escolherItemInventárioIngameUI(itemSelecionadoInventário);
-                            turnoAtual++;
+                            passagemDeTurnos();
                             itemSelecionadoInventário = 0;
                         }
                         break;
@@ -693,37 +664,43 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             {
 
             }
-            if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto 
-             && tempoAtual - ultimaAcaoFeita >= delayEmMili)
-            {
-                player.setFome(player.getFome() - 1);
-                player.setSede(player.getSede() - 1);
-            }
-            if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto
-             && tempoAtual - ultimaAcaoFeita >= delayEmMili)
-            { 
-                diasSePassaram++;
-                List<Item> itensParaRemover = new ArrayList<>(); 
-                //remover um item enquanto dentro do for loop gera exceptions
-                for (Item item : player.getInventário())
-                {
-                    if (item instanceof Alimento)
-                    {
-                        ((Alimento) item).setValidade(((Alimento) item).getValidade() - 1);
-                        if (((Alimento) item).getValidade() < 1) //TODO apodrecimento
-                        {
-                            itensParaRemover.add((Alimento) item);
-                        }
-                    }
-                }
-                for (Item item : itensParaRemover) //remove se foi adicionado a lista
-                { objInventario.removerItem(player, item); }
-            }
+            
             if (player.getVida() <= 0 || player.getFome() <= 0 || 
             player.getSede() <= 0 || player.getSanidade() <= 0)
             { playerEstáVivo = false; }
         }
         repaint();
+    }
+
+    public void passagemDeTurnos()
+    {
+        turnoAtual++;
+        //Diminui fome e Sede com o passar dos turnos
+        if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto)
+        {
+            player.setFome(player.getFome() - 1);
+            player.setSede(player.getSede() - 1);
+        }
+        //Passagem dos dias e diminuir validade itens
+        if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto) 
+        { 
+            diasSePassaram++;
+            List<Item> itensParaRemover = new ArrayList<>(); 
+            //remover um item enquanto dentro do for loop gera exceptions
+            for (Item item : player.getInventário())
+            {
+                if (item instanceof Alimento)
+                {
+                    ((Alimento) item).setValidade(((Alimento) item).getValidade() - 1);
+                    if (((Alimento) item).getValidade() < 1) //TODO: apodrecimento
+                    {
+                        itensParaRemover.add((Alimento) item);
+                    }
+                }
+            }
+            for (Item item : itensParaRemover) //remove se foi adicionado a lista
+            { objInventario.removerItem(player, item); }
+        } 
     }
 
     public void keyReleased(KeyEvent k) 

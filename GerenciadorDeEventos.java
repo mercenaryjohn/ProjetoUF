@@ -92,7 +92,7 @@ public class GerenciadorDeEventos
         
     }
 
-    public boolean removerEvento(String evento, Ambiente local) //TODO: temp
+    public boolean removerEvento(String evento, Ambiente local) //TODO: talvez melhorar?
     {
         if (local == null)
         {

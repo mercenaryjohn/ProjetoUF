@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 
 public class EscolherClasse extends Personagem
 {
@@ -30,7 +30,7 @@ public class EscolherClasse extends Personagem
         setSanidade (250);
         //setInventário (new ArrayList<>(30));
         setLocalização (new double [2]);
-        setCapacidadeInventário(30);
+        setCapacidadeInventário(28);
         }
 
         if (classeEscolhidaLowered.equals("veterinário") || classeEscolhida.equals("3"))
@@ -43,7 +43,7 @@ public class EscolherClasse extends Personagem
         setSanidade  (200);
         //setInventário  (new ArrayList<>(30));
         setLocalização  (new double [2]);
-        setCapacidadeInventário(30);
+        setCapacidadeInventário(26);
         }
 
         if (classeEscolhidaLowered.equals("prisioneiro") || classeEscolhida.equals("4"))
