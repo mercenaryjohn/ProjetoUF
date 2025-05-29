@@ -1,3 +1,5 @@
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -10,6 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +33,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private boolean inventárioAberto = false;
     private boolean statsAberto = true;
     private boolean playerEmCombate = false;
-    private boolean playerSeMovimentou = false;
     private EscolherClasse player;
     private InventarioClasse objInventario;
     private int itemSelecionadoInventário = 0;
@@ -58,6 +63,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private char[][] mapa;
     private int mapaAltura;
     private int mapaLargura;
+    private int playerX;
+    private int playerY;
 
     Timer timer = new Timer(16, this); //60 FPS
 
@@ -179,21 +186,46 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         }
     }
 
+    private BufferedImage playerSprite;
+    public void setSprites() 
+    {
+        try 
+        {
+            if (player.getNome().equals("Escoteiro"))
+                { playerSprite = ImageIO.read(getClass().getResource("Sprites/escoteiro.png")); }
+            else if (player.getNome().equals("Engenheiro"))
+                { playerSprite = ImageIO.read(getClass().getResource("Sprites/engenheiro.png")); }
+            else if (player.getNome().equals("Veterinário"))
+                { playerSprite = ImageIO.read(getClass().getResource("Sprites/veterinario.png")); }
+            else if (player.getNome().equals("Prisioneiro"))
+                { playerSprite = ImageIO.read(getClass().getResource("Sprites/prisioneiro.png")); }
+            //System.out.println("Teste Sprite");
+            if(playerSprite==null)
+               System.out.println("Imagem é null"); 
+        } 
+        catch (IOException | IllegalArgumentException e) 
+        {
+            System.err.println("Não conseguiu carregar o sprite: " + e.getMessage());
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
+
         if (classeFoiEscolhida == false) 
         {// Player ainda não escolheu
             return; }
 
-        int chunkVisao = 5; //chunkVisao
-        int tileTamanho = 30;
+        int chunkVisao = 5; // 5
+        int tileTamanho = 30; // 30
+        int playerTamanho = tileTamanho + 30; // tileTamanho + 30
 
         // Posição atual do player
         double[] localização = player.getLocalização();
-        int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
-        int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
+        playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
+        playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
 
         if (player.getEnergia() <= 0)
         {
@@ -231,6 +263,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         Color ruinaRoxo = new Color(120, 70, 180);
         Color planicieCor = new Color(154, 200, 120); //verde musgo
         
+        int screenXPLAYER = 0;
+        int screenYPLAYER = 0;
+
         for (int y = inicioY; y < fimY; y++) 
         {
             for (int x = inicioX; x < fimX; x++) 
@@ -272,10 +307,20 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         { g.setColor(jogadorCorEscura);}
                     int screenX = deslocaX + (x - inicioX) * tileTamanho;
                     int screenY = deslocaY + (y - inicioY) * tileTamanho;
-                    g.fillOval(screenX + 220, screenY, tileTamanho, tileTamanho);
+                    screenXPLAYER = screenX;
+                    screenYPLAYER = screenY;
+
+                    if (playerSprite == null) 
+                    {
+                        g.fillOval(screenX + 220, screenY, tileTamanho, tileTamanho);
+                    }
                 }
             }
         }
+
+        // Mostra o sprite do player por cima do mapa
+        g.drawImage(playerSprite, screenXPLAYER + 220 - (playerTamanho / 4), screenYPLAYER - (playerTamanho / 2) - 2,
+        playerTamanho, playerTamanho, null);
 
         if (inventárioAberto) // Mostrar inventário
         {
@@ -487,10 +532,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             posiçãoXD[0] = posiçãoXD[0] + 1;
                             player.setLocalização(posiçãoXD);
                             player.setEnergia(player.getEnergia() - 1);
-                            menuAberto = false;
-                            playerSeMovimentou = true;
                             ultimaAcaoFeita = tempoAtual;
+                            ativarChanceEvento();
                         }
+                        menuAberto = false;
                         break;
                     case KeyEvent.VK_S:
                         if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
@@ -499,8 +544,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             posiçãoYS[1] = posiçãoYS[1] - 1;
                             player.setLocalização(posiçãoYS);
                             player.setEnergia(player.getEnergia() - 1);
-                            playerSeMovimentou = true;
                             ultimaAcaoFeita = tempoAtual;
+                            ativarChanceEvento();
                         }
                         menuAberto = false;
                         break;
@@ -511,8 +556,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             posiçãoXA[0] = posiçãoXA[0] - 1;
                             player.setLocalização(posiçãoXA);
                             player.setEnergia(player.getEnergia() - 1);
-                            playerSeMovimentou = true;
                             ultimaAcaoFeita = tempoAtual;
+                            ativarChanceEvento();
                         }
                         menuAberto = false;
                         break;
@@ -523,8 +568,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             posiçãoYW[1] = posiçãoYW[1] + 1;
                             player.setLocalização(posiçãoYW);
                             player.setEnergia(player.getEnergia() - 1);
-                            playerSeMovimentou = true;
                             ultimaAcaoFeita = tempoAtual;
+                            ativarChanceEvento();
                         }
                         menuAberto = false;
                         break;
@@ -570,42 +615,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         default:
                             break;
                 }
-                if (playerSeMovimentou == true && !menuAberto && !inventárioAberto) //EVENTOS
-                {
-                    double[] localização = player.getLocalização();
-                    int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
-                    int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
-                    String ambienteAtualNome = objGerenciadorDeAmbientes.pegarNomeAmbiente(mapa[playerY][playerX]);
-                    Ambiente ambienteAtualObj = objGerenciadorDeAmbientes.pegarObjAmbiente(ambienteAtualNome);
-                    
-                    if (eventoEstáOcorrendo == true)
-                    {
-                        eventoEstáOcorrendo = objGerenciadorDeEventos.removerEvento(eventoAtual, ambienteAtualObj);
-                        if (eventoEstáOcorrendo == false)
-                        {
-                            eventoAtual = "";
-                        }
-                    }
-                        if (ambienteAtualObj != null)
-                        {
-                            if (eventoEstáOcorrendo == false)
-                            {
-                                String eventoSorteado = objGerenciadorDeEventos.sortearEvento(ambienteAtualObj);
-                                if (!eventoSorteado.equals(""))
-                                {
-                                    eventoAtual = eventoSorteado;
-                                    objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoSorteado);
-                                    eventoEstáOcorrendo = true;
-                                }
-                            }
-                            if (eventoEstáOcorrendo == true)
-                            {
-                                objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual);
-                            }
-                        }
-                    passagemDeTurnos();
-                    playerSeMovimentou = false;
-                }
                 switch  (k.getKeyCode())
                 {
                     case KeyEvent.VK_E: //Menu
@@ -615,7 +624,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         repaint();
                         break;
                     case KeyEvent.VK_2: //Descansar
-                        if (menuAberto && inventárioAberto == false)
+                        if (menuAberto && inventárioAberto == false && mapa[playerY][playerX] != '~')
                         {
                             menuAberto = false;
                             player.setFome(player.getFome() - 20);
@@ -624,6 +633,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             if (sanidadeMáxima < player.getSanidade())
                                 { player.setSanidade(sanidadeMáxima); }
                             player.setEnergia(energiaMáxima);
+                            ativarChanceEvento();
                         }
                         break;
                     case KeyEvent.VK_3: //Abrir Inventário
@@ -664,6 +674,11 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             {
 
             }
+
+            // Sempre checar isso, evita inventário não cheio com mensagem de cheio
+            if ( player.getInventário().size() < player.getCapacidadeInventário()
+             && últimoItemEncontrado.equals("inventário cheio " + "("+ player.getCapacidadeInventário() +")"))
+            { últimoItemEncontrado = ""; }
             
             if (player.getVida() <= 0 || player.getFome() <= 0 || 
             player.getSede() <= 0 || player.getSanidade() <= 0)
@@ -701,6 +716,43 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             for (Item item : itensParaRemover) //remove se foi adicionado a lista
             { objInventario.removerItem(player, item); }
         } 
+    }
+
+    // if (playerSeMovimentou == true && !menuAberto && !inventárioAberto) // EVENTOS
+    public void ativarChanceEvento()
+    {
+        double[] localização = player.getLocalização();
+        int playerX = mapaLargura / 2 + (int)localização[0]; // Em X, tem que ser adição
+        int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
+        String ambienteAtualNome = objGerenciadorDeAmbientes.pegarNomeAmbiente(mapa[playerY][playerX]);
+        Ambiente ambienteAtualObj = objGerenciadorDeAmbientes.pegarObjAmbiente(ambienteAtualNome);
+        
+        if (eventoEstáOcorrendo == true)
+        {
+            eventoEstáOcorrendo = objGerenciadorDeEventos.removerEvento(eventoAtual, ambienteAtualObj);
+            if (eventoEstáOcorrendo == false)
+            {
+                eventoAtual = "";
+            }
+        }
+            if (ambienteAtualObj != null)
+            {
+                if (eventoEstáOcorrendo == false)
+                {
+                    String eventoSorteado = objGerenciadorDeEventos.sortearEvento(ambienteAtualObj);
+                    if (!eventoSorteado.equals(""))
+                    {
+                        eventoAtual = eventoSorteado;
+                        objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoSorteado);
+                        eventoEstáOcorrendo = true;
+                    }
+                }
+                if (eventoEstáOcorrendo == true)
+                {
+                    objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual);
+                }
+            }
+        passagemDeTurnos();
     }
 
     public void keyReleased(KeyEvent k) 

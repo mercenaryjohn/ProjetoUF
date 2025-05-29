@@ -20,6 +20,7 @@ public class MainGUI
         EscolherClasse classeEscolhida = tela.mostrarMenuInicial(listaDeClasses);
 
         tela.setPlayer(classeEscolhida);
+        tela.setSprites();
         tela.setClasseFoiEscolhida(true);
         InventarioClasse objInventario = new InventarioClasse();
         tela.setInventario(objInventario);
