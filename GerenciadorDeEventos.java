@@ -30,60 +30,78 @@ public class GerenciadorDeEventos
         return eventoEscolhido;
     }
 
-    Combate objCombate = new Combate();
+    private Combate objCombate = new Combate();
     public Combate getObjCombate()
     { return objCombate;}
+
+    private boolean eventoEstáOcorrendo = false;
+    public boolean getEventoEstáOcorrendo()
+    { return eventoEstáOcorrendo; }
+    public void setEventoEstáOcorrendo(boolean bool)
+    { this.eventoEstáOcorrendo = bool; }
+
+    private int turnosDePaz = 0;
+    private int numInicialDePaz = 8;
+    public void iniciarTurnosDePaz()
+    { this.turnosDePaz = numInicialDePaz; }
+    public void passarTurnosDePaz()
+    {
+        if (turnosDePaz > 0)
+        {
+            turnosDePaz --;
+        }
+    }
 
     public void aplicarEventoAmbiente(Personagem player, Ambiente local, String eventoEscolhido)
     {
         String[] eventos = local.getClimasEventos();
-
+        System.out.println(turnosDePaz);
         if (local.getNome().equals("Floresta"))
         { // "Lobo", "Urso", "Explorador perdido", "Chuva intensa"
-            if (eventoEscolhido.equals(eventos[0]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[1]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[2]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[3]));
-                { objEventoClimatico.executar(player, eventoEscolhido); }
+            if (eventoEscolhido.equals(eventos[0]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[1]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[2]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[3]))
+                { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
         else if (local.getNome().equals("Montanha")) 
         { // "Nevasca Repentina", "Deslizamento", "Descoberta de Caverna"
-            if (eventoEscolhido.equals(eventos[0]));
-                { objEventoClimatico.executar(player, eventoEscolhido); }
-            if (eventoEscolhido.equals(eventos[1]));
-                { objEventoClimatico.executar(player, eventoEscolhido); }
-            if (eventoEscolhido.equals(eventos[2]));
+            if (eventoEscolhido.equals(eventos[0]))
+                { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[1]))
+                { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[2]))
                 {}
         }
         else if (local.getNome().equals("Caverna")) 
         { //"Criatura", "Tunel", "Desmoronamento"
-            if (eventoEscolhido.equals(eventos[0]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[1]));
+            if (eventoEscolhido.equals(eventos[0]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[1]))
                 {}
-            if (eventoEscolhido.equals(eventos[2]));
-                { objEventoClimatico.executar(player, eventoEscolhido); }
+            if (eventoEscolhido.equals(eventos[2]))
+                { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
         else if (local.getNome().equals("Corpo d'água")) 
         { // "Jacaré", "Piranha", "Afogamento"
-            if (eventoEscolhido.equals(eventos[0]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[1]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[2]));
-                { objEventoDoencaFerimento.executar(player, eventoEscolhido); }
+            if (eventoEscolhido.equals(eventos[0]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[1]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[2]))
+                { objEventoDoencaFerimento.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
         else if (local.getNome().equals("Ruínas Abandonadas"))
         { // "Sobrevivente hostil", "Passagem secreta", "Armadilha"
-            if (eventoEscolhido.equals(eventos[0]));
-                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
-            if (eventoEscolhido.equals(eventos[1]));
+            if (eventoEscolhido.equals(eventos[0]) && turnosDePaz == 0)
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
+            if (eventoEscolhido.equals(eventos[1]))
                 {}
-            if (eventoEscolhido.equals(eventos[2]));
-                { objEventoDoencaFerimento.executar(player, eventoEscolhido); }
+            if (eventoEscolhido.equals(eventos[2]))
+                { objEventoDoencaFerimento.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
         else if (local.getNome().equals("Planície")) //Nada
         {

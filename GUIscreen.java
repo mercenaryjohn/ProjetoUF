@@ -51,12 +51,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private GerenciadorDeEventos objGerenciadorDeEventos = new GerenciadorDeEventos();
     private Combate objCombate = objGerenciadorDeEventos.getObjCombate();
     private boolean playerEmCombate = false;
+    private int acaoEscolhidaCombate = 0;
 
     private String últimoItemEncontrado = "";
                 //Tem que começar em 1, já que só aparece a partir do 2° item
     private int numeroDeItensEcontradosIguais = 1;
     private String eventoAtual = "";
-    private boolean eventoEstáOcorrendo = false;
     private int turnoAtual = 0;
     private int diasSePassaram = 0;
 
@@ -136,7 +136,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-    public void escolherItemInventárioIngameUI(int indexEscolhido) 
+    public void escolherItemInventárioIngameUI(int indexEscolhido, String modo) 
     {
         List<String> chavesExibidas = new ArrayList<>(cópiaDeMapaContadorLista.keySet());
         Map<String, List<Item>> mapaItensPorChave = new LinkedHashMap<>();
@@ -161,14 +161,13 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
             List<Item> itensReais = mapaItensPorChave.get(chaveEscolhida);
 
-            if (itensReais != null && !itensReais.isEmpty()) 
+            if (itensReais != null && !itensReais.isEmpty() && modo.equals("enter"))
             {
                 Item itemEscolhido = itensReais.get(0); // Sempre o primeiro da lista
 
                 objInventario.usarItem(player, itemEscolhido);
                 objInventario.removerItem(player, itemEscolhido);
             
-
                     if (vidaMáxima < player.getVida()) // Para não passar do máximo
                     { player.setVida(vidaMáxima); }
 
@@ -183,6 +182,12 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
                     if (fomeMáxima < player.getFome())
                     { player.setFome(fomeMáxima); }
+            }
+            if (itensReais != null && !itensReais.isEmpty() && modo.equals("r"))
+            {
+                Item itemEscolhido = itensReais.get(0); // Sempre o primeiro da lista
+
+                objInventario.removerItem(player, itemEscolhido);
             }
         }
     }
@@ -371,7 +376,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     { g.drawImage(cavernaTeto, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
             }
         }
-
+        //####################################################################################################
+        //####################################################################################################
         if (inventárioAberto) // Mostrar inventário
         {
             Map<String, Integer> mapaContadorLista = new HashMap<>();
@@ -423,14 +429,18 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 index++;
                 i++;
             }
-            g.drawString("Selecionado [ " + itemSelecionadoInventário +" ] " 
-            + "-aperte (enter) para usar", 
-            getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
+            g.drawString("Selecionado [ " + itemSelecionadoInventário +" ] ",
+             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
+
+            g.drawString("Aperte (enter) para usar/equipar | (r) para remover",
+             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + 17 + i * 20);
+
             g.drawString("________________________________________", getWidth() / 2 + 30,
-             (getHeight() / 2) - alturaPosição2 + 10 + i * 20);
+             (getHeight() / 2) - alturaPosição2 + 22 + i * 20);
         }
-        
-        if (menuAberto) //Na frente do mapa
+        //####################################################################################################
+        //####################################################################################################
+        if (menuAberto)
         {
             g.setColor(Color.DARK_GRAY);
             g.fillRect(getWidth() / 2 + 10, (getHeight() / 2) - 90, 420, 140); //Fundo do fundo
@@ -446,7 +456,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 g.drawString(listaDeOpcoes[i], getWidth() / 2 + 30, (getHeight() / 2) - 50 + i * 20);
             }
         }
-
+        //####################################################################################################
+        //####################################################################################################
         if (statsAberto)
         {
             String ambienteAtualNome = objGerenciadorDeAmbientes.pegarNomeAmbiente(mapa[playerY][playerX]);
@@ -542,7 +553,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 g.drawString(statsArray[i], deslocaX - 210, 20 + deslocaY + i * 20);
             }
         }
-
+        //####################################################################################################
+        //####################################################################################################
         if (playerEmCombate)
         {
             g.setColor(Color.DARK_GRAY);
@@ -550,12 +562,37 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             g.setColor(Color.BLACK);
             g.fillRect(deslocaX + 240, deslocaY + 20, 580, 580); //Fundo
 
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            if (objCombate.getNomeInimigo() != null)
+                { 
+                    g.drawString(objCombate.getNomeInimigo(), deslocaX + 245, deslocaY + 40); 
+                    g.drawString("Vida: " + objCombate.getVidaInimigo() + "/" + objCombate.getVidaMáximaInimigo()
+                    , deslocaX + 245, deslocaY + 60);
+                }
+
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 16));
-            if (objCombate.getNomeInimigo() != null)
-                { g.drawString(objCombate.getNomeInimigo(), deslocaX + 240, deslocaY + 30); }
-        }
+            if (objCombate.getUltimaAcaoDoInimigo() != null)
+                { g.drawString("Último turno: " + objCombate.getUltimaAcaoDoInimigo(), deslocaX + 245, deslocaY + 90); }
 
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            if(acaoEscolhidaCombate == 0)
+                { 
+                    g.drawString("ATACAR" + "<", deslocaX + 245, deslocaY + 400);
+                    g.setColor(Color.GRAY);
+                    g.drawString("FUGIR", deslocaX + 245, deslocaY + 420);
+                }
+            if(acaoEscolhidaCombate == 1)
+                { 
+                    g.drawString("FUGIR" + "<", deslocaX + 245, deslocaY + 420);
+                    g.setColor(Color.GRAY);
+                    g.drawString("ATACAR", deslocaX + 245, deslocaY + 400);
+                }
+            
+        }
+        //####################################################################################################
+        //####################################################################################################
         if (playerEstáVivo == false)
         {
             g.setColor(Color.BLACK);
@@ -701,7 +738,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         break;
                 }
             }
-            if (inventárioAberto) //Usando Inventário
+            if (inventárioAberto) //Usando o INVENTÁRIO
             {
                 switch (k.getKeyCode()) 
                 {
@@ -719,34 +756,56 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     case KeyEvent.VK_ENTER:
                         if (player.getInventário().size() > 0)
                         {
-                            escolherItemInventárioIngameUI(itemSelecionadoInventário);
+                            String modoDeUso = "enter";
+                            escolherItemInventárioIngameUI(itemSelecionadoInventário, modoDeUso);
+                            passagemDeTurnos();
+                            itemSelecionadoInventário = 0;
+                        }
+                        break;
+                    case KeyEvent.VK_R:
+                        if (player.getInventário().size() > 0)
+                        {
+                            String modoDeUso = "r";
+                            escolherItemInventárioIngameUI(itemSelecionadoInventário, modoDeUso);
                             passagemDeTurnos();
                             itemSelecionadoInventário = 0;
                         }
                         break;
                 }
             }
-            if (playerEmCombate) ///// COMBATE /////
+            if (playerEmCombate) //////////// COMBATE ////////////
             {
                 switch (k.getKeyCode()) 
                 {
                     case KeyEvent.VK_E:
-                        objCombate.setEmCombate(false); //TODO
+                        objCombate.turnoDoInimigo(player);
+                        escolherAcaoCombate(acaoEscolhidaCombate);
+                        acaoEscolhidaCombate = 0;
+                        if (objCombate.getVidaInimigo() <= 0 || !objCombate.getEmCombate())
+                            { 
+                                objCombate.setEmCombate(false); 
+                                objGerenciadorDeEventos.setEventoEstáOcorrendo(false);
+                                eventoAtual = "";
+                                objGerenciadorDeEventos.iniciarTurnosDePaz();
+                            }
                         passagemDeTurnos();
                         break;
                     case KeyEvent.VK_W:
-                        itemSelecionadoInventário = itemSelecionadoInventário + 1;
+                        acaoEscolhidaCombate = acaoEscolhidaCombate - 1;
                         break;
                     case KeyEvent.VK_S:
-                        itemSelecionadoInventário = itemSelecionadoInventário - 1;
+                        acaoEscolhidaCombate = acaoEscolhidaCombate + 1;
                         if (itemSelecionadoInventário < 1)
                         { itemSelecionadoInventário = 0;}
                         break;
                 }
+                if (acaoEscolhidaCombate < 1)
+                    { acaoEscolhidaCombate = 0;}
+                if (acaoEscolhidaCombate > 1)
+                    { acaoEscolhidaCombate = 1;}
             }
             playerEmCombate = objCombate.getEmCombate(); //Se for EventoCriatura será true
-            System.out.println(objCombate.getEmCombate());
-            System.out.println(eventoAtual);
+
             // Sempre checar isso, evita inventário não estar cheio mas com mensagem de cheio
             if ( player.getInventário().size() < player.getCapacidadeInventário()
              && últimoItemEncontrado.equals("inventário cheio " + "("+ player.getCapacidadeInventário() +")"))
@@ -763,6 +822,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     public void passagemDeTurnos()
     {
         turnoAtual++;
+        objGerenciadorDeEventos.passarTurnosDePaz();
         //Diminui fome e Sede com o passar dos turnos
         if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto)
         {
@@ -800,34 +860,47 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         int playerY = (mapaAltura / 2) - (int)localização[1]; // Em Y, tem que ser subtração
         String ambienteAtualNome = objGerenciadorDeAmbientes.pegarNomeAmbiente(mapa[playerY][playerX]);
         Ambiente ambienteAtualObj = objGerenciadorDeAmbientes.pegarObjAmbiente(ambienteAtualNome);
-        
-        if (eventoEstáOcorrendo == true)
+
+        if (objGerenciadorDeEventos.getEventoEstáOcorrendo()) //true
         {
             //Chance de remover o evento
-            eventoEstáOcorrendo = objGerenciadorDeEventos.removerEvento(eventoAtual, ambienteAtualObj);
-            if (eventoEstáOcorrendo == false)
+            boolean eventoEstáOcorrendo = objGerenciadorDeEventos.removerEvento(eventoAtual, ambienteAtualObj);
+            objGerenciadorDeEventos.setEventoEstáOcorrendo(eventoEstáOcorrendo);
+            if (!objGerenciadorDeEventos.getEventoEstáOcorrendo()) // false
             { 
                 eventoAtual = "";
             }
         }
         if (ambienteAtualObj != null) 
         {
-            if (eventoEstáOcorrendo == false)
+            if (!objGerenciadorDeEventos.getEventoEstáOcorrendo()) // false
             {
                 String eventoSorteado = objGerenciadorDeEventos.sortearEvento(ambienteAtualObj);
                 if (!eventoSorteado.equals(""))
                 {
                     eventoAtual = eventoSorteado;
                     objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoSorteado);
-                    eventoEstáOcorrendo = true;
-                    System.out.println(objCombate.getEmCombate() + "1"); //TODO
-                    System.out.println(eventoAtual + "1");
+                    if (!objGerenciadorDeEventos.getEventoEstáOcorrendo())
+                    { eventoAtual = ""; }
                 }
             }
-            else if (eventoEstáOcorrendo == true) //Se já está ocorrendo, executar
+            else if (objGerenciadorDeEventos.getEventoEstáOcorrendo()) //Se já está ocorrendo, executar
                 { objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual); }
         }
         passagemDeTurnos();
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    public void escolherAcaoCombate(int acaoEscolhidaCombate)
+    {
+        if (acaoEscolhidaCombate == 0)
+        { 
+            objCombate.atacar(player);
+        }
+        if (acaoEscolhidaCombate == 1)
+        { 
+            objCombate.fugir();
+        }
     }
 
     public void keyReleased(KeyEvent k) 

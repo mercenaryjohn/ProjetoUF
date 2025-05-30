@@ -6,6 +6,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(50);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(6);
             objCombate.setEmCombate(true);
         }
@@ -13,6 +14,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(100);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(20);
             objCombate.setEmCombate(true);
         }
@@ -20,6 +22,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(80);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(5);
             objCombate.setEmCombate(true);
         }
@@ -27,6 +30,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(50);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(6);
             objCombate.setEmCombate(true);
         }
@@ -34,6 +38,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(100);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(15);
             objCombate.setEmCombate(true);
         }
@@ -41,6 +46,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(30);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(5);
             objCombate.setEmCombate(true);
         }
@@ -48,6 +54,7 @@ public class EventoCriatura extends Evento
         {
             objCombate.setNomeInimigo(eventoEscolhido);
             objCombate.setVidaInimigo(70);
+            objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(6);
             objCombate.setEmCombate(true);
         }
