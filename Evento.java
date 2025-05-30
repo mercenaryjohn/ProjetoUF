@@ -1,5 +1,5 @@
 
-public abstract class Evento 
+public class Evento 
 {
         /* 
         Nome: Identificação do evento.
@@ -12,5 +12,8 @@ public abstract class Evento
             determinados ambientes).
         */
         
-    public abstract void executar(Personagem jogador, String eventoEscolhido, String[] eventos);
+    public void executar(Personagem player, String eventoEscolhido) //Esqueleto
+    {
+
+    }
 }

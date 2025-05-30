@@ -30,6 +30,10 @@ public class GerenciadorDeEventos
         return eventoEscolhido;
     }
 
+    Combate objCombate = new Combate();
+    public Combate getObjCombate()
+    { return objCombate;}
+
     public void aplicarEventoAmbiente(Personagem player, Ambiente local, String eventoEscolhido)
     {
         String[] eventos = local.getClimasEventos();
@@ -37,62 +41,57 @@ public class GerenciadorDeEventos
         if (local.getNome().equals("Floresta"))
         { // "Lobo", "Urso", "Explorador perdido", "Chuva intensa"
             if (eventoEscolhido.equals(eventos[0]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[1]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[2]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[3]));
-            { objEventoClimatico.executar(player, eventoEscolhido, eventos); }
+                { objEventoClimatico.executar(player, eventoEscolhido); }
         }
         else if (local.getNome().equals("Montanha")) 
         { // "Nevasca Repentina", "Deslizamento", "Descoberta de Caverna"
             if (eventoEscolhido.equals(eventos[0]));
-            { objEventoClimatico.executar(player, eventoEscolhido, eventos); }
+                { objEventoClimatico.executar(player, eventoEscolhido); }
             if (eventoEscolhido.equals(eventos[1]));
-            { objEventoClimatico.executar(player, eventoEscolhido, eventos); }
+                { objEventoClimatico.executar(player, eventoEscolhido); }
             if (eventoEscolhido.equals(eventos[2]));
-            {}
+                {}
         }
         else if (local.getNome().equals("Caverna")) 
         { //"Criatura", "Tunel", "Desmoronamento"
             if (eventoEscolhido.equals(eventos[0]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[1]));
-            {}
+                {}
             if (eventoEscolhido.equals(eventos[2]));
-            { objEventoClimatico.executar(player, eventoEscolhido, eventos); }
+                { objEventoClimatico.executar(player, eventoEscolhido); }
         }
         else if (local.getNome().equals("Corpo d'água")) 
         { // "Jacaré", "Piranha", "Afogamento"
             if (eventoEscolhido.equals(eventos[0]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[1]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[2]));
-            { objEventoDoencaFerimento.executar(player, eventoEscolhido, eventos); }
+                { objEventoDoencaFerimento.executar(player, eventoEscolhido); }
         }
         else if (local.getNome().equals("Ruínas Abandonadas"))
         { // "Sobrevivente hostil", "Passagem secreta", "Armadilha"
             if (eventoEscolhido.equals(eventos[0]));
-            {}
+                { objEventoCriatura.executar(player, eventoEscolhido, objCombate); }
             if (eventoEscolhido.equals(eventos[1]));
-            {}
+                {}
             if (eventoEscolhido.equals(eventos[2]));
-            { objEventoDoencaFerimento.executar(player, eventoEscolhido, eventos); }
+                { objEventoDoencaFerimento.executar(player, eventoEscolhido); }
         }
-        else if (local.getNome().equals("Planície")) 
+        else if (local.getNome().equals("Planície")) //Nada
         {
 
         }
     }
 
-    public void eventoVasculhar(Personagem player)
-    {
-        
-    }
-
-    public boolean removerEvento(String evento, Ambiente local) //TODO: talvez melhorar?
+    public boolean removerEvento(String evento, Ambiente local) //TODO: talvez melhorar
     {
         if (local == null)
         {
@@ -102,7 +101,7 @@ public class GerenciadorDeEventos
         float randomFloat; 
         for (int i = 0; i < probabilidades.length; i++)
         {
-            randomFloat= objRandom.nextFloat();
+            randomFloat = objRandom.nextFloat();
             if (probabilidades[i] > randomFloat)
             {
                 return false;

@@ -1,5 +1,4 @@
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -32,7 +31,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private boolean menuAberto = false;
     private boolean inventárioAberto = false;
     private boolean statsAberto = true;
-    private boolean playerEmCombate = false;
     private EscolherClasse player;
     private InventarioClasse objInventario;
     private int itemSelecionadoInventário = 0;
@@ -51,6 +49,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
     private GerenciadorDeAmbientes objGerenciadorDeAmbientes = new GerenciadorDeAmbientes();
     private GerenciadorDeEventos objGerenciadorDeEventos = new GerenciadorDeEventos();
+    private Combate objCombate = objGerenciadorDeEventos.getObjCombate();
+    private boolean playerEmCombate = false;
 
     private String últimoItemEncontrado = "";
                 //Tem que começar em 1, já que só aparece a partir do 2° item
@@ -134,7 +134,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             return null;
         }
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     public void escolherItemInventárioIngameUI(int indexEscolhido) 
     {
         List<String> chavesExibidas = new ArrayList<>(cópiaDeMapaContadorLista.keySet());
@@ -185,8 +186,18 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             }
         }
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     private BufferedImage playerSprite;
+
+    private BufferedImage cavernaSprite;
+        private BufferedImage cavernaTeto;
+    private BufferedImage florestaSprite;
+        private BufferedImage florestaFolhas;
+    private BufferedImage lagoRioSprite;
+    private BufferedImage montanhaSprite;
+    private BufferedImage ruinasSprite;
+    private BufferedImage planicieSprite;
     public void setSprites() 
     {
         try 
@@ -199,7 +210,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 { playerSprite = ImageIO.read(getClass().getResource("Sprites/veterinario.png")); }
             else if (player.getNome().equals("Prisioneiro"))
                 { playerSprite = ImageIO.read(getClass().getResource("Sprites/prisioneiro.png")); }
-            //System.out.println("Teste Sprite");
+
+            cavernaSprite = ImageIO.read(getClass().getResource("Sprites/caverna.png"));
+                cavernaTeto = ImageIO.read(getClass().getResource("Sprites/cavernaTeto.png"));
+            florestaSprite = ImageIO.read(getClass().getResource("Sprites/floresta.png"));
+                florestaFolhas = ImageIO.read(getClass().getResource("Sprites/florestaFolhas.png"));
+            lagoRioSprite = ImageIO.read(getClass().getResource("Sprites/lagoRio.png"));
+            montanhaSprite = ImageIO.read(getClass().getResource("Sprites/montanha.png"));
+            ruinasSprite = ImageIO.read(getClass().getResource("Sprites/ruinas.png"));
+            planicieSprite = ImageIO.read(getClass().getResource("Sprites/planicie.png"));
+            
             if(playerSprite==null)
                System.out.println("Imagem é null"); 
         } 
@@ -208,7 +228,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             System.err.println("Não conseguiu carregar o sprite: " + e.getMessage());
         }
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void paintComponent(Graphics g)
     {
@@ -270,26 +291,41 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         {
             for (int x = inicioX; x < fimX; x++) 
             {
+                int screenX = deslocaX + (x - inicioX) * tileTamanho;
+                int screenY = deslocaY + (y - inicioY) * tileTamanho;
                 if (true)
                 {
                     if (mapa[y][x] == 'F')
-                        { g.setColor(florestaVerde); }
+                        { g.setColor(florestaVerde);
+                            if (florestaSprite != null) 
+                        g.drawImage(florestaSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else if (mapa[y][x] == 'M') 
-                        { g.setColor(montanhaBranco); }
+                        { g.setColor(montanhaBranco); 
+                            if (montanhaSprite != null)
+                        g.drawImage(montanhaSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else if (mapa[y][x] == 'C') 
-                        { g.setColor(cavernaCinza); }
+                        { g.setColor(cavernaCinza); 
+                            if (cavernaSprite != null)
+                        g.drawImage(cavernaSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else if (mapa[y][x] == '~') 
-                        { g.setColor(aguaAzul); }
+                        { g.setColor(aguaAzul);
+                            if (lagoRioSprite != null)
+                        g.drawImage(lagoRioSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else if (mapa[y][x] == 'R') 
-                        { g.setColor(ruinaRoxo); }
+                        { g.setColor(ruinaRoxo); 
+                            if (ruinasSprite != null)
+                        g.drawImage(ruinasSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else if (mapa[y][x] == '_') 
-                        { g.setColor(planicieCor); }
+                        { g.setColor(planicieCor);
+                            if (planicieSprite != null)
+                        g.drawImage(planicieSprite, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
                     else { g.setColor(Color.RED); } // Por garantia
-                    int screenX = deslocaX + (x - inicioX) * tileTamanho;
-                    int screenY = deslocaY + (y - inicioY) * tileTamanho;
-                    g.fillRect(screenX + 220, screenY, tileTamanho, tileTamanho);
+
+                    if (cavernaSprite == null || florestaSprite == null || lagoRioSprite == null || 
+                    montanhaSprite == null || ruinasSprite == null || planicieSprite == null)
+                    { g.fillRect(screenX + 220, screenY, tileTamanho, tileTamanho); }
                 }
-                if(y == playerY && x == playerX)
+                if(y == playerY && x == playerX) //Fallback para playerSprite
                 {
                     if (mapa[y][x] == 'F')
                         { g.setColor(jogadorCorEscura); }
@@ -305,22 +341,36 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         { g.setColor(jogadorCorEscura); }
                     else
                         { g.setColor(jogadorCorEscura);}
-                    int screenX = deslocaX + (x - inicioX) * tileTamanho;
-                    int screenY = deslocaY + (y - inicioY) * tileTamanho;
                     screenXPLAYER = screenX;
                     screenYPLAYER = screenY;
 
-                    if (playerSprite == null) 
+                    if (playerSprite == null)
                     {
                         g.fillOval(screenX + 220, screenY, tileTamanho, tileTamanho);
                     }
                 }
             }
         }
-
         // Mostra o sprite do player por cima do mapa
-        g.drawImage(playerSprite, screenXPLAYER + 220 - (playerTamanho / 4), screenYPLAYER - (playerTamanho / 2) - 2,
-        playerTamanho, playerTamanho, null);
+        if(playerSprite != null)
+        {
+            g.drawImage(playerSprite, screenXPLAYER + 220 - (playerTamanho / 4),
+             screenYPLAYER - (playerTamanho / 2) - 2,
+             playerTamanho, playerTamanho, null);
+        }
+        // TETOS, aparecem por cima do player
+        for (int y = inicioY; y < fimY; y++)
+        {
+            for (int x = inicioX; x < fimX; x++) 
+            {
+                int screenX = deslocaX + (x - inicioX) * tileTamanho;
+                int screenY = deslocaY + (y - inicioY) * tileTamanho;
+                if (mapa[y][x] == 'F' && florestaFolhas != null)
+                    { g.drawImage(florestaFolhas, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
+                if (mapa[y][x] == 'C' && florestaFolhas != null)
+                    { g.drawImage(cavernaTeto, screenX + 220, screenY, tileTamanho, tileTamanho, null); }
+            }
+        }
 
         if (inventárioAberto) // Mostrar inventário
         {
@@ -499,6 +549,11 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             g.fillRect(deslocaX + 230, deslocaY + 10, 600, 600); //Fundo
             g.setColor(Color.BLACK);
             g.fillRect(deslocaX + 240, deslocaY + 20, 580, 580); //Fundo
+
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            if (objCombate.getNomeInimigo() != null)
+                { g.drawString(objCombate.getNomeInimigo(), deslocaX + 240, deslocaY + 30); }
         }
 
         if (playerEstáVivo == false)
@@ -515,7 +570,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             else { g.drawString("GAME OVER...", deslocaX + 260, getHeight() / 2 + 30); }
         }
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     public void keyPressed(KeyEvent k) //TODO
     {
         long tempoAtual = System.currentTimeMillis();
@@ -670,12 +726,28 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         break;
                 }
             }
-            if (playerEmCombate)
+            if (playerEmCombate) ///// COMBATE /////
             {
-
+                switch (k.getKeyCode()) 
+                {
+                    case KeyEvent.VK_E:
+                        objCombate.setEmCombate(false); //TODO
+                        passagemDeTurnos();
+                        break;
+                    case KeyEvent.VK_W:
+                        itemSelecionadoInventário = itemSelecionadoInventário + 1;
+                        break;
+                    case KeyEvent.VK_S:
+                        itemSelecionadoInventário = itemSelecionadoInventário - 1;
+                        if (itemSelecionadoInventário < 1)
+                        { itemSelecionadoInventário = 0;}
+                        break;
+                }
             }
-
-            // Sempre checar isso, evita inventário não cheio com mensagem de cheio
+            playerEmCombate = objCombate.getEmCombate(); //Se for EventoCriatura será true
+            System.out.println(objCombate.getEmCombate());
+            System.out.println(eventoAtual);
+            // Sempre checar isso, evita inventário não estar cheio mas com mensagem de cheio
             if ( player.getInventário().size() < player.getCapacidadeInventário()
              && últimoItemEncontrado.equals("inventário cheio " + "("+ player.getCapacidadeInventário() +")"))
             { últimoItemEncontrado = ""; }
@@ -686,7 +758,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         }
         repaint();
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     public void passagemDeTurnos()
     {
         turnoAtual++;
@@ -717,7 +790,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             { objInventario.removerItem(player, item); }
         } 
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     // if (playerSeMovimentou == true && !menuAberto && !inventárioAberto) // EVENTOS
     public void ativarChanceEvento()
     {
@@ -729,29 +803,30 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         
         if (eventoEstáOcorrendo == true)
         {
+            //Chance de remover o evento
             eventoEstáOcorrendo = objGerenciadorDeEventos.removerEvento(eventoAtual, ambienteAtualObj);
             if (eventoEstáOcorrendo == false)
-            {
+            { 
                 eventoAtual = "";
             }
         }
-            if (ambienteAtualObj != null)
+        if (ambienteAtualObj != null) 
+        {
+            if (eventoEstáOcorrendo == false)
             {
-                if (eventoEstáOcorrendo == false)
+                String eventoSorteado = objGerenciadorDeEventos.sortearEvento(ambienteAtualObj);
+                if (!eventoSorteado.equals(""))
                 {
-                    String eventoSorteado = objGerenciadorDeEventos.sortearEvento(ambienteAtualObj);
-                    if (!eventoSorteado.equals(""))
-                    {
-                        eventoAtual = eventoSorteado;
-                        objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoSorteado);
-                        eventoEstáOcorrendo = true;
-                    }
-                }
-                if (eventoEstáOcorrendo == true)
-                {
-                    objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual);
+                    eventoAtual = eventoSorteado;
+                    objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoSorteado);
+                    eventoEstáOcorrendo = true;
+                    System.out.println(objCombate.getEmCombate() + "1"); //TODO
+                    System.out.println(eventoAtual + "1");
                 }
             }
+            else if (eventoEstáOcorrendo == true) //Se já está ocorrendo, executar
+                { objGerenciadorDeEventos.aplicarEventoAmbiente(player, ambienteAtualObj, eventoAtual); }
+        }
         passagemDeTurnos();
     }
 

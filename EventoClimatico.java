@@ -1,6 +1,6 @@
 public class EventoClimatico extends Evento
 {
-    public void executar(Personagem player, String eventoEscolhido, String[] eventos)
+    public void executar(Personagem player, String eventoEscolhido)
     {
         if(eventoEscolhido.equals("Chuva intensa"))
         {
