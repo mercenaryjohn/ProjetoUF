@@ -15,10 +15,8 @@ public class Agua extends Item
     public int getHidratação() 
     { return hidratação; }
 
-    //InventarioClasse objInventario = new InventarioClasse();
     public void usar(EscolherClasse classeEscolhida)
     {
-        //System.out.println(this.nome); //DEBUG this.nome funciona para usar o nome
         classeEscolhida.setSede(classeEscolhida.getSede() + hidratação);
     }
 }

@@ -80,6 +80,7 @@ public class GerenciadorDeAmbientes
 
     private Agua objAgua = new Agua();
     private Alimento objAlimento = new Alimento(0, 0);
+    private Remedio objRemédio = new Remedio();
     private Item objItemGenérico = new Item(); //Para itens não específicos
 
     public Item vasculharAmbiente (Ambiente localAtual)
@@ -139,6 +140,12 @@ public class GerenciadorDeAmbientes
                 ((Alimento) recursoEscolhidoItem).setAlimentoStats(recursoEscolhidoNome);
                 return recursoEscolhidoItem;
             }
+        }
+
+        if (recursoEscolhidoNome.equals("Remédio"))
+        {
+            recursoEscolhidoItem = objRemédio;
+            return recursoEscolhidoItem;
         }
 
         boolean chance5050 = objRandom.nextBoolean();

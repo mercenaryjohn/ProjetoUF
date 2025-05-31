@@ -55,6 +55,12 @@ public class Item
             obj.setPoderDeDano(((Arma)item).getPoderDeDano());
             return obj;
         }
+        else if (item instanceof Remedio) 
+        {
+            Remedio obj = new Remedio();
+            obj.setNome(item.getNome());
+            return obj;
+        }
         else
         {
             Item obj = new Item();

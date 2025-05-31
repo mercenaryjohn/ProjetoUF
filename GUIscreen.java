@@ -786,7 +786,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 objCombate.setEmCombate(false); 
                                 objGerenciadorDeEventos.setEventoEstáOcorrendo(false);
                                 eventoAtual = "";
-                                objGerenciadorDeEventos.iniciarTurnosDePaz();
+                                objGerenciadorDeEventos.iniciarTurnosDePazApósCombate();
                             }
                         passagemDeTurnos();
                         break;
@@ -822,7 +822,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     public void passagemDeTurnos()
     {
         turnoAtual++;
-        objGerenciadorDeEventos.passarTurnosDePaz();
+        objGerenciadorDeEventos.passarTurnosDePazApósCombate();
         //Diminui fome e Sede com o passar dos turnos
         if (turnoAtual % 4 == 0 && !menuAberto && !inventárioAberto)
         {
