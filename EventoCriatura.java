@@ -26,7 +26,7 @@ public class EventoCriatura extends Evento
             objCombate.setVidaInimigo(80);
             objCombate.setVidaMáximaInimigo(objCombate.getVidaInimigo());
             objCombate.setDanoInimigo(5);
-            objCombate.setDanoSanidade(3);
+            objCombate.setDanoSanidade(6);
             objCombate.setEmCombate(true);
         }
         else if(eventoEscolhido.equals("Criatura"))
