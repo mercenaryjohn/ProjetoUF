@@ -18,7 +18,6 @@ public class MainGUI
         String[] listaDeClasses = {"Escoteiro","Engenheiro","Veterinário","Prisioneiro"};
 
         EscolherClasse classeEscolhida = tela.mostrarMenuInicial(listaDeClasses);
-
         tela.setPlayer(classeEscolhida);
         tela.setSprites();
         tela.setClasseFoiEscolhida(true);

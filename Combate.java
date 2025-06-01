@@ -8,16 +8,19 @@ public class Combate
     private int danoInimigo;
     private int danoSanidade;
     private boolean emCombate = false; //Iniciar com false, importante
+    private int numeroDeInimigosDerrotados = 0;
+    private int condiçãoDeVitóriaInimgosDerrotados = 60;
 
     private int poderDeAtaqueInicial = 2;
-     private int poderDeAtaqueAdicional = 0;
+     private int poderDeAtaqueAdicionalArma = 0;
     private int vidaMáximaInimigo;
     String ultimaAcaoDoInimigo;
 
     public void atacar(EscolherClasse player)
     {
         int randomIntD20 = objRandom.nextInt(1,20);
-        int poderDeAtaque = (poderDeAtaqueInicial + poderDeAtaqueAdicional) * randomIntD20;
+        int poderDeAtaque = (poderDeAtaqueInicial * randomIntD20) + poderDeAtaqueAdicionalArma;
+        poderDeAtaqueAdicionalArma = 0; //Se arma foi usada, volta a zero
 
         vidaInimigo = vidaInimigo - poderDeAtaque;
     }
@@ -46,6 +49,9 @@ public class Combate
         else{ ultimaAcaoDoInimigo = "(não fez nada)"; }
     }
 
+    public void inimigoFoiDerrotado()
+    { numeroDeInimigosDerrotados++; }
+
     public String getNomeInimigo()
     { return nomeInimigo; }
     public int getVidaInimigo()
@@ -58,6 +64,10 @@ public class Combate
     { return ultimaAcaoDoInimigo; }
     public int getVidaMáximaInimigo()
     { return vidaMáximaInimigo; }
+    public int getNumeroDeInimigosDerrotados()
+    { return numeroDeInimigosDerrotados;}
+    public int getCondiçãoDeVitóriaInimgosDerrotados()
+    { return condiçãoDeVitóriaInimgosDerrotados;}
 
     public void setNomeInimigo(String nomeInimigo)
     { this.nomeInimigo = nomeInimigo; }
@@ -69,6 +79,8 @@ public class Combate
     { this.danoSanidade = danoSanidade; }
     public void setEmCombate(boolean emCombate)
     { this.emCombate = emCombate; }
+    public void setPoderDeAtaqueAdicionalArma(int poderDeAtaqueAdicionalArma)
+    { this.poderDeAtaqueAdicionalArma = poderDeAtaqueAdicionalArma; }
     public void setUltimaAcaoDoInimigo(String ultimaAcaoDoInimigo)
     { this.ultimaAcaoDoInimigo = ultimaAcaoDoInimigo; }
     public void setVidaMáximaInimigo(int vidaMáximaInimigo)

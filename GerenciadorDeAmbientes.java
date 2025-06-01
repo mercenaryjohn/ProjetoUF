@@ -81,6 +81,7 @@ public class GerenciadorDeAmbientes
     private Agua objAgua = new Agua();
     private Alimento objAlimento = new Alimento(0, 0);
     private Remedio objRemédio = new Remedio();
+    private Arma objArma = new Arma();
     private Item objItemGenérico = new Item(); //Para itens não específicos
 
     public Item vasculharAmbiente (Ambiente localAtual)
@@ -145,6 +146,14 @@ public class GerenciadorDeAmbientes
         if (recursoEscolhidoNome.equals("Remédio"))
         {
             recursoEscolhidoItem = objRemédio;
+            return recursoEscolhidoItem;
+        }
+
+        if (recursoEscolhidoNome.equals("Arma antiga"))
+        {
+            recursoEscolhidoItem = objArma;
+            recursoEscolhidoItem.setNome("Arma antiga");
+            recursoEscolhidoItem.setDurabilidade(12);
             return recursoEscolhidoItem;
         }
 

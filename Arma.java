@@ -6,7 +6,8 @@ public class Arma extends Item
     {
         setNome("Arma");
         setPeso(1);
-        setDurabilidade(50);
+        setDurabilidade(10);
+        this.poderDeDano = 20;
     }
 
     public void setPoderDeDano(int danoPower)
@@ -16,6 +17,6 @@ public class Arma extends Item
 
     public void usar()
     {
-
+        setDurabilidade(getDurabilidade() - 1);
     }
 }

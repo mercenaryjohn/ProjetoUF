@@ -12,6 +12,10 @@ public class Remedio extends Item
 
     public void usar(EscolherClasse classeEscolhida)
     {
-        classeEscolhida.setVida(classeEscolhida.getVida() + cura);
+        if (classeEscolhida.getNome().equals("veterinário"))
+            { classeEscolhida.setVida(classeEscolhida.getVida() + cura + 40); }
+        else 
+            { classeEscolhida.setVida(classeEscolhida.getVida() + cura); }
+
     }
 }

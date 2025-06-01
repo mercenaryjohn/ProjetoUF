@@ -28,6 +28,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 {
     private boolean classeFoiEscolhida = false;
     private boolean playerEstáVivo = true;
+    private boolean vitóriaYouWin = false;
     private boolean menuAberto = false;
     private boolean inventárioAberto = false;
     private boolean statsAberto = true;
@@ -52,6 +53,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private Combate objCombate = objGerenciadorDeEventos.getObjCombate();
     private boolean playerEmCombate = false;
     private int acaoEscolhidaCombate = 0;
+    private boolean temArmaOuNão = false;
+    private boolean temMunicaoOuNão = false;
 
     private String últimoItemEncontrado = "";
                 //Tem que começar em 1, já que só aparece a partir do 2° item
@@ -59,6 +62,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private String eventoAtual = "";
     private int turnoAtual = 0;
     private int diasSePassaram = 0;
+    private int quantosTurnosÉumDia = 48;
+    private int diasSePassaramCondiçãoVitória = 20;
+    
     private int custoDeDescansar = 20;
 
     private char[][] mapa;
@@ -126,7 +132,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
         if (escolha != null) 
         {
-            EscolherClasse classeEscolhida = new EscolherClasse(escolha.toLowerCase());
+            EscolherClasse classeEscolhida = new EscolherClasse(escolha);
             return classeEscolhida;
         } 
         else 
@@ -162,6 +168,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
             List<Item> itensReais = mapaItensPorChave.get(chaveEscolhida);
 
+            // modo ENTER, usar
             if (itensReais != null && !itensReais.isEmpty() && modo.equals("enter"))
             {
                 Item itemEscolhido = itensReais.get(0); // Sempre o primeiro da lista
@@ -184,6 +191,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     if (fomeMáxima < player.getFome())
                     { player.setFome(fomeMáxima); }
             }
+            // modo R, remover
             if (itensReais != null && !itensReais.isEmpty() && modo.equals("r"))
             {
                 Item itemEscolhido = itensReais.get(0); // Sempre o primeiro da lista
@@ -212,6 +220,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private BufferedImage JacareSprite;
     private BufferedImage PiranhaSprite;
     private BufferedImage SobreviventeHostilSprite;
+
     public void setSprites() 
     {
         try 
@@ -240,7 +249,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         } 
         catch (IOException | IllegalArgumentException e) 
         {
-            System.err.println("Não conseguiu carregar o sprite: " + e.getMessage());
+            System.err.println("Não conseguiu carregar um sprite [player/sprite]: " + e.getMessage()); //DEBUG
         }
         try
         {
@@ -254,7 +263,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         }
         catch (IOException | IllegalArgumentException e) 
         {
-            System.err.println("Não conseguiu carregar o sprite [inimigos]: " + e.getMessage());
+            System.err.println("Não conseguiu carregar um sprite [inimigos]: " + e.getMessage()); //DEBUG
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +281,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
 
         if (classeFoiEscolhida == false) 
         {// Player ainda não escolheu
-            return; }
+            return; 
+        }
 
         int chunkVisao = 5; // 5
         int tileTamanho = 30; // 30
@@ -408,68 +418,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         }
         //####################################################################################################
         //####################################################################################################
-        if (inventárioAberto) // Mostrar inventário
-        {
-            Map<String, Integer> mapaContadorLista = new HashMap<>();
-            // Usar para contar os items da list Inventário
-
-            for (Item item : player.getInventário()) // Coloca itens no HasMap
-            {
-                if (item instanceof Alimento) 
-                {
-                    Alimento alimentoHM = (Alimento) item;
-                    String chave = alimentoHM.getNome() + " (Validade: " + alimentoHM.getValidade() + ")";
-                    mapaContadorLista.put(chave, mapaContadorLista.getOrDefault(chave, 0) + 1);
-                } 
-                else
-                {
-                    String chaveHM = item.getNome();
-                    mapaContadorLista.put(chaveHM, mapaContadorLista.getOrDefault(chaveHM, 0) + 1);
-                } 
-            }
-            int tiposDiferentesDeItem = mapaContadorLista.size();
-            cópiaDeMapaContadorLista = mapaContadorLista;
-
-            int alturaInicio = 220 + tiposDiferentesDeItem * 4; // usado para subtrair
-            int alturaPosição1 = alturaInicio - 20;
-            int alturaPosição2 = alturaInicio - 25;
-
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(getWidth() / 2 + 10, (getHeight() / 2) - alturaInicio - 10, 420, //Fundo do fundo
-            140 + tiposDiferentesDeItem * 20);
-
-            g.setColor(Color.BLACK);
-            g.fillRect(getWidth() / 2 + 20, (getHeight() / 2) - alturaInicio, 400, 
-            120 + tiposDiferentesDeItem * 20);
-    
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-
-            g.drawString("Inventário:", getWidth() / 2 + 30,(getHeight() / 2) - alturaPosição1);
-            g.drawString("________________________________________", getWidth() / 2 + 30, (getHeight() / 2) 
-            - alturaPosição2);
-
-            // Print cada item
-            int index = 1;
-            int i = 1;
-            for (Map.Entry<String, Integer> entry : mapaContadorLista.entrySet())
-            {
-                String linha = " x" + entry.getValue() + " [" + index + "]- " + entry.getKey();
-                g.drawString(linha, getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
-                index++;
-                i++;
-            }
-            g.drawString("Selecionado [ " + itemSelecionadoInventário +" ] ",
-             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
-
-            g.drawString("Aperte (enter) para usar/equipar | (r) para remover",
-             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + 17 + i * 20);
-
-            g.drawString("________________________________________", getWidth() / 2 + 30,
-             (getHeight() / 2) - alturaPosição2 + 22 + i * 20);
-        }
-        //####################################################################################################
-        //####################################################################################################
         if (menuAberto)
         {
             g.setColor(Color.DARK_GRAY);
@@ -546,9 +494,11 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 "Ambiente: " + ambienteAtualNome,
                 "   " + DescriçãoParte1, DescriçãoParte2, DescriçãoParte3 + DescriçãoParte4,
                 "Turno: " + turnoAtual,
-                "   ("+ diasSePassaram + ") dias se passaram",
+                "   ("+ diasSePassaram + " / "+") dias se passaram",
                 "Último recurso encontrado: " + últimoItemEncontrado,
-                "Evento atual: " + eventoAtual
+                "Evento atual: " + eventoAtual,
+                "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
+                "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer"
                 };
                 statsArray = statsArrayA;
             }
@@ -568,7 +518,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     "Turno: " + turnoAtual,
                     "   ("+ diasSePassaram + ") dias se passaram",
                     "Último recurso encontrado: " + últimoItemEncontrado,
-                    "Evento atual: " + eventoAtual
+                    "Evento atual: " + eventoAtual,
+                    "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
+                    "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer"
                     };
                     statsArray = statsArrayB;
             }
@@ -626,26 +578,115 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 }
 
             g.setFont(new Font("Arial", Font.PLAIN, 16));
-            if(acaoEscolhidaCombate == 0)
+            if(acaoEscolhidaCombate == -1)
                 { 
-                    g.drawString("ATACAR" + "<", deslocaX + 245, deslocaY + 400);
+                    g.drawString("USAR ARMA" + " <", deslocaX + 245, deslocaY + 380);
                     g.setColor(Color.GRAY);
                     g.drawString("FUGIR", deslocaX + 245, deslocaY + 420);
+                    g.drawString("ATACAR", deslocaX + 245, deslocaY + 400);
+                }
+            if(acaoEscolhidaCombate == 0)
+                { 
+                    g.drawString("ATACAR" + " <", deslocaX + 245, deslocaY + 400);
+                    g.setColor(Color.GRAY);
+                    g.drawString("FUGIR", deslocaX + 245, deslocaY + 420);
+                    g.drawString("USAR ARMA", deslocaX + 245, deslocaY + 380);
                 }
             if(acaoEscolhidaCombate == 1)
                 { 
-                    g.drawString("FUGIR" + "<", deslocaX + 245, deslocaY + 420);
+                    g.drawString("FUGIR" + " <", deslocaX + 245, deslocaY + 420);
                     g.setColor(Color.GRAY);
                     g.drawString("ATACAR", deslocaX + 245, deslocaY + 400);
+                    g.drawString("USAR ARMA", deslocaX + 245, deslocaY + 380);
                 }
-            
+            g.setFont(new Font("Arial", Font.PLAIN, 12));
+            g.setColor(Color.WHITE);
+            if(temArmaOuNão)
+                {g.drawString( "[Tem arma]", deslocaX + 245, deslocaY + 440);}
+            if(temMunicaoOuNão)
+                {g.drawString( "[Tem munição]", deslocaX + 245, deslocaY + 460);}
+            g.setColor(Color.GRAY);
+            if(!temArmaOuNão)
+                {g.drawString( "[Sem arma]", deslocaX + 245, deslocaY + 440);}
+            if(!temMunicaoOuNão)
+                {g.drawString( "[Sem munição]", deslocaX + 245, deslocaY + 460);}
+        }
+        //####################################################################################################
+        //####################################################################################################
+        if (inventárioAberto) // Mostrar inventário
+        {
+            Map<String, Integer> mapaContadorLista = new HashMap<>();
+            // Usar para contar os items da list Inventário
+
+            for (Item item : player.getInventário()) // Coloca itens no HasMap
+            {
+                if (item instanceof Alimento) 
+                {
+                    Alimento alimentoHM = (Alimento) item;
+                    String chave = alimentoHM.getNome() + " (Validade: " + alimentoHM.getValidade() + ")";
+                    mapaContadorLista.put(chave, mapaContadorLista.getOrDefault(chave, 0) + 1);
+                }
+                if (item instanceof Arma) 
+                {
+                    Arma armaHM = (Arma) item;
+                    String chave = armaHM.getNome() + " (Durabilidade: " + armaHM.getDurabilidade() + ")";
+                    mapaContadorLista.put(chave, mapaContadorLista.getOrDefault(chave, 0) + 1);
+                } 
+                else
+                {
+                    String chaveHM = item.getNome();
+                    mapaContadorLista.put(chaveHM, mapaContadorLista.getOrDefault(chaveHM, 0) + 1);
+                } 
+            }
+            int tiposDiferentesDeItem = mapaContadorLista.size();
+            cópiaDeMapaContadorLista = mapaContadorLista;
+
+            int alturaInicio = 220 + tiposDiferentesDeItem * 4; // usado para subtrair
+            int alturaPosição1 = alturaInicio - 20;
+            int alturaPosição2 = alturaInicio - 25;
+
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(getWidth() / 2 + 10, (getHeight() / 2) - alturaInicio - 10, 420, //Fundo do fundo
+            140 + tiposDiferentesDeItem * 20);
+
+            g.setColor(Color.BLACK);
+            g.fillRect(getWidth() / 2 + 20, (getHeight() / 2) - alturaInicio, 400, 
+            120 + tiposDiferentesDeItem * 20);
+    
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+
+            g.drawString("Inventário:", getWidth() / 2 + 30,(getHeight() / 2) - alturaPosição1);
+            g.drawString("________________________________________", getWidth() / 2 + 30, (getHeight() / 2) 
+            - alturaPosição2);
+
+            // Print cada item
+            int index = 1;
+            int i = 1;
+            for (Map.Entry<String, Integer> entry : mapaContadorLista.entrySet())
+            {
+                String linha = " x" + entry.getValue() + " [" + index + "]- " + entry.getKey();
+                g.drawString(linha, getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
+                index++;
+                i++;
+            }
+            g.drawString("Selecionado [ " + itemSelecionadoInventário +" ] ",
+             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + i * 20);
+
+            g.drawString("Aperte (enter) para usar | (r) para remover",
+             getWidth() / 2 + 30, (getHeight() / 2) - alturaPosição2 + 17 + i * 20);
+
+            g.drawString("________________________________________", getWidth() / 2 + 30,
+             (getHeight() / 2) - alturaPosição2 + 22 + i * 20);
         }
         //####################################################################################################
         //####################################################################################################
         if (playerEstáVivo == false)
         {
+            g.setColor(Color.RED);
+            g.fillRect(deslocaX + 230, getHeight() / 2 - 10, 420, 70); //Borda
             g.setColor(Color.BLACK);
-            g.fillRect(deslocaX + 240, getHeight() / 2, 400, 50); //Fundo do menu
+            g.fillRect(deslocaX + 240, getHeight() / 2, 400, 50); //Fundo
     
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -655,13 +696,31 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             }
             else { g.drawString("GAME OVER...", deslocaX + 260, getHeight() / 2 + 30); }
         }
+
+        if(vitóriaYouWin)
+        {
+            g.setColor(Color.WHITE);
+            g.fillRect(deslocaX + 230, getHeight() / 2 - 10, 575, 70); //Borda
+            g.setColor(Color.BLACK);
+            g.fillRect(deslocaX + 240, getHeight() / 2, 555, 50); //Fundo
+    
+            g.setColor(florestaVerde);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            g.drawString("PARABÉNS! VOCÊ SOBREVIVEU À ÚLTIMA FRONTEIRA!!", deslocaX + 250, getHeight() / 2 + 30);
+        }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
     public void keyPressed(KeyEvent k) //TODO
     {
         long tempoAtual = System.currentTimeMillis();
-        if (playerEstáVivo)
+        if (playerEstáVivo && !vitóriaYouWin)
         {
             if (!playerEmCombate && !inventárioAberto)
             {
@@ -824,14 +883,39 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             }
             if (playerEmCombate) //////////// COMBATE ////////////
             {
+                ///////////// Encontrar item arma e munição no inventário
+                Arma armaEncontrada = null;
+                Item municaoEncontrada = null;
+                for (Item item : player.getInventário()) 
+                {
+                    if (item instanceof Arma && armaEncontrada == null) 
+                        { armaEncontrada = (Arma) item; temArmaOuNão = true;} 
+                    else if (item.getNome().equals("Munição") && municaoEncontrada == null) 
+                        { municaoEncontrada = item; temMunicaoOuNão = true;}
+
+                    if (armaEncontrada != null && municaoEncontrada != null) 
+                        { break; }
+                }
+                if (armaEncontrada == null)
+                    { temArmaOuNão = false; }
+                if (municaoEncontrada == null)
+                    { temMunicaoOuNão = false; } ////////////////////////
+
                 switch (k.getKeyCode()) 
                 {
                     case KeyEvent.VK_E:
                         objCombate.turnoDoInimigo(player);
-                        escolherAcaoCombate(acaoEscolhidaCombate);
+                        escolherAcaoCombate(acaoEscolhidaCombate, armaEncontrada, municaoEncontrada);
                         acaoEscolhidaCombate = 0;
                         if (objCombate.getVidaInimigo() <= 0 || !objCombate.getEmCombate())
                             { 
+                                if (objCombate.getVidaInimigo() <= 0)
+                                { 
+                                    objCombate.inimigoFoiDerrotado(); 
+                                    if (objCombate.getNumeroDeInimigosDerrotados() == 
+                                    objCombate.getCondiçãoDeVitóriaInimgosDerrotados())
+                                        { vitóriaYouWin = true;}
+                                }
                                 objCombate.setEmCombate(false); 
                                 objGerenciadorDeEventos.setEventoEstáOcorrendo(false);
                                 eventoAtual = "";
@@ -849,8 +933,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         { itemSelecionadoInventário = 0;}
                         break;
                 }
-                if (acaoEscolhidaCombate < 1)
-                    { acaoEscolhidaCombate = 0;}
+                if (acaoEscolhidaCombate < 0)
+                    { acaoEscolhidaCombate = -1;}
                 if (acaoEscolhidaCombate > 1)
                     { acaoEscolhidaCombate = 1;}
             }
@@ -880,9 +964,11 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             player.setSede(player.getSede() - 1);
         }
         //Passagem dos dias e diminuir validade itens
-        if (turnoAtual % 60 == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto) 
+        if (turnoAtual % quantosTurnosÉumDia == 0 && turnoAtual != 0 && !menuAberto && !inventárioAberto) 
         { 
             diasSePassaram++;
+            if (diasSePassaram == diasSePassaramCondiçãoVitória)
+                { vitóriaYouWin = true; }
             List<Item> itensParaRemover = new ArrayList<>(); 
             //remover um item enquanto dentro do for loop gera exceptions
             for (Item item : player.getInventário())
@@ -890,7 +976,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 if (item instanceof Alimento)
                 {
                     ((Alimento) item).setValidade(((Alimento) item).getValidade() - 1);
-                    if (((Alimento) item).getValidade() < 1) //TODO: apodrecimento
+                    if (((Alimento) item).getValidade() < 1)
                     {
                         itensParaRemover.add((Alimento) item);
                     }
@@ -941,8 +1027,29 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
-    public void escolherAcaoCombate(int acaoEscolhidaCombate)
+    public void escolherAcaoCombate(int acaoEscolhidaCombate, Arma armaEncontrada, Item municaoEncontrada)
     {
+        if (acaoEscolhidaCombate == -1)
+        {
+            if (armaEncontrada != null && municaoEncontrada != null)
+            {
+                objInventario.removerItem(player, municaoEncontrada); //Gasta uma munição
+
+                objCombate.setPoderDeAtaqueAdicionalArma(armaEncontrada.getPoderDeDano());
+                ((Arma)armaEncontrada).usar();
+                objCombate.atacar(player);
+
+                if (((Arma)armaEncontrada).getDurabilidade() <= 0)
+                    { objInventario.removerItem(player, armaEncontrada); }
+            }
+            if (armaEncontrada == null)
+                { temArmaOuNão = false; }
+            else { temArmaOuNão = true; }
+            if (municaoEncontrada == null)
+                { temMunicaoOuNão = false; }
+            else { temMunicaoOuNão = true; }
+        }
+
         if (acaoEscolhidaCombate == 0)
         { 
             objCombate.atacar(player);
