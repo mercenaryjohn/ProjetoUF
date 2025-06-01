@@ -6,6 +6,7 @@ public class Combate
     private String nomeInimigo;
     private int vidaInimigo;
     private int danoInimigo;
+    private int danoSanidade;
     private boolean emCombate = false; //Iniciar com false, importante
 
     private int poderDeAtaqueInicial = 2;
@@ -17,7 +18,7 @@ public class Combate
     {
         int randomIntD20 = objRandom.nextInt(1,20);
         int poderDeAtaque = (poderDeAtaqueInicial + poderDeAtaqueAdicional) * randomIntD20;
-        //System.out.println(poderDeAtaque);
+
         vidaInimigo = vidaInimigo - poderDeAtaque;
     }
 
@@ -31,10 +32,6 @@ public class Combate
         //Chance de fugir aumenta inversamente proporcional a vida do inimigo
         if (randomIntVidaInimigo + randomIntD20 > vidaInimigo) 
             { emCombate = false; }
-        //System.out.println(randomIntVidaInimigo);
-        //System.out.println(randomIntD20);
-        //System.out.println(vidaInimigo);
-        //System.out.println("############");
     }
 
     public void turnoDoInimigo(EscolherClasse player)
@@ -42,8 +39,9 @@ public class Combate
         boolean randomBoolean5050 = objRandom.nextBoolean();
         if (randomBoolean5050 == true)
             { 
-                ultimaAcaoDoInimigo = "atacou (" + danoInimigo + " de Dano)"; 
+                ultimaAcaoDoInimigo = "Atacou! (" + danoInimigo + " Vida " + danoSanidade + " Sanidade)";
                 player.setVida(player.getVida() - danoInimigo);
+                player.setSanidade(player.getSanidade() - danoSanidade);
             }
         else{ ultimaAcaoDoInimigo = "(não fez nada)"; }
     }
@@ -67,8 +65,12 @@ public class Combate
     { this.vidaInimigo = vidaInimigo; }
     public void setDanoInimigo(int danoInimigo)
     { this.danoInimigo = danoInimigo; }
+    public void setDanoSanidade(int danoSanidade)
+    { this.danoSanidade = danoSanidade; }
     public void setEmCombate(boolean emCombate)
     { this.emCombate = emCombate; }
+    public void setUltimaAcaoDoInimigo(String ultimaAcaoDoInimigo)
+    { this.ultimaAcaoDoInimigo = ultimaAcaoDoInimigo; }
     public void setVidaMáximaInimigo(int vidaMáximaInimigo)
     { this.vidaMáximaInimigo = vidaMáximaInimigo; }
 }

@@ -25,7 +25,7 @@ public class AmbienteLagoRio extends Ambiente
         "Corpo d'água",
         "Regiões ricas em água, mas que podem esconder riscos como afogamento ou criaturas aquáticas",
         new String[] {"Peixe", "Alga comestível", "Fibra-selvagem"}, //recursos
-        new float[] {0.02f, 0.06f, 0.05f}, //probabilidades eventos
+        new float[] {0.06f, 0.06f, 0.05f}, //probabilidades eventos
         new String[] {"Jacaré", "Piranha", "Afogamento"} // climas e eventos
         );
     }

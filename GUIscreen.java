@@ -59,6 +59,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private String eventoAtual = "";
     private int turnoAtual = 0;
     private int diasSePassaram = 0;
+    private int custoDeDescansar = 20;
 
     private char[][] mapa;
     private int mapaAltura;
@@ -203,36 +204,65 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private BufferedImage montanhaSprite;
     private BufferedImage ruinasSprite;
     private BufferedImage planicieSprite;
+
+    private BufferedImage LoboSprite;
+    private BufferedImage UrsoSprite;
+    private BufferedImage ExploradorPerdidoSprite;
+    private BufferedImage CriaturaSprite;
+    private BufferedImage JacareSprite;
+    private BufferedImage PiranhaSprite;
+    private BufferedImage SobreviventeHostilSprite;
     public void setSprites() 
     {
         try 
         {
             if (player.getNome().equals("Escoteiro"))
-                { playerSprite = ImageIO.read(getClass().getResource("Sprites/escoteiro.png")); }
+                { playerSprite = ImageIO.read(getClass().getResource("/Sprites/escoteiro.png")); }
             else if (player.getNome().equals("Engenheiro"))
-                { playerSprite = ImageIO.read(getClass().getResource("Sprites/engenheiro.png")); }
+                { playerSprite = ImageIO.read(getClass().getResource("/Sprites/engenheiro.png")); }
             else if (player.getNome().equals("Veterinário"))
-                { playerSprite = ImageIO.read(getClass().getResource("Sprites/veterinario.png")); }
+                { playerSprite = ImageIO.read(getClass().getResource("/Sprites/veterinario.png")); }
             else if (player.getNome().equals("Prisioneiro"))
-                { playerSprite = ImageIO.read(getClass().getResource("Sprites/prisioneiro.png")); }
+                { playerSprite = ImageIO.read(getClass().getResource("/Sprites/prisioneiro.png")); }
 
-            cavernaSprite = ImageIO.read(getClass().getResource("Sprites/caverna.png"));
-                cavernaTeto = ImageIO.read(getClass().getResource("Sprites/cavernaTeto.png"));
-            florestaSprite = ImageIO.read(getClass().getResource("Sprites/floresta.png"));
-                florestaFolhas = ImageIO.read(getClass().getResource("Sprites/florestaFolhas.png"));
-            lagoRioSprite = ImageIO.read(getClass().getResource("Sprites/lagoRio.png"));
-            montanhaSprite = ImageIO.read(getClass().getResource("Sprites/montanha.png"));
-            ruinasSprite = ImageIO.read(getClass().getResource("Sprites/ruinas.png"));
-            planicieSprite = ImageIO.read(getClass().getResource("Sprites/planicie.png"));
-            
-            if(playerSprite==null)
+            cavernaSprite = ImageIO.read(getClass().getResource("/Sprites/caverna.png"));
+                cavernaTeto = ImageIO.read(getClass().getResource("/Sprites/cavernaTeto.png"));
+
+            florestaSprite = ImageIO.read(getClass().getResource("/Sprites/floresta.png"));
+                florestaFolhas = ImageIO.read(getClass().getResource("/Sprites/florestaFolhas.png"));
+
+            lagoRioSprite = ImageIO.read(getClass().getResource("/Sprites/lagoRio.png"));
+            montanhaSprite = ImageIO.read(getClass().getResource("/Sprites/montanha.png"));
+            ruinasSprite = ImageIO.read(getClass().getResource("/Sprites/ruinas.png"));
+            planicieSprite = ImageIO.read(getClass().getResource("/Sprites/planicie.png"));
+            if (playerSprite == null)
                System.out.println("Imagem é null"); 
         } 
         catch (IOException | IllegalArgumentException e) 
         {
             System.err.println("Não conseguiu carregar o sprite: " + e.getMessage());
         }
+        try
+        {
+            LoboSprite = ImageIO.read(getClass().getResource("/Sprites/lobo.png"));
+            UrsoSprite = ImageIO.read(getClass().getResource("/Sprites/urso.png"));
+            ExploradorPerdidoSprite = ImageIO.read(getClass().getResource("/Sprites/exploradorPerdido.png"));
+            CriaturaSprite = ImageIO.read(getClass().getResource("/Sprites/criatura.png"));
+            JacareSprite = ImageIO.read(getClass().getResource("/Sprites/jacare.png"));
+            PiranhaSprite = ImageIO.read(getClass().getResource("/Sprites/piranha.png"));
+            SobreviventeHostilSprite = ImageIO.read(getClass().getResource("/Sprites/sobreviventeHostil.png"));
+        }
+        catch (IOException | IllegalArgumentException e) 
+        {
+            System.err.println("Não conseguiu carregar o sprite [inimigos]: " + e.getMessage());
+        }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
@@ -562,6 +592,22 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             g.setColor(Color.BLACK);
             g.fillRect(deslocaX + 240, deslocaY + 20, 580, 580); //Fundo
 
+            if (eventoAtual.equals("Lobo"))
+                { g.drawImage(LoboSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Urso"))
+                { g.drawImage(UrsoSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Explorador perdido"))
+                { g.drawImage(ExploradorPerdidoSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Criatura"))
+                { g.drawImage(CriaturaSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Jacaré"))
+                { g.drawImage(JacareSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Piranha"))
+                { g.drawImage(PiranhaSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+            if (eventoAtual.equals("Sobrevivente hostil"))
+                { g.drawImage(SobreviventeHostilSprite, deslocaX + 490, deslocaY + 80, 300, 300, null); }
+
+
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             if (objCombate.getNomeInimigo() != null)
@@ -574,7 +620,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 16));
             if (objCombate.getUltimaAcaoDoInimigo() != null)
-                { g.drawString("Último turno: " + objCombate.getUltimaAcaoDoInimigo(), deslocaX + 245, deslocaY + 90); }
+                { 
+                    g.drawString("O que ocorreu no último turno:", deslocaX + 245, deslocaY + 90);
+                    g.drawString(" "+ objCombate.getUltimaAcaoDoInimigo(), deslocaX + 245, deslocaY + 120); 
+                }
 
             g.setFont(new Font("Arial", Font.PLAIN, 16));
             if(acaoEscolhidaCombate == 0)
@@ -720,8 +769,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (menuAberto && inventárioAberto == false && mapa[playerY][playerX] != '~')
                         {
                             menuAberto = false;
-                            player.setFome(player.getFome() - 20);
-                            player.setSede(player.getSede() - 20);
+                            player.setFome(player.getFome() - custoDeDescansar);
+                            player.setSede(player.getSede() - custoDeDescansar);
                             player.setSanidade(player.getSanidade() + 40);
                             if (sanidadeMáxima < player.getSanidade())
                                 { player.setSanidade(sanidadeMáxima); }
@@ -744,6 +793,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 {
                     case KeyEvent.VK_E:
                         inventárioAberto = false;
+                        itemSelecionadoInventário = 0;
                         break;
                     case KeyEvent.VK_W:
                         itemSelecionadoInventário = itemSelecionadoInventário + 1;
@@ -759,7 +809,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                             String modoDeUso = "enter";
                             escolherItemInventárioIngameUI(itemSelecionadoInventário, modoDeUso);
                             passagemDeTurnos();
-                            itemSelecionadoInventário = 0;
                         }
                         break;
                     case KeyEvent.VK_R:
@@ -787,6 +836,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 objGerenciadorDeEventos.setEventoEstáOcorrendo(false);
                                 eventoAtual = "";
                                 objGerenciadorDeEventos.iniciarTurnosDePazApósCombate();
+                                objCombate.setUltimaAcaoDoInimigo("");
                             }
                         passagemDeTurnos();
                         break;

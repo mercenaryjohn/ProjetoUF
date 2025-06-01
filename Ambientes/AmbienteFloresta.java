@@ -27,7 +27,7 @@ public class AmbienteFloresta extends Ambiente
         "Uma área rica em recursos naturais, mas também habitada por predadores",
                  /*fazer com que Escoteiro saiba se o Cogumelo é venenoso ou não*/
         new String[] {"Fruta", "Raíz", "Cogumelo", "Cogumelo (Venenoso)", "Madeira"}, //recursos
-        new float[] {0.05f, 0.03f, 0.3f, 0.1f}, //probabilidades eventos
+        new float[] {0.08f, 0.07f, 0.06f, 0.1f}, //probabilidades eventos
                                                     /* dificultar exploração se chuva */
         new String[] {"Lobo", "Urso", "Explorador perdido", "Chuva intensa"} // climas e eventos
         );

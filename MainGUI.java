@@ -31,7 +31,7 @@ public class MainGUI
         //objAlimento.setAlimentoStats("Fruta");
         //objInventario.adicionarItem(classeEscolhida, objAlimento);
 
-        String[] opções = {"1 - Vasculhar", "2 - Descansar","3 - Inventário",/*"4 - Status",*/"- para voltar [e] -"};
+        String[] opções = {"1 - Vasculhar", "2 - Descansar ( - fome e sede)","3 - Inventário",/*"4 - Status",*/"- para voltar [e] -"};
         tela.setListaDeOpcoes(opções);
 
         /*
