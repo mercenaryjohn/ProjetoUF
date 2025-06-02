@@ -1,4 +1,4 @@
-package Ambientes;
+package UFsource.Ambientes;
 
 public class AmbienteCaverna extends Ambiente
 {

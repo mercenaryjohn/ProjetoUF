@@ -1,5 +1,10 @@
+
+package UFsource.Player;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import UFsource.Itens.*;
 
 public class Personagem
 {

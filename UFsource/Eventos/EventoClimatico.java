@@ -1,3 +1,8 @@
+
+package UFsource.Eventos;
+
+import UFsource.Player.*;
+
 public class EventoClimatico extends Evento
 {
     public void executar(Personagem player, String eventoEscolhido)

@@ -1,4 +1,8 @@
 
+package UFsource.Player;
+
+import UFsource.Itens.*;
+
 public class InventarioClasse
 {
     // Insere um novo item no inventário, se houver espaço.

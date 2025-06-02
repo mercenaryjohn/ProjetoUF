@@ -1,4 +1,6 @@
 
+package UFsource;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -22,7 +24,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import Ambientes.*;
+import UFsource.Player.*;
+import UFsource.Ambientes.*;
+import UFsource.Itens.*;
 
 public class GUIscreen extends JPanel implements ActionListener, KeyListener
 {

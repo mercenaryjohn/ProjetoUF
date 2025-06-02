@@ -1,4 +1,8 @@
 
+package UFsource.Eventos;
+
+import UFsource.Player.*;
+
 public class Evento 
 {
         /* 

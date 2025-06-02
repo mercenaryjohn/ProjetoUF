@@ -1,4 +1,6 @@
 
+package UFsource.Itens;
+
 public class Arma extends Item
 {
     private int poderDeDano;

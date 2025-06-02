@@ -1,3 +1,9 @@
+
+package UFsource.Eventos;
+
+import UFsource.*;
+import UFsource.Player.*;
+
 public class EventoCriatura extends Evento
 {
     public void executar(Personagem player, String eventoEscolhido, Combate objCombate)

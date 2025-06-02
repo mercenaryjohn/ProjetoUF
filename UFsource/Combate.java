@@ -1,4 +1,9 @@
+
+package UFsource;
+
 import java.util.Random;
+
+import UFsource.Player.*;
 
 public class Combate 
 {

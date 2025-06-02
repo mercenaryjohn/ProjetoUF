@@ -1,4 +1,8 @@
 
+package UFsource.Itens;
+
+import UFsource.Player.*;
+
 public class Agua extends Item
 {
     private int hidratação;

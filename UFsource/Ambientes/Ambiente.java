@@ -1,4 +1,4 @@
-package Ambientes;
+package UFsource.Ambientes;
 
 import java.util.Random;
 

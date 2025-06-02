@@ -1,6 +1,9 @@
 
+package UFsource;
+
 import java.util.Random;
-import Ambientes.*;
+import UFsource.Ambientes.*;
+import UFsource.Itens.*;
 
 public class GerenciadorDeAmbientes 
 {

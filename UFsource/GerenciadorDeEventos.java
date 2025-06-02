@@ -1,7 +1,11 @@
 
+package UFsource;
+
 import java.util.Random;
 
-import Ambientes.*;
+import UFsource.Player.*;
+import UFsource.Ambientes.*;
+import UFsource.Eventos.*;
 
 public class GerenciadorDeEventos 
 {

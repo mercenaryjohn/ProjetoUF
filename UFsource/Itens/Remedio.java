@@ -1,4 +1,8 @@
 
+package UFsource.Itens;
+
+import UFsource.Player.*;
+
 public class Remedio extends Item
 {
     private int cura;

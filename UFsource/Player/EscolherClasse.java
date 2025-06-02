@@ -1,4 +1,5 @@
 
+package UFsource.Player;
 
 public class EscolherClasse extends Personagem
 {

@@ -1,4 +1,8 @@
-import Ambientes.*;
+
+package UFsource;
+
+import UFsource.Player.*;
+import UFsource.Ambientes.*;
 
 public class MainGUI
 {
