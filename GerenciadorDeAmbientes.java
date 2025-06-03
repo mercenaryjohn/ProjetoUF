@@ -98,7 +98,7 @@ public class GerenciadorDeAmbientes
     public int getQuantasVezesVasculhou()
         { return quantasVezesVasculhou; }
     public void addUmaVezVasculhou()
-    { 
+    {
         quantasVezesVasculhou = quantasVezesVasculhou + 1;
         System.out.println(quantasVezesVasculhou);
         if (quantasVezesVasculhou == 5)

@@ -1,6 +1,4 @@
 
-
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -14,7 +12,7 @@ public class GUIframe extends JFrame
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Última Fronteira");
-        setSize(1100,650); //1100,650
+        setSize(1080,650); //1100,650
         setResizable(true);
 
         iniciarFrame(mapa);
@@ -33,7 +31,7 @@ public class GUIframe extends JFrame
 
         tela = new GUIscreen(mapa);
 
-        tela.setPreferredSize(new Dimension(1100,650));
+        tela.setPreferredSize(new Dimension(1080,650));
         add(tela);
 
         pack();

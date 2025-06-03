@@ -1,6 +1,4 @@
 
-
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -45,7 +43,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     @SuppressWarnings("unused")
     private long tempoAtual; // usado em keyPressed para limitar a velocidade de certas ações
     private long ultimaAcaoFeita = 0;
-    private int delayEmMili = 200; // && tempoQuePassou >= delayEmMili
+    private int delayEmMili = 100; // && tempoQuePassou >= delayEmMili
 
     private int vidaMáxima;
     private int sanidadeMáxima;
@@ -816,6 +814,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                     }
                                 }
                                 else { últimoItemEncontrado = "(Nada)"; }
+                                if (!objGerenciadorDeAmbientes.getPodeVasculhar())
+                                { últimoItemEncontrado = "(Procure em outro lugar)"; }
                                 if ( player.getInventário().size() == player.getCapacidadeInventário() )
                                 { últimoItemEncontrado = "inventário cheio " + "("+ player.getCapacidadeInventário() +")"; }
                             }
