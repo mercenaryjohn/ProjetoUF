@@ -23,7 +23,7 @@ public class EscolherClasse extends Personagem
         if (classeEscolhidaLowered.equals("engenheiro") || classeEscolhida.equals("2"))
         {
         setNome ("Engenheiro");
-        setVida (100);
+        setVida (140);
         setFome (160);
         setSede (90);
         setEnergia  (260);
@@ -35,7 +35,7 @@ public class EscolherClasse extends Personagem
         if (classeEscolhidaLowered.equals("veterinário") || classeEscolhida.equals("3"))
         {
         setNome  ("Veterinário");
-        setVida  (100);
+        setVida  (140);
         setFome  (170);
         setSede  (100);
         setEnergia  (240);
@@ -47,7 +47,7 @@ public class EscolherClasse extends Personagem
         if (classeEscolhidaLowered.equals("prisioneiro") || classeEscolhida.equals("4"))
         {
         setNome  ("Prisioneiro");
-        setVida  (80);
+        setVida  (100);
         setFome  (90);
         setSede  (120);
         setEnergia  (130);

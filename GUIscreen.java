@@ -507,7 +507,9 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 +" itens por movimento)",
                 "Evento atual: " + eventoAtual,
                 "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
-                "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer"
+                "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer",
+                "[ Movimento: W,A,S,D ]",
+                "[ Inventário: E ]",
                 };
                 statsArray = statsArrayA;
             }
@@ -527,9 +529,13 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     "Turno: " + turnoAtual,
                     "   ("+ diasSePassaram + " / "+ diasSePassaramCondiçãoVitória + ") dias se passaram",
                     "Último recurso encontrado: " + últimoItemEncontrado,
+                    "   (Limite de " + objGerenciadorDeAmbientes.getLimiteDeVasculhar()
+                    +" itens por movimento)",
                     "Evento atual: " + eventoAtual,
                     "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
-                    "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer"
+                    "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer",
+                    "[ Movimento: W,A,S,D ]",
+                    "[ Inventário: E ]",
                     };
                     statsArray = statsArrayB;
             }
@@ -586,6 +592,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     g.drawString(" "+ objCombate.getUltimaAcaoDoInimigo(), deslocaX + 245, deslocaY + 120); 
                 }
 
+            g.drawString("[e] para escolher uma ação", deslocaX + 245, deslocaY + 355);
             g.setFont(new Font("Arial", Font.PLAIN, 16));
             if(acaoEscolhidaCombate == -1)
                 { 
@@ -611,14 +618,14 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
             g.setFont(new Font("Arial", Font.PLAIN, 12));
             g.setColor(Color.WHITE);
             if(temArmaOuNão)
-                {g.drawString( "[Tem arma]", deslocaX + 245, deslocaY + 440);}
+                {g.drawString( "[Tem arma]", deslocaX + 245, deslocaY + 445);}
             if(temMunicaoOuNão)
-                {g.drawString( "[Tem munição]", deslocaX + 245, deslocaY + 460);}
+                {g.drawString( "[Tem munição]", deslocaX + 245, deslocaY + 465);}
             g.setColor(Color.GRAY);
             if(!temArmaOuNão)
-                {g.drawString( "[Sem arma]", deslocaX + 245, deslocaY + 440);}
+                {g.drawString( "[Sem arma]", deslocaX + 245, deslocaY + 445);}
             if(!temMunicaoOuNão)
-                {g.drawString( "[Sem munição]", deslocaX + 245, deslocaY + 460);}
+                {g.drawString( "[Sem munição]", deslocaX + 245, deslocaY + 465);}
         }
         //####################################################################################################
         //####################################################################################################
@@ -836,8 +843,6 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                     }
                                 }
                                 else { últimoItemEncontrado = "(Nada)"; }
-                                if (!objGerenciadorDeAmbientes.getPodeVasculhar())
-                                { últimoItemEncontrado = últimoItemEncontrado + " (5/5)"; } // (Procure em outro lugar)
                                 if ( player.getInventário().size() == player.getCapacidadeInventário() )
                                 { últimoItemEncontrado = "inventário cheio " + "("+ player.getCapacidadeInventário() +")"; }
                             }
@@ -1075,6 +1080,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 if (((Arma)armaEncontrada).getDurabilidade() <= 0)
                     { objInventario.removerItem(player, armaEncontrada); }
             }
+            else { objCombate.atacar(player); } // Caso não tenha os dois, ataque normal
             if (armaEncontrada == null)
                 { temArmaOuNão = false; }
             else { temArmaOuNão = true; }

@@ -25,7 +25,7 @@ public class Combate
         int randomIntD20 = objRandom.nextInt(1,20);
         int poderDeAtaque = (poderDeAtaqueInicial * randomIntD20) + poderDeAtaqueAdicionalArma;
         poderDeAtaqueAdicionalArma = 0; //Se arma foi usada, volta a zero
-
+                
         vidaInimigo = vidaInimigo - poderDeAtaque;
     }
 
