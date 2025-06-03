@@ -65,6 +65,12 @@ public class Item
             obj.setNome(item.getNome());
             return obj;
         }
+        else if (item instanceof Ferramenta) 
+        {
+            Ferramenta obj = new Ferramenta();
+            obj.setNome(item.getNome());
+            return obj;
+        }
         else
         {
             Item obj = new Item();

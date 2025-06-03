@@ -54,6 +54,10 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
     private GerenciadorDeAmbientes objGerenciadorDeAmbientes = new GerenciadorDeAmbientes();
     private GerenciadorDeEventos objGerenciadorDeEventos = new GerenciadorDeEventos();
     private Combate objCombate = objGerenciadorDeEventos.getObjCombate();
+            // Apenas para pegar as dimensões do mapa
+    private Ambiente objAmbienteDimensões = 
+        new Ambiente(null,null,null,null,null);
+
     private boolean playerEmCombate = false;
     private int acaoEscolhidaCombate = 0;
     private boolean temArmaOuNão = false;
@@ -439,7 +443,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
         }
         //####################################################################################################
         //####################################################################################################
-        if (statsAberto)
+        if (statsAberto) //Sempre aberto, na parte esquerda da tela
         {
             String ambienteAtualNome = objGerenciadorDeAmbientes.pegarNomeAmbiente(mapa[playerY][playerX]);
             String ambienteAtualDescrição = objGerenciadorDeAmbientes.pegarDescriçãoAmbiente(mapa[playerY][playerX]);
@@ -499,6 +503,8 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                 "Turno: " + turnoAtual,
                 "   ("+ diasSePassaram + " / "+ diasSePassaramCondiçãoVitória + ") dias se passaram",
                 "Último recurso encontrado: " + últimoItemEncontrado,
+                "   (Limite de " + objGerenciadorDeAmbientes.getLimiteDeVasculhar()
+                +" itens por movimento)",
                 "Evento atual: " + eventoAtual,
                 "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
                 "   ("+ objCombate.getCondiçãoDeVitóriaInimgosDerrotados() + ") para vencer"
@@ -519,7 +525,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                     "Ambiente: " + ambienteAtualNome,
                     "   " + DescriçãoParte1, DescriçãoParte2, DescriçãoParte3 + DescriçãoParte4,
                     "Turno: " + turnoAtual,
-                    "   ("+ diasSePassaram + ") dias se passaram",
+                    "   ("+ diasSePassaram + " / "+ diasSePassaramCondiçãoVitória + ") dias se passaram",
                     "Último recurso encontrado: " + últimoItemEncontrado,
                     "Evento atual: " + eventoAtual,
                     "Número de inimigos derrotados: " + objCombate.getNumeroDeInimigosDerrotados(),
@@ -733,12 +739,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             double[] posiçãoXD = player.getLocalização();
-                            posiçãoXD[0] = posiçãoXD[0] + 1;
-                            player.setLocalização(posiçãoXD);
-                            player.setEnergia(player.getEnergia() - 1);
-                            ultimaAcaoFeita = tempoAtual;
-                            objGerenciadorDeAmbientes.setPodeVasculhar();
-                            ativarChanceEvento();
+                            double posiçãoHolder = posiçãoXD[0] + 1;
+                            if (posiçãoHolder > -(objAmbienteDimensões.getDimensõesDoMapaMundo() / 2))
+                            {
+                                posiçãoXD[0] = posiçãoHolder;
+                                player.setLocalização(posiçãoXD);
+                                player.setEnergia(player.getEnergia() - 1);
+                                ultimaAcaoFeita = tempoAtual;
+                                objGerenciadorDeAmbientes.setPodeVasculhar();
+                                ativarChanceEvento();
+                            }
                         }
                         menuAberto = false;
                         break;
@@ -746,12 +756,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             double[] posiçãoYS = player.getLocalização();
-                            posiçãoYS[1] = posiçãoYS[1] - 1;
-                            player.setLocalização(posiçãoYS);
-                            player.setEnergia(player.getEnergia() - 1);
-                            ultimaAcaoFeita = tempoAtual;
-                            objGerenciadorDeAmbientes.setPodeVasculhar();
-                            ativarChanceEvento();
+                            double posiçãoHolder = posiçãoYS[1] - 1;
+                            if (posiçãoHolder > -(objAmbienteDimensões.getDimensõesDoMapaMundo() / 2))
+                            {
+                                posiçãoYS[1] = posiçãoHolder;
+                                player.setLocalização(posiçãoYS);
+                                player.setEnergia(player.getEnergia() - 1);
+                                ultimaAcaoFeita = tempoAtual;
+                                objGerenciadorDeAmbientes.setPodeVasculhar();
+                                ativarChanceEvento();
+                            }
                         }
                         menuAberto = false;
                         break;
@@ -759,12 +773,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             double[] posiçãoXA = player.getLocalização();
-                            posiçãoXA[0] = posiçãoXA[0] - 1;
-                            player.setLocalização(posiçãoXA);
-                            player.setEnergia(player.getEnergia() - 1);
-                            ultimaAcaoFeita = tempoAtual;
-                            objGerenciadorDeAmbientes.setPodeVasculhar();
-                            ativarChanceEvento();
+                            double posiçãoHolder = posiçãoXA[0] - 1;
+                            if (posiçãoHolder > -(objAmbienteDimensões.getDimensõesDoMapaMundo() / 2))
+                            {
+                                posiçãoXA[0] = posiçãoHolder;
+                                player.setLocalização(posiçãoXA);
+                                player.setEnergia(player.getEnergia() - 1);
+                                ultimaAcaoFeita = tempoAtual;
+                                objGerenciadorDeAmbientes.setPodeVasculhar();
+                                ativarChanceEvento();
+                            }
                         }
                         menuAberto = false;
                         break;
@@ -772,12 +790,16 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                         if (player.getEnergia() > 0 && tempoAtual - ultimaAcaoFeita >= delayEmMili)
                         {
                             double[] posiçãoYW = player.getLocalização();
-                            posiçãoYW[1] = posiçãoYW[1] + 1;
-                            player.setLocalização(posiçãoYW);
-                            player.setEnergia(player.getEnergia() - 1);
-                            ultimaAcaoFeita = tempoAtual;
-                            objGerenciadorDeAmbientes.setPodeVasculhar();
-                            ativarChanceEvento();
+                            double posiçãoHolder = posiçãoYW[1] + 1;
+                            if (posiçãoHolder < objAmbienteDimensões.getDimensõesDoMapaMundo() / 2)
+                            {
+                                posiçãoYW[1] = posiçãoHolder;
+                                player.setLocalização(posiçãoYW);
+                                player.setEnergia(player.getEnergia() - 1);
+                                ultimaAcaoFeita = tempoAtual;
+                                objGerenciadorDeAmbientes.setPodeVasculhar();
+                                ativarChanceEvento();
+                            }
                         }
                         menuAberto = false;
                         break;
@@ -815,7 +837,7 @@ public class GUIscreen extends JPanel implements ActionListener, KeyListener
                                 }
                                 else { últimoItemEncontrado = "(Nada)"; }
                                 if (!objGerenciadorDeAmbientes.getPodeVasculhar())
-                                { últimoItemEncontrado = "(Procure em outro lugar)"; }
+                                { últimoItemEncontrado = últimoItemEncontrado + " (5/5)"; } // (Procure em outro lugar)
                                 if ( player.getInventário().size() == player.getCapacidadeInventário() )
                                 { últimoItemEncontrado = "inventário cheio " + "("+ player.getCapacidadeInventário() +")"; }
                             }

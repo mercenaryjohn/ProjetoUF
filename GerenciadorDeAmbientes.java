@@ -83,6 +83,7 @@ public class GerenciadorDeAmbientes
     private Alimento objAlimento = new Alimento(0, 0);
     private Remedio objRemédio = new Remedio();
     private Arma objArma = new Arma();
+    private Ferramenta objFerramenta = new Ferramenta();
     private Item objItemGenérico = new Item(); //Para itens não específicos
 /////////////////////////
     private boolean podeVasculhar = true;
@@ -100,7 +101,6 @@ public class GerenciadorDeAmbientes
     public void addUmaVezVasculhou()
     {
         quantasVezesVasculhou = quantasVezesVasculhou + 1;
-        System.out.println(quantasVezesVasculhou);
         if (quantasVezesVasculhou == 5)
         { 
             podeVasculhar = false; 
@@ -137,7 +137,7 @@ public class GerenciadorDeAmbientes
         if (recursoEscolhidoNome.equals("Água contaminada"))
         {
             recursoEscolhidoItem = objAgua;
-            ((Agua) recursoEscolhidoItem).setHidratação(-50);
+            ((Agua) recursoEscolhidoItem).setHidratação(-40);
             recursoEscolhidoItem.setNome("Água contaminada");
             return recursoEscolhidoItem;
         }
@@ -178,6 +178,13 @@ public class GerenciadorDeAmbientes
             recursoEscolhidoItem = objArma;
             recursoEscolhidoItem.setNome("Arma antiga");
             recursoEscolhidoItem.setDurabilidade(12);
+            return recursoEscolhidoItem;
+        }
+
+        if (recursoEscolhidoNome.equals("Abrigo"))
+        {
+            recursoEscolhidoItem = objFerramenta;
+            recursoEscolhidoItem.setNome("Abrigo");
             return recursoEscolhidoItem;
         }
 

@@ -43,23 +43,9 @@ public class Ambiente
     public String[] getClimasEventos()
     { return climasEventos; }
 
-
-    public void explorar()
-    {
-
-    }
-
-    public void gerarEvento()
-    {
-
-    }
-
-    public void modificarClima()
-    {
-
-    }
-
-
+    private int dimensõesDoMapaMundo = 8000; // uma dimensão * chunck, quadrado
+    public int getDimensõesDoMapaMundo()
+    { return dimensõesDoMapaMundo; }
     public char[][] fazerMapaMundo()
     {
         int altura = 1000;
@@ -117,9 +103,9 @@ public class Ambiente
             }
         }
         
-        mapa[altura/2][largura/2] = ambientes[5]; // Planície
+        mapa[altura/2][largura/2] = ambientes[5]; // Para o player sempre começar em uma Planície
 
-        // Expandir cada letra em um bloco 5x5
+        // Expandir cada letra em um bloco 8 x 8
         for (int y = 0; y < altura; y++) 
         {
             for (int x = 0; x < largura; x++) 
@@ -134,7 +120,7 @@ public class Ambiente
                 }
             }
         }
-        // Mostrar o mapa total
+        // Mostrar o mapa total //Terminal
         /* 
         for (int y = 0; y < altura; y++) 
         {
@@ -148,7 +134,7 @@ public class Ambiente
         return mapaComChunks;
     }
 
-    public void printVisaoAtualMapa(char[][] mapa, double[] localização)
+    public void printVisaoAtualMapa(char[][] mapa, double[] localização) // Apenas terminal
     {
         int chunkVisao = 5; //chunkVisao
         int mapaAltura = mapa.length;

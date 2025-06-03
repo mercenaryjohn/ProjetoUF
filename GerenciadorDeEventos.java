@@ -75,14 +75,14 @@ public class GerenciadorDeEventos
             if (eventoEscolhido.equals(eventos[1]))
                 { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
             if (eventoEscolhido.equals(eventos[2]))
-                {}
+                { objEventoDescoberta.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
         else if (local.getNome().equals("Caverna")) 
         { //"Criatura", "Tunel", "Desmoronamento"
             if (eventoEscolhido.equals(eventos[0]) && turnosDePazApósCombate == 0)
                 { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
             if (eventoEscolhido.equals(eventos[1]))
-                {}
+                { objEventoDescoberta.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
             if (eventoEscolhido.equals(eventos[2]))
                 { objEventoClimatico.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }
@@ -100,7 +100,7 @@ public class GerenciadorDeEventos
             if (eventoEscolhido.equals(eventos[0]) && turnosDePazApósCombate == 0)
                 { objEventoCriatura.executar(player, eventoEscolhido, objCombate); eventoEstáOcorrendo = true;}
             if (eventoEscolhido.equals(eventos[1]))
-                {}
+                { objEventoDescoberta.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
             if (eventoEscolhido.equals(eventos[2]))
                 { objEventoDoencaFerimento.executar(player, eventoEscolhido); eventoEstáOcorrendo = true;}
         }

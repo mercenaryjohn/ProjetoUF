@@ -129,7 +129,6 @@ public class Alimento extends Item
     
     }
 
-    //InventarioClasse objInventario = new InventarioClasse();
     public void usar(EscolherClasse classeEscolhida)
     {
         String[] nomesAlimentos = getNomesAlimentos();

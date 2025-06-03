@@ -25,7 +25,7 @@ public class AmbienteMontanha extends Ambiente
         "Montanha",
         "Uma região de difícil acesso, mas rica em minérios e pedras preciosas",
         new String[] {"Pedra", "Gelo", "Água de degelo"}, //recursos
-        new float[] {0.08f, 0.05f, 0.02f}, //probabilidades eventos
+        new float[] {0.08f, 0.05f, 0.00f}, //probabilidades eventos
         new String[] {"Nevasca Repentina", "Deslizamento", "Descoberta de Caverna"} // climas e eventos
         );
     }
